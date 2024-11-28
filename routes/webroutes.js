@@ -4,6 +4,15 @@ const subscriptionController = require('../Controllers/SubscriptionController');
 const hospitalController = require('../Controllers/HospitalController');
 const contentController = require('../Controllers/ContentController');
 
+const registerController = require('../Controllers/auth/register');
+const loginController = require('../Controllers/auth/login');
+const check_otpController = require('../Controllers/auth/check_otp');
+
+// Appel de la fonction de configuration des routes
+registerController(router);
+loginController(router); // Appelle le contrôleur de login et associe la route `/login`
+check_otpController(router); // Ajoute la route pour vérifier l'check_otp
+
 // subscription admin manage
 // Add subscription
 router.post('/addsubscription', subscriptionController.addSubscription);
