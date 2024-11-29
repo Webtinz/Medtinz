@@ -9,7 +9,8 @@ const hospitalSchema = new mongoose.Schema({
   },
   hospital_name: { 
     type: String, 
-    required: true 
+    required: true ,
+    unique: true // Assure l'unicité de ce champ
   },
   hospital_country: {
     type: String, 
@@ -25,7 +26,8 @@ const hospitalSchema = new mongoose.Schema({
   },
   hospital_phone: {
     type: String, 
-    required: true 
+    required: true ,
+    unique: true // Assure l'unicité de ce champ
   },
   hospital_isActive: { 
     type: Boolean,
@@ -34,6 +36,14 @@ const hospitalSchema = new mongoose.Schema({
   hospital_admin_id: { 
     type: String, 
     // default: true 
+  },
+  subscription_id: {
+    type: String, 
+    default: null 
+  },
+  is_hospital_suscribed: {
+    type: String, 
+    default: false 
   }
 },{
   timestamps: true,
