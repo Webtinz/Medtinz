@@ -11,8 +11,8 @@ async function connectDB() {
     console.log('Connected to MongoDB');
 
     // Réinitialiser la collection User (optionnel)
-    await User.deleteMany({}); // Supprime tous les utilisateurs existants
-    await Hospital.deleteMany({}); // Supprime tous les Hospitaux existants
+    // await User.deleteMany({}); // Supprime tous les utilisateurs existants
+    // await Hospital.deleteMany({}); // Supprime tous les Hospitaux existants
 
     // Vérifier si l'utilisateur existe déjà
     const existingUser = await User.findOne({ username: 'AdminHMS' });
