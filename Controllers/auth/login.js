@@ -1,7 +1,7 @@
 const { User } = require('../../config/database');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const privateKey = process.env.private_key; // Assurez-vous que `private_key` est bien défini dans vos variables d'environnement
+const privateKey = process.env.JWT_SECRET; // Assurez-vous que `private_key` est bien défini dans vos variables d'environnement
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');

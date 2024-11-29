@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt'); // Pour hasher les mots de passe
 const { User }  = require('../Models/user')
 const Hospital = require('../Models/Hospital');
+const Subscription = require('../Models/Subscription');
 require('dotenv').config();
 
 async function connectDB() {
@@ -13,6 +14,7 @@ async function connectDB() {
     // Réinitialiser la collection User (optionnel)
     // await User.deleteMany({}); // Supprime tous les utilisateurs existants
     // await Hospital.deleteMany({}); // Supprime tous les Hospitaux existants
+    // await Subscription.deleteMany({}); // Supprime tous les Subscriptions existants
 
     // Vérifier si l'utilisateur existe déjà
     const existingUser = await User.findOne({ username: 'AdminHMS' });

@@ -1,8 +1,13 @@
 const jwt = require('jsonwebtoken');
 
 const authMiddleware = (req, res, next) => {
-    const token = req.headers['authorization']?.split(' ')[1]; // Le jeton doit être envoyé dans le header Authorization
+    const authHeader = req.headers['authorization'];
 
+    if (!authHeader) {
+        return res.status(401).json({ message: 'Access denied. No token provided.' });
+    }
+
+    const token = authHeader.split(' ')[1]; // Le jeton doit être envoyé dans le header Authorization
     if (!token) {
         return res.status(401).json({ message: 'Access denied. No token provided.' });
     }
@@ -12,7 +17,7 @@ const authMiddleware = (req, res, next) => {
         req.user = decoded; // Ajoutez les données du token à l'objet req pour un accès ultérieur
         next();
     } catch (error) {
-        res.status(401).json({ message: 'Invalid token.' });
+        return res.status(401).json({ message: 'Invalid token.', error: error.message });
     }
 };
 

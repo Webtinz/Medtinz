@@ -4,12 +4,17 @@ const Subscription = require('../Models/Subscription');
 exports.addSubscription = async (req, res) => {
     try {
         const { 
-            name, description, duration, features, price , description_fr, features_fr 
+            name, description, duration, features, price, description_fr, features_fr 
         } = req.body;
 
+        // Validation simple des champs requis
+        if (!name || !description || !price || !duration) {
+            return res.status(400).json({ error: 'Name, description, price, and duration are required.' });
+        }
+
         // S'assurer que 'features' et 'features_fr' sont toujours des tableaux
-        let featuresArray = Array.isArray(features) ? features : [features];
-        let featuresFrArray = Array.isArray(features_fr) ? features_fr : [features_fr];
+        let featuresArray = Array.isArray(features) ? features : (features ? [features] : []);
+        let featuresFrArray = Array.isArray(features_fr) ? features_fr : (features_fr ? [features_fr] : []);
 
         // Créer un nouvel abonnement
         const subscription = new Subscription({
@@ -31,9 +36,11 @@ exports.addSubscription = async (req, res) => {
             subscription,
         });
     } catch (error) {
-        res.status(400).json({ error: error.message });
+        // Gestion des erreurs avec message détaillé
+        res.status(400).json({ error: error.message || 'Error occurred while adding the subscription.' });
     }
 };
+
 
 // Récupérer tous les abonnements
 exports.getAllSubscriptions = async (req, res) => {

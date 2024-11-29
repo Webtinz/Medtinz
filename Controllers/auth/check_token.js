@@ -1,6 +1,6 @@
 const { User } = require('../../config/database');
 const jwt = require('jsonwebtoken');
-const privateKey = process.env.private_key; // Assurez-vous que `private_key` est bien défini dans vos variables d'environnement
+const privateKey = process.env.JWT_SECRET; // Assurez-vous que `private_key` est bien défini dans vos variables d'environnement
 
 module.exports = (router) => {
   // Définition de la route pour valider le token
