@@ -2,6 +2,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt'); // Pour hasher les mots de passe
 const { User }  = require('../Models/user')
+const Hospital = require('../Models/Hospital');
 require('dotenv').config();
 
 async function connectDB() {
@@ -10,7 +11,8 @@ async function connectDB() {
     console.log('Connected to MongoDB');
 
     // Réinitialiser la collection User (optionnel)
-    // await User.deleteMany({}); // Supprime tous les utilisateurs existants
+    await User.deleteMany({}); // Supprime tous les utilisateurs existants
+    await Hospital.deleteMany({}); // Supprime tous les Hospitaux existants
 
     // Vérifier si l'utilisateur existe déjà
     const existingUser = await User.findOne({ username: 'AdminHMS' });
@@ -25,6 +27,7 @@ async function connectDB() {
             name: 'Degkof',
             email: 'degkofittiq@gmail.com',
             otp: myDefaultOtp,
+            is_otp_valid: true,
             type: 4,
             password: 'AdmEvt@123'
         });

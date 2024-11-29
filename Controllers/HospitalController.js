@@ -1,5 +1,5 @@
 // controllers/hospitalController.js
-const Hospital = require('../Models/Hospital');
+const Hospital = require('../Models/Hospital'); 
 
 // Ajouter un hôpital
 exports.addHospital = async (req, res) => {

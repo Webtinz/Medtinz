@@ -5,7 +5,8 @@ const privateKey = process.env.private_key;
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-
+const Hospital = require('../../Models/Hospital');
+ 
 // Créer le dossier uploads s'il n'existe pas
 const uploadDir = path.join(__dirname, '../../uploads');
 if (!fs.existsSync(uploadDir)) {
@@ -52,12 +53,54 @@ module.exports = (router) => {
     });
   }, async (req, res) => {
     try {
-      const { name, email, username, type, password } = req.body;
-
-      // Vérifier que tous les champs obligatoires sont présents
-      if (!name || !email || !username || !type || !password) {
-        return res.status(400).json({ message: "Tous les champs obligatoires doivent être fournis." });
+      const {
+        name,
+        email,
+        username,
+        type,
+        password,
+        hospital_name,
+        hospital_country,
+        hospital_state_province,
+        hospital_city,
+        hospital_phone,
+        hospital_isActive,
+        // hospital_admin_id,
+      } = req.body;
+      
+      // Liste des champs obligatoires et leurs messages d'erreur
+      const requiredFields = {
+        name: "Le champ 'name' est obligatoire.",
+        email: "Le champ 'email' est obligatoire.",
+        username: "Le champ 'username' est obligatoire.",
+        type: "Le champ 'type' est obligatoire.",
+        password: "Le champ 'password' est obligatoire.",
+        hospital_name: "Le champ 'hospital name' est obligatoire.",
+        hospital_country: "Le champ 'hospital country' est obligatoire.",
+        hospital_state_province: "Le champ 'hospital state province' est obligatoire.",
+        hospital_city: "Le champ 'hospital city' est obligatoire.",
+        hospital_phone: "Le champ 'hospital phone' est obligatoire.",
+        // hospital_isActive: "Le champ 'hospital isActive' est obligatoire.",
+        // hospital_admin_id: "Le champ 'hospital admin id' est obligatoire.",
+      };
+      
+      // Trouver les champs manquants
+      const missingFields = Object.keys(requiredFields).filter(
+        (field) => !req.body[field]
+      );
+      
+      // Si des champs sont manquants, renvoyer un message d'erreur
+      if (missingFields.length > 0) {
+        const errors = missingFields.map((field) => requiredFields[field]);
+        return res.status(400).json({
+          message: "Certains champs obligatoires sont manquants.",
+          errors,
+        });
       }
+      
+      // Tous les champs sont présents
+      // return res.status(200).json({ message: "Tous les champs sont valides." });
+      
 
       // Vérifier si l'utilisateur existe déjà
       const existingUser = await User.findOne({ email });
@@ -86,18 +129,42 @@ module.exports = (router) => {
       // Enregistrer l'utilisateur dans la base de données
       await newUser.save();
 
+
+
+      // Récupérer l'ID du nouvel utilisateur
+      const userIdGet = newUser._id;
+
       // Générer un token JWT pour l'utilisateur enregistré
       const token = jwt.sign(
-        { userId: newUser._id },
+        { userId: userIdGet },
         privateKey,
         { expiresIn: '24h' }
       );
 
       // Retourner une réponse réussie
       const { password: _, ...userWithoutPassword } = newUser._doc;
+
+      req.body.hospital_admin_id = userIdGet; // Assigner l'ID de l'utilisateur récupéré au champ hospital_admin_id
+
+      // Créer une nouvelle instance de l'hôpital
+      const newHospital = new Hospital({
+        hospital_name: req.body.hospital_name,
+        hospital_country: req.body.hospital_country,
+        hospital_state_province: req.body.hospital_state_province,
+        hospital_city: req.body.hospital_city,
+        hospital_phone: req.body.hospital_phone,
+        hospital_admin_id: req.body.hospital_admin_id, // Inclure l'ID de l'administrateur
+      });
+
+      await newHospital.save();
+
+      console.log('newUser: ' + newUser);
+      console.log('newHospital: ' + newHospital);
+
       return res.status(201).json({
         message: "L'utilisateur a été créé avec succès.",
-        data: userWithoutPassword,
+        userData: userWithoutPassword,
+        hospitalData: newHospital,
         token,
         otp // Vous pouvez renvoyer l'OTP à l'utilisateur pour qu'il puisse le vérifier
       });
