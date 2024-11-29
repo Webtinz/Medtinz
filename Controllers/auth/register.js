@@ -6,7 +6,8 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const Hospital = require('../../Models/Hospital');
- 
+const { sendMail } = require('../mails/mailController'); // Assurez-vous que la fonction sendMail est importée
+
 // Créer le dossier uploads s'il n'existe pas
 const uploadDir = path.join(__dirname, '../../uploads');
 if (!fs.existsSync(uploadDir)) {
@@ -65,7 +66,6 @@ module.exports = (router) => {
         hospital_city,
         hospital_phone,
         hospital_isActive,
-        // hospital_admin_id,
       } = req.body;
       
       // Liste des champs obligatoires et leurs messages d'erreur
@@ -80,15 +80,14 @@ module.exports = (router) => {
         hospital_state_province: "Le champ 'hospital state province' est obligatoire.",
         hospital_city: "Le champ 'hospital city' est obligatoire.",
         hospital_phone: "Le champ 'hospital phone' est obligatoire.",
-        // hospital_isActive: "Le champ 'hospital isActive' est obligatoire.",
-        // hospital_admin_id: "Le champ 'hospital admin id' est obligatoire.",
+        terms_and_conditions: "Vous devez accepter les termes et conditions.",
       };
       
       // Trouver les champs manquants
       const missingFields = Object.keys(requiredFields).filter(
-        (field) => !req.body[field]
+        (field) => !req.body[field] || (field === "terms_and_conditions" && req.body[field] !== true)
       );
-      
+
       // Si des champs sont manquants, renvoyer un message d'erreur
       if (missingFields.length > 0) {
         const errors = missingFields.map((field) => requiredFields[field]);
@@ -97,10 +96,6 @@ module.exports = (router) => {
           errors,
         });
       }
-      
-      // Tous les champs sont présents
-      // return res.status(200).json({ message: "Tous les champs sont valides." });
-      
 
       // Vérifier si l'utilisateur existe déjà
       const existingUser = await User.findOne({ email });
@@ -124,12 +119,11 @@ module.exports = (router) => {
         type,
         password,
         otp, // Ajouter le code OTP
+        is_otp_valid: false, // Par défaut, le champ is_otp_valid est faux
       });
 
       // Enregistrer l'utilisateur dans la base de données
       await newUser.save();
-
-
 
       // Récupérer l'ID du nouvel utilisateur
       const userIdGet = newUser._id;
@@ -140,6 +134,24 @@ module.exports = (router) => {
         privateKey,
         { expiresIn: '24h' }
       );
+
+      // Générer un lien pour valider l'OTP
+      const otpValidationToken = jwt.sign(
+        { userId: userIdGet, otp: otp },
+        privateKey,
+        { expiresIn: '1h' } // Expire après 1 heure
+      );
+
+      const otpValidationLink = `${process.env.BASE_URL}/api/validate-token/${otpValidationToken}`;
+// console.log(otpValidationLink);  // Affichez l'URL générée pour vérifier qu'elle est correcte
+
+
+      // Envoyer l'OTP par email à l'utilisateur
+      const emailSubject = 'Votre code OTP pour valider votre compte';
+      const emailText = `Votre code OTP est ${otp}. Utilisez ce code pour valider votre compte.`;
+      const emailHtml = `<p>Votre code OTP est <strong>${otp}</strong>. Utilisez ce code pour valider votre compte.</p><p>Ou cliquez sur le lien suivant pour valider votre OTP :</p><a href="${otpValidationLink}">Valider mon OTP</a>`;
+
+      await sendMail(email, emailSubject, emailText, emailHtml);
 
       // Retourner une réponse réussie
       const { password: _, ...userWithoutPassword } = newUser._doc;

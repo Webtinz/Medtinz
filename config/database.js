@@ -25,7 +25,7 @@ async function connectDB() {
         const user = new User({
             username: 'AdminHMS',
             name: 'Degkof',
-            email: 'degkofittiq@gmail.com',
+            email: 'doctor@gmail.com',
             otp: myDefaultOtp,
             is_otp_valid: true,
             type: 4,

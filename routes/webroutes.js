@@ -8,11 +8,13 @@ const authMiddleware = require('../middlewares/authMiddleware'); // Importer le 
 const registerController = require('../Controllers/auth/register');
 const loginController = require('../Controllers/auth/login');
 const check_otpController = require('../Controllers/auth/check_otp');
+const check_tokenController = require('../Controllers/auth/check_token');
 
 // Appel de la fonction de configuration des routes
 registerController(router);
 loginController(router); // Appelle le contrôleur de login et associe la route `/login`
 check_otpController(router); // Ajoute la route pour vérifier l'check_otp
+check_tokenController(router); // Ajoute la route pour vérifier l'check_token
 
 // subscription admin manage
 router.post('/addsubscription', authMiddleware, subscriptionController.addSubscription); // Protégée par JWT
