@@ -8,6 +8,8 @@ const cors = require('cors');
 const webRoutes = require('./routes/webroutes');
 const {connectDB} = require('./config/database');
 const path = require('path');
+const paymentRoute = require('./routes/paymentRoute');
+
 require('dotenv').config();
 
 const app = express();
@@ -21,6 +23,8 @@ app.use(cors())
     .use(express.urlencoded({ extended: true }))
 
 app.use('/api', webRoutes);
+app.use('/payment',paymentRoute);
+// /payment/pay
 
 // Routes Dynamiques
 app.get('/teteyooo', (req, res) => {
