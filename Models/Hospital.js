@@ -1,5 +1,14 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const sharp = require('sharp');
+const path = require('path');
+const fs = require('fs');
+
+// Création des répertoires si non existants
+const uploadDir = path.join(__dirname, '../uploads/hospitals_logo');
+const processedDir = path.join(uploadDir, 'processed');
+if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
+if (!fs.existsSync(processedDir)) fs.mkdirSync(processedDir);
 
 const hospitalSchema = new mongoose.Schema({
   hospital_spec_id: { 
@@ -42,8 +51,16 @@ const hospitalSchema = new mongoose.Schema({
     default: null 
   },
   is_hospital_suscribed: {
-    type: String, 
+    type: Boolean, 
     default: false 
+  },
+  logo: {
+    type: String,
+    validate: {
+        validator: (value) => !value || /\.(jpg|jpeg|png|gif|svg)$/i.test(value), // Validation d'extension
+        message: 'Le fichier doit avoir une extension valide (jpg, jpeg, png, gif, svg)!',
+    },
+    default: null,
   }
 },{
   timestamps: true,
@@ -80,26 +97,33 @@ hospitalSchema.pre('validate', async function (next) {
   next();
 });
 
+// Middleware pour traiter l'image avant la sauvegarde
+hospitalSchema.pre('save', async function (next) {
+  if (this.isModified('logo') && this.logo) {
+    const extname = path.extname(this.logo).toLowerCase();
+    if (!/\.(jpg|jpeg|png|gif|svg)$/i.test(extname)) {
+      return next(new Error('Le fichier doit avoir une extension valide (jpg, jpeg, png, gif, svg)!'));
+    }
 
+    const imagePath = path.join(uploadDir, this.logo);
 
-// hospitalSchema.pre('validate', async function (next) {
-//   if (!this.hospital_spec_id) {
-//     let isUnique = false;
-//     while (!isUnique) {
-//       // Générer un identifiant unique
-//       const randomId = Math.floor(100000 + Math.random() * 900000);
-//       const generatedId = `clinic-${randomId}`;
-      
-//       // Vérifier si l'identifiant existe déjà
-//       const existingHospital = await mongoose.models.Hospital.findOne({ hospital_spec_id: generatedId });
-//       if (!existingHospital) {
-//         this.hospital_spec_id = generatedId;
-//         isUnique = true;
-//       }
-//     }
-//   }
-//   next();
-// });
+    try {
+      // Traitement de l'image
+      await sharp(imagePath)
+        .resize(800) // Par exemple, redimensionner
+        .toFile(path.join(processedDir, this.logo));
+
+      fs.unlinkSync(imagePath); // Supprimer l'image originale si vous le souhaitez
+
+      // Mettre à jour le chemin de l'image traitée
+      this.logo = path.join('uploads', 'processed', path.basename(this.logo));
+    } catch (error) {
+      return next(error);
+    }
+  }
+  next();
+});
+
 
 const Hospital = mongoose.model('Hospital', hospitalSchema);
 module.exports = Hospital;

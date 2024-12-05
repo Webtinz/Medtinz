@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const Hospital = require('../Models/Hospital'); 
 const Subscription = require('../Models/Subscription'); 
+const multer = require('multer');
+const path = require('path');
 
 // Ajouter un hôpital
 exports.addHospital = async (req, res) => {
@@ -71,7 +73,6 @@ exports.deactivateHospital = async (req, res) => {
     }
 }
 
-
 // Choose plan
 exports.selectHospitalPlan = async (req, res) => {
     const { hospitalSpecId, subscription_id: selectPlanParam } = req.body;
@@ -124,4 +125,55 @@ exports.selectHospitalPlan = async (req, res) => {
         return res.status(500).json({ error: error.message || 'An error occurred while processing your request.' });
     }
 
+};
+
+// Configurer Multer pour gérer l'upload des fichiers
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, path.join(__dirname, '../uploads/hospitals_logo/'));  // Dossier où les logos sont stockés
+    },
+    filename: (req, file, cb) => {
+      const extname = path.extname(file.originalname).toLowerCase();
+      if (!/\.(jpg|jpeg|png|gif|svg)$/i.test(extname)) {
+        return cb(new Error('Le fichier doit avoir une extension valide (jpg, jpeg, png, gif, svg)!'));
+      }
+  
+      const filename = `hospital-logo-${Date.now()}${extname}`;
+      cb(null, filename); // Donner un nom unique à chaque image uploadée
+    }
+});
+
+// Initialisation de multer avec la configuration ci-dessus
+const upload = multer({ storage }).single('logo');
+// Méthode pour ajouter un logo à un hôpital
+exports.addHospitalLogo = async (req, res) => {
+    upload(req, res, async (err) => {
+        if (err) {
+            return res.status(400).json({ error: err.message });
+        }
+
+        try {
+            // Récupérer l'ID de l'hôpital depuis le corps de la requête
+            const { hospitalId } = req.body; // Utilisation de req.body pour récupérer l'ID
+            
+            if (!hospitalId) {
+                return res.status(400).json({ message: 'Hospital ID is required' });
+            }
+
+            // Trouver l'hôpital correspondant dans la base de données
+            const hospital = await Hospital.findById(hospitalId);
+
+            if (!hospital) {
+                return res.status(404).json({ message: 'Hôpital introuvable' });
+            }
+
+            // Mettre à jour le champ logo de l'hôpital
+            hospital.logo = `uploads/hospitals_logo/${req.file.filename}`;
+            await hospital.save();
+
+            return res.status(200).json({ message: 'Logo ajouté avec succès', hospital });
+        } catch (error) {
+            return res.status(500).json({ message: 'Erreur lors de l\'ajout du logo', error: error.message });
+        }
+    });
 };

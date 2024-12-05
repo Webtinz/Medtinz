@@ -26,6 +26,7 @@ router.delete('/deletesubscriptions/:id', authMiddleware, subscriptionController
 
 // Hospital manage
 router.post('/addhospital', authMiddleware, hospitalController.addHospital); // Protégée
+router.post('/addhospitallogo', authMiddleware, hospitalController.addHospitalLogo); // Protégée
 router.get('/hospitals', authMiddleware, hospitalController.getHospitals); // Protégée
 router.put('/deactivate/:hospitalId', authMiddleware, hospitalController.deactivateHospital); // Protégée
 router.post('/selectplan', authMiddleware, hospitalController.selectHospitalPlan); // Protégée
