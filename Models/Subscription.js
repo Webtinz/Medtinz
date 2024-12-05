@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 
 const SubscriptionSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  duration: { type: String, required: true , unique: true },
+  duration: { type: String, required: true },
   description: { type: String, required: true },
   features: { type: [String], required: true  },
   description_fr: { type: String, required: true},
