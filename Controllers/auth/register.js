@@ -58,7 +58,7 @@ module.exports = (router) => {
         name,
         email,
         username,
-        type,
+        role,
         password,
         hospital_name,
         hospital_country,
@@ -73,7 +73,7 @@ module.exports = (router) => {
         name: "Le champ 'name' est obligatoire.",
         email: "Le champ 'email' est obligatoire.",
         username: "Le champ 'username' est obligatoire.",
-        type: "Le champ 'type' est obligatoire.",
+        role: "Le champ 'role' est obligatoire.",
         password: "Le champ 'password' est obligatoire.",
         hospital_name: "Le champ 'hospital name' est obligatoire.",
         hospital_country: "Le champ 'hospital country' est obligatoire.",
@@ -116,7 +116,7 @@ module.exports = (router) => {
         email,
         username,
         picture: req.file ? req.file.filename : null, // Stocker uniquement le nom du fichier
-        type,
+        role,
         password,
         otp, // Ajouter le code OTP
         is_otp_valid: false, // Par défaut, le champ is_otp_valid est faux

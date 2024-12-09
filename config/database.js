@@ -5,6 +5,11 @@ const { User }  = require('../Models/user')
 const Hospital = require('../Models/Hospital');
 const Department = require('../Models/Department');
 const Subscription = require('../Models/Subscription');
+
+const { Role } = require('../Models/Role');
+const { Specialty } = require('../Models/Specialty');
+const { Schedule } = require('../Models/Schedule');
+
 require('dotenv').config();
 
 async function connectDB() {
@@ -13,7 +18,10 @@ async function connectDB() {
     console.log('Connected to MongoDB');
 
     // Réinitialiser la collection User (optionnel)
-    // await Department.deleteMany({}); // Supprime tous les Departments existants
+    // await Role.deleteMany({}); // Supprime tous les Roles existants
+    // await Specialty.deleteMany({}); // Supprime tous les Specialtys existants
+    // await Schedule.deleteMany({}); // Supprime tous les Schedules existants
+    // // await Department.deleteMany({}); // Supprime tous les Departments existants
     // await User.deleteMany({}); // Supprime tous les utilisateurs existants
     // await Hospital.deleteMany({}); // Supprime tous les Hospitaux existants
     // await Subscription.deleteMany({}); // Supprime tous les Subscriptions existants

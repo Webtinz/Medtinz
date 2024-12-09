@@ -40,6 +40,8 @@ router.put('/updatedepartment', authMiddleware, departmentController.updateDepar
 router.delete('/deletedepartment', authMiddleware, departmentController.deleteDepartment); // Protégée
 
 
+// Users Management By Hospital Admin
+
 // Content Management
 router.get('/:lang/content', contentController.getContent); // Non protégée
 router.post('/content', authMiddleware, contentController.addOrUpdateContent); // Protégée

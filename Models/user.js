@@ -11,8 +11,6 @@ if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
 if (!fs.existsSync(processedDir)) fs.mkdirSync(processedDir);
 
 // Schéma utilisateur
-const validTypes = [1, 2, 3, 4];
-
 const userSchema = new mongoose.Schema({
     email: { 
         type: String, 
@@ -21,36 +19,47 @@ const userSchema = new mongoose.Schema({
     },
     name: {
         type: String,
-        required: [true, 'Le champ nom est requis'],
-        minlength: [3, 'Le nom doit contenir au moins 3 caractères'],
-        maxlength: [200, 'Le nom est trop long'],
+        required: true,
+        minlength: 3,
+        maxlength: 200,
         trim: true,
     },
     username: {
         type: String,
-        required: [true, 'Le champ nom d\'utilisateur est requis'],
+        required: true,
+        minlength: 3,
+        maxlength: 100,
         unique: true,
         trim: true,
     },
     picture: {
         type: String,
         validate: {
-            validator: (value) => !value || /\.(jpg|jpeg|png|gif|svg)$/i.test(value), // Validation d'extension
+            validator: (value) => !value || /\.(jpg|jpeg|png|gif|svg)$/i.test(value),
             message: 'Le fichier doit avoir une extension valide (jpg, jpeg, png, gif, svg)!',
         },
         default: null,
     },
-    type: {
-        type: Number,
-        required: [true, 'Vous devez choisir un type!'],
-        validate: {
-            validator: (value) => validTypes.includes(value),
-            message: `Le type d'utilisateur doit être contenu dans cette liste: ${validTypes}`,
-        },
+    role: { // Rôle de l'utilisateur (en lien avec le modèle Role)
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Role', // Lien avec le modèle Role
+        required: true,
+    },
+    specialties: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Specialty'
+    }],
+    schedule: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Schedule'
+    },
+    contact: {
+        phone: { type: String, required: true },
+        address: { type: String, required: false },
     },
     password: {
         type: String,
-        required: [true, 'Le champ mot de passe est requis'],
+        required: true,
         validate: {
             validator: (value) =>
                 /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(value),
@@ -59,17 +68,15 @@ const userSchema = new mongoose.Schema({
         },
     },
     otp: {
-        type: Number,  // Le code OTP généré pour l'utilisateur
-        required: false,
+        type: Number,
         default: null,
     },
     is_otp_valid: {
-        type: Boolean,  // Indique si l'OTP est valide ou non
-        required: true,
+        type: Boolean,
         default: false,
     },
 }, {
-    timestamps: true, // Ajoute les champs createdAt et updatedAt automatiquement
+    timestamps: true,
 });
 
 // Middleware pour hasher le mot de passe avant la sauvegarde
@@ -98,7 +105,6 @@ userSchema.pre('save', async function (next) {
         try {
             // Traitement de l'image avec sharp (redimensionnement, compression, etc.)
             await sharp(filePath)
-                // .resize(800) // Redimensionner à 800px de largeur (vous pouvez ajuster selon vos besoins)
                 .toFile(path.join(processedDir, imagePath)); // Sauvegarder l'image traitée
 
             // Si l'image est traitée, vous pouvez supprimer l'original si nécessaire
@@ -114,6 +120,6 @@ userSchema.pre('save', async function (next) {
     next();
 });
 
-const User = mongoose.model('users', userSchema);
+const User = mongoose.model('User', userSchema); // Modèle avec un seul rôle
 
-module.exports = { User }; // Exporter le modèle User
+module.exports = { User }; 
