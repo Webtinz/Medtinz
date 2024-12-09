@@ -9,6 +9,11 @@ import DocsIcons from './DocsIcons'
 import DocsLink from './DocsLink'
 import DocsExample from './DocsExample'
 
+// client side
+import ClientSidebar from './ClientSidebar'
+import ClientContent from './ClientContent'
+import ClientHeader from './ClientHeader'
+
 export {
   AppBreadcrumb,
   AppContent,
@@ -20,4 +25,9 @@ export {
   DocsIcons,
   DocsLink,
   DocsExample,
+
+  // client side
+  ClientSidebar,
+  ClientContent,
+  ClientHeader
 }

@@ -36,7 +36,7 @@ const Tables = () => {
     // Fonction pour gérer l'édition d'un abonnement
     const handleEdit = (id) => {
         // Redirige vers la page d'édition avec l'ID de l'abonnement dans l'URL
-        navigate(`/admin/editplan${id}`);
+        navigate(`/admin/editplan/${id}`);
     };
 
     // Fonction de suppression avec confirmation

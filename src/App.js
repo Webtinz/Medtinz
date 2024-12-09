@@ -1,18 +1,18 @@
 import React, { Suspense, useEffect } from 'react'
-import {  HashRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, HashRouter, Route, Routes } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 import { CSpinner, useColorModes } from '@coreui/react'
 import './scss/style.scss'
+import ClientRoutesComponent from './routes/clientnodash';
 
 // We use those styles to show code examples, you should remove them in your application.
 import './scss/examples.scss'
 
-// Importation du composant Routes qui gère les routes
-import ClientRoutesComponent from './routes/clientRoutes';
-
 // Containers
-const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'))
+const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'));
+const ClientLayout = React.lazy(() => import('./layout/ClientLayout'))
+
 
 // Pages
 const Login = React.lazy(() => import('./views/auth/Login'))
@@ -51,21 +51,14 @@ const App = () => {
           <Route exact path="/login" name="Login Page" element={<Login />} />
           <Route exact path="/register" name="Register Page" element={<Register />} />
           <Route exact path="/404" name="Page 404" element={<Page404 />} />
-          <Route exact pat="/500" name="Page 500" element={<Page500 />} />
-          <Route path="/" name="Home" element={<DefaultLayout />} />
+          <Route exact path="/500" name="Page 500" element={<Page500 />} />
+          <Route path="/admin/*" name="Home" element={<DefaultLayout />} />
 
-          {/* Route pour le layout de l'admin */}
-          <Route path="/" element={<DefaultLayout />}>
-            <Route index element={<DefaultLayout />} /> {/* Page par défaut */}
-          </Route>
-
-          {/* Client Routes */}
-          <Route path="/*" element={<ClientRoutesComponent />} /> {/* Inclure les routes clients */}
+          <Route path="/client/*" name="clientroute" element={<ClientLayout />} />
         </Routes>
+        {/* <ClientRoutesComponent /> */}
       </Suspense>
     </HashRouter>
-
-
   )
 }
 

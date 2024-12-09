@@ -1,18 +1,17 @@
-import React from 'react';
-import Sidebar from '../components/ClientSidebar'; // Sidebar
+import React from 'react'
+import { ClientContent, ClientSidebar, AppFooter, ClientHeader } from '../components/index'
 
-const Layout = ({ children }) => {
+const DefaultLayout = () => {
   return (
-    <div className="layout-container">
-      <Sidebar />
-      <div className="content">
-        <div className="main-content">
-          {/* Le contenu dynamique de la page */}
-          {children}
+    <div>
+      <ClientSidebar />
+      <div className="wrapper d-flex flex-column min-vh-100">
+        <div className="body flex-grow-1" style={{backgroundColor:'#DFEAF5'}}>
+          <ClientContent />
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default Layout;
+export default DefaultLayout

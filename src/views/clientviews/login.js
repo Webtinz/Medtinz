@@ -43,7 +43,7 @@ const LoginPage = () => {
             </div>
 
             {/* Section des rôles */}
-            <div className="formslogin mt-4">
+            <div className="formslogin mt-5">
                 <h3 className="title text-center">Enter your credentials</h3>
                 <div className="loginfoms container">
                     <form onSubmit={handleLogin} className="login-form">
@@ -89,7 +89,7 @@ const LoginPage = () => {
             </div>
 
             {/* Footer */}
-            <footer className="text-left container mt-5">
+            <footer className="text-left container">
                 <img src={BottomLeftmedication} alt="Bottom left orange" className="image-medication-left" />
                 <p>&copy; 2024 Développé par ITTIQ</p>
             </footer>

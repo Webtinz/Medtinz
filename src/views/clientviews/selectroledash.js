@@ -47,7 +47,7 @@ const SelectRolePage = () => {
       </div>
 
       {/* Footer */}
-      <footer className="text-left container mt-5">
+      <footer className="text-left container">
         <img src={BottomLeftmedication} alt="Bottom left orange" className="image-medication-left" />
         <p>&copy; 2024 Développé par ITTIQ</p>  
       </footer>

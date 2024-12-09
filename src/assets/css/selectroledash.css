@@ -2,10 +2,12 @@
 
 .Selectrole {
     font-family: 'Lexend', sans-serif;
+    max-height: 100%;
+    height: 100vh;
 }
 
 .selecthead {
-    height: 33vh;
+    padding:50px 0px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -29,7 +31,7 @@
 
 .image-orange-bottom-left {
     position: absolute;
-    bottom: 58vh;
+    top: 27%;
     left: 0px;
     width: 70px;
     /* Ajustez la taille de l'image en bas à gauche */
@@ -76,6 +78,7 @@
 
 .role-btn:hover {
     background-color: #00308f;
+    color: white !important;
 }
 
 .continue-btn , .formcontinue-btn{
@@ -93,14 +96,9 @@
     margin-top: 1%;
 }
 
-.continue-btn:hover {
-    background-color: #00308f;
-    color: white !important;
-}
-
 .image-orange-right {
     position: absolute;
-    bottom: 5vh;
+    bottom: 5%;
     right: 15%;
     width: 150px;
     /* Ajustez la taille de l'image en bas à gauche */
@@ -111,7 +109,7 @@
 .image-medication-left {
     position: absolute;
     bottom: 0px;
-    left: 100px;
+    left: 7%;
     width: 150px;
     /* Ajuste la taille de l'image */
     height: auto;
@@ -120,9 +118,14 @@
 }
 
 /* Ajout de style pour s'assurer que le texte est lisible sur l'image */
+footer{
+  display: flex !important;
+  align-items: end !important;  
+}
 footer p {
     position: relative;
     z-index: 2;
+    margin-top: 20px;
     /* S'assurer que le texte soit au-dessus de l'image */
     font-size: 14px;
 }
@@ -130,8 +133,7 @@ footer p {
 /* loginpage */
 
 .loginfoms {
-    padding: 20px;
-    margin-top: 20px;
+    padding:0px 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -150,8 +152,8 @@ footer p {
     width: 100%;
     padding: 10px;
     margin-top: 5px;
-    border-radius: 5px;
-    border: 1px solid #00308f !important;
+    border-radius: 10px;
+    border: 2px solid #00308f !important;
 }
 
 .remember-me {
