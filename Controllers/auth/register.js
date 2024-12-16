@@ -58,8 +58,10 @@ module.exports = (router) => {
         name,
         email,
         username,
+        phone,
         role,
         password,
+        address,
         hospital_name,
         hospital_country,
         hospital_state_province,
@@ -120,6 +122,10 @@ module.exports = (router) => {
         password,
         otp, // Ajouter le code OTP
         is_otp_valid: false, // Par défaut, le champ is_otp_valid est faux
+        contact: {
+          phone: phone || null, // Utiliser req.body pour récupérer le téléphone, ou null si non fourni
+          address: address || null, // Utiliser req.body pour récupérer l'adresse, ou null si non fourni
+        },
       });
 
       // Enregistrer l'utilisateur dans la base de données
@@ -143,7 +149,7 @@ module.exports = (router) => {
       );
 
       const otpValidationLink = `${process.env.BASE_URL}/api/validate-token/${otpValidationToken}`;
-// console.log(otpValidationLink);  // Affichez l'URL générée pour vérifier qu'elle est correcte
+      // console.log(otpValidationLink);  // Affichez l'URL générée pour vérifier qu'elle est correcte
 
 
       // Envoyer l'OTP par email à l'utilisateur
