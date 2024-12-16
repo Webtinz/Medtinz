@@ -38,7 +38,7 @@ const upload = multer({
 
 // Fonction pour générer un OTP aléatoire à 4 chiffres
 function generateOTP() {
-  return Math.floor(1000 + Math.random() * 9000);
+  return Math.floor(100000 + Math.random() * 9000);
 }
 
 // Fonction principale pour définir les routes
