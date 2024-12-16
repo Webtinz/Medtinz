@@ -7,8 +7,16 @@ const fs = require('fs');
 // Création des répertoires si non existants
 const uploadDir = path.join(__dirname, '../uploads/hospitals_logo');
 const processedDir = path.join(uploadDir, 'processed');
-if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
-if (!fs.existsSync(processedDir)) fs.mkdirSync(processedDir);
+
+// Vérification et création récursive
+function ensureDirectoryExistence(dirPath) {
+  if (!fs.existsSync(dirPath)) {
+    fs.mkdirSync(dirPath, { recursive: true });
+  }
+}
+
+ensureDirectoryExistence(uploadDir);
+ensureDirectoryExistence(processedDir);
 
 const hospitalSchema = new mongoose.Schema({
   hospital_spec_id: { 
@@ -74,10 +82,10 @@ hospitalSchema.pre('validate', async function (next) {
       // Trouver le dernier hospital_spec_id dans la base de données
       const lastHospital = await mongoose.models.Hospital.findOne().sort({ hospital_spec_id: -1 }).limit(1);
       
-      let newId = 'clinic-000001'; // ID par défaut si aucun hôpital n'existe
+      let newId = 'hms-clinic-000001'; // ID par défaut si aucun hôpital n'existe
       if (lastHospital) {
         // Extraire la partie numérique de l'ID existant
-        const lastIdNumber = parseInt(lastHospital.hospital_spec_id.replace('clinic-', ''));
+        const lastIdNumber = parseInt(lastHospital.hospital_spec_id.replace('hms-clinic-', ''));
         
         // Incrémenter cette valeur
         const incrementedIdNumber = lastIdNumber + 1;

@@ -43,7 +43,7 @@ const userSchema = new mongoose.Schema({
     role: { // Rôle de l'utilisateur (en lien avec le modèle Role)
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Role', // Lien avec le modèle Role
-        required: true,
+        // required: true,
     },
     specialties: [{
         type: mongoose.Schema.Types.ObjectId,
@@ -54,17 +54,18 @@ const userSchema = new mongoose.Schema({
         ref: 'Schedule'
     },
     contact: {
-        phone: { type: String, required: true },
+        phone: { type: String, required: false },
         address: { type: String, required: false },
     },
     password: {
         type: String,
         required: true,
+        maxlength: 128,  // Limite de 128 caractères
         validate: {
             validator: (value) =>
-                /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(value),
+                /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$!%*?&])[A-Za-z\d@#$!%*?&]{8,}$/.test(value),
             message:
-                'Le mot de passe doit contenir au moins 8 caractères, avec une majuscule, une minuscule, un chiffre, et un caractère spécial.',
+                'Le mot de passe doit contenir au moins 8 caractères, avec une majuscule, une minuscule, un chiffre, et un caractère spécial compris dans ce lot(@,#,$,!,%,*,?,&).',
         },
     },
     otp: {
@@ -75,6 +76,16 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    hospital_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Hospital', // Lien avec le modèle Hospital
+        default: null,   // Par défaut, null
+    },
+    departementId: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Department', // Lien avec le modèle Department
+        default: null,
+    }],
 }, {
     timestamps: true,
 });
