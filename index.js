@@ -22,6 +22,21 @@ app.use(cors())
     .use(bodyParser.urlencoded({ extended: true }))
     .use(express.urlencoded({ extended: true }))
 
+
+/* Start code for call */
+
+// Définir le dossier public comme dossier contenant les fichiers statiques
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Route pour servir la page HTML
+app.get('/call', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// http://localhost:5000/call
+
+/* End code for call */
+
 app.use('/api', webRoutes);
 app.use('/payment',paymentRoute);
 // /payment/pay
