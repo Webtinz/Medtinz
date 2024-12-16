@@ -8,12 +8,24 @@ const userController = require('../Controllers/userController');
 const roleController = require('../Controllers/RoleController'); // Importer le contrôleur des rôles
 const specialtyController = require('../Controllers/SpecialityController'); // Import du contrôleur Specialty
 
+const resendOtpController = require('../Controllers/auth/resend_otp');
+const forgotPasswordController = require('../Controllers/auth/forgot_password');
+const resetPasswordController = require('../Controllers/auth/reset_password');
+
 const authMiddleware = require('../middlewares/authMiddleware'); // Importer le middleware
 
 const registerController = require('../Controllers/auth/register');
 const loginController = require('../Controllers/auth/login');
 const check_otpController = require('../Controllers/auth/check_otp');
 const check_tokenController = require('../Controllers/auth/check_token');
+
+// Route pour renvoyer l'OTP
+router.post('/resend-otp', resendOtpController);
+// Route pour mot de passe oublié
+router.post('/forgot-password', forgotPasswordController);
+
+// Route pour reset-password
+router.post('/reset-password', resetPasswordController);
 
 // Appel de la fonction de configuration des routes
 registerController(router);
