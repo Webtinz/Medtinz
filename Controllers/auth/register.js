@@ -59,6 +59,7 @@ module.exports = (router) => {
         email,
         username,
         phone,
+        phone2,
         role,
         password,
         address,
@@ -124,6 +125,7 @@ module.exports = (router) => {
         is_otp_valid: false, // Par défaut, le champ is_otp_valid est faux
         contact: {
           phone: phone || null, // Utiliser req.body pour récupérer le téléphone, ou null si non fourni
+          phone2: phone2 || null, // Utiliser req.body pour récupérer le téléphone2, ou null si non fourni
           address: address || null, // Utiliser req.body pour récupérer l'adresse, ou null si non fourni
         },
       });

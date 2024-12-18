@@ -55,6 +55,7 @@ const userSchema = new mongoose.Schema({
     },
     contact: {
         phone: { type: String, required: false },
+        phone2: { type: String, required: false },
         address: { type: String, required: false },
     },
     password: {
