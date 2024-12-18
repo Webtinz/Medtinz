@@ -46,6 +46,11 @@ const hospitalSchema = new mongoose.Schema({
     required: true ,
     unique: true // Assure l'unicité de ce champ
   },
+  hospital_phone2: {
+    type: String, 
+    required: true ,
+    unique: true // Assure l'unicité de ce champ
+  },
   hospital_isActive: { 
     type: Boolean,
     default: false 

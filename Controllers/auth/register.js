@@ -60,7 +60,7 @@ module.exports = (router) => {
         username,
         phone,
         phone2,
-        role,
+        // role: "Hospital Admin",
         password,
         address,
         hospital_name,
@@ -68,6 +68,7 @@ module.exports = (router) => {
         hospital_state_province,
         hospital_city,
         hospital_phone,
+        hospital_phone2,
         hospital_isActive,
       } = req.body;
       
@@ -76,13 +77,14 @@ module.exports = (router) => {
         name: "Le champ 'name' est obligatoire.",
         email: "Le champ 'email' est obligatoire.",
         username: "Le champ 'username' est obligatoire.",
-        role: "Le champ 'role' est obligatoire.",
+        // role: "Le champ 'role' est obligatoire.",
         password: "Le champ 'password' est obligatoire.",
         hospital_name: "Le champ 'hospital name' est obligatoire.",
         hospital_country: "Le champ 'hospital country' est obligatoire.",
         hospital_state_province: "Le champ 'hospital state province' est obligatoire.",
         hospital_city: "Le champ 'hospital city' est obligatoire.",
         hospital_phone: "Le champ 'hospital phone' est obligatoire.",
+        hospital_phone2: "Le champ 'hospital phone 2' est obligatoire.",
         terms_and_conditions: "Vous devez accepter les termes et conditions.",
       };
       
@@ -119,7 +121,7 @@ module.exports = (router) => {
         email,
         username,
         picture: req.file ? req.file.filename : null, // Stocker uniquement le nom du fichier
-        role,
+        role: "Hospital Admin",
         password,
         otp, // Ajouter le code OTP
         is_otp_valid: false, // Par défaut, le champ is_otp_valid est faux
@@ -173,6 +175,7 @@ module.exports = (router) => {
         hospital_state_province: req.body.hospital_state_province,
         hospital_city: req.body.hospital_city,
         hospital_phone: req.body.hospital_phone,
+        hospital_phone2: req.body.hospital_phone2,
         hospital_admin_id: req.body.hospital_admin_id, // Inclure l'ID de l'administrateur
       });
 
