@@ -1,0 +1,123 @@
+/* Global styles */
+.bodya {
+  margin: 0;
+  padding: 0;
+  background-color: #EFF7FF !important; /* Couleur de fond */
+  overflow: hidden; /* Empêche le défilement global */
+  height: 100vh; /* Hauteur totale de l'écran */
+  width: 100%; /* Largeur complète */
+  box-sizing: border-box; /* Inclut padding et bordures */
+}
+
+/* .right{
+    padding: 20px;
+} */
+
+.vyne{
+  background-color: #28A745 !important;
+  color: #fff !important;
+  padding: 10px !important;
+}
+
+.form{
+  margin: 50px;
+}
+
+.dill{
+  color: #0056B3;
+}
+
+.cecile{
+  position: relative;
+}
+.unit{
+  position: absolute;
+  top:15px;
+  left: 90%;
+  color: #0056B3;
+}
+
+.geste{
+  border:3px solid #0056B3 !important;
+  background-color:#EFF7FF !important ;
+}
+.club{
+  padding: 14px !important;
+  border:3px solid #0056B3 !important;
+  background-color:#EFF7FF !important ;
+}
+
+.cirus{
+  text-decoration: none;
+  color: #28A745;
+  font-weight: bold;
+}
+
+/* Section gauche avec l'image de fond */
+.lefte {
+  background-image: url('./image/Group%20208.png'); /* Utilisez %20 pour les espaces */
+  background-size: cover; /* L'image couvre toute la zone */
+  background-position: center; /* Centrage */
+  /* width: 100%; */
+  height: 100vh; 
+  padding: 0;
+  margin: 0;
+  overflow: hidden; /* Empêche le débordement */
+}
+
+/* Texte principal */
+.ninas {
+  font-size: 32px;
+  font-weight: 500;
+  color: black;
+  align-items: end;
+  text-align: end; /* Centre le texte */
+  margin: 20px 0;
+}
+
+/* Texte en vert */
+.toy {
+  color: #28A745;
+}
+
+/* Image ajustée */
+.Morije {
+  position: absolute;
+  display: block;
+  width: 60%;
+  height: 80vh;
+  object-fit: cover;
+  margin: 0 !important;
+  padding: 0 !important;
+  left: 50%;
+  
+  filter: 0px 13px 61px rgba(48, 48, 48, 0.366013);
+}
+
+/* Classe cachée sur les mobiles */
+@media (max-width: 768px) {
+  .lefte {
+    display: none; /* Cache la classe gauche */
+  }
+
+  .right {
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .bodya {
+    overflow: hidden !important; /* Empêche tout défilement sur mobile */
+    overflow-x:hidden;
+    overflow-y: hidden;
+    height: 100vh; /* Ajuste à la hauteur de l'écran */
+  }
+
+  .Morije {
+    display: none; /* Cache l'image absolue */
+  }
+
+  .ninas {
+    font-size: 24px;
+    text-align: center;
+  }
+}

@@ -7,7 +7,7 @@ import routes from '../routes/clientRoutes'
 
 const ClientContent = () => {
   return (
-    <CContainer className="px-4" lg >
+    <CContainer lg >
       <Suspense fallback={<CSpinner color="primary" />}>
         <Routes>
           {routes.map((route, idx) => {

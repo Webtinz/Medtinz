@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 
 import { CSpinner, useColorModes } from '@coreui/react'
 import './scss/style.scss'
-import ClientRoutesComponent from './routes/clientnodash';
+import Clientroutesnodash from './routes/clientnodash';
 
 // We use those styles to show code examples, you should remove them in your application.
 import './scss/examples.scss'
@@ -55,8 +55,12 @@ const App = () => {
           <Route path="/admin/*" name="Home" element={<DefaultLayout />} />
 
           <Route path="/client/*" name="clientroute" element={<ClientLayout />} />
+
+          {/* Intégration des routes du client sans dashboard */}
+          {Clientroutesnodash.map((route) => (
+            <Route key={route.name} path={route.path} element={<route.element />} />
+          ))}
         </Routes>
-        {/* <ClientRoutesComponent /> */}
       </Suspense>
     </HashRouter>
   )

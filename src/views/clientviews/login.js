@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import '../../assets/css/selectroledash.css';  // Assurez-vous que le CSS est bien lié
+import '../../assets/css/selectroledash.css'; 
+import '../../assets/css/responsive.css'; 
+import {  BsArrowRight } from 'react-icons/bs';
 
 
 // Importation des images orange
@@ -26,7 +28,7 @@ const LoginPage = () => {
         <div className="Selectrole">
             {/* Bannière bleu avec une image */}
             <div className="selecthead">
-                <div className="container d-flex">
+                <div className="container">
                     <div>
                         <img src={logomedtinz} alt="Bottom left orange" className="logomedtinz" />
                     </div>
@@ -45,10 +47,10 @@ const LoginPage = () => {
             {/* Section des rôles */}
             <div className="formslogin mt-5">
                 <h3 className="title text-center">Enter your credentials</h3>
-                <div className="loginfoms container">
+                <div className="loginfoms  container">
                     <form onSubmit={handleLogin} className="login-form">
                         <label>Email</label>
-                        <div className="input-group">
+                        <div className="input-group ">
                             <input
                                 type="email"
                                 placeholder="Enter your email"
@@ -76,13 +78,13 @@ const LoginPage = () => {
                                 />
                                 <span>Remember me</span>
                             </div>
-                            <div className='ms-auto'>
+                            <div className='ms-auto forgetpass'>
                                 <a>Forget password</a>
                             </div>
                         </div>
 
 
-                        <button type="submit" className="formcontinue-btn">Continue</button>
+                        <button type="submit" className="formcontinue-btn mx-auto d-flex align-items-center">Continue<BsArrowRight className='ms-2'/></button>
                     </form>
                 </div>
                 <img src={imageOrangeBottomright} alt="Bottom right orange" className="image-orange-right" />

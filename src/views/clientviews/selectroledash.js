@@ -1,5 +1,7 @@
 import React from 'react';
-import '../../assets/css/selectroledash.css';  // Assurez-vous que le CSS est bien lié
+import '../../assets/css/selectroledash.css'; 
+import '../../assets/css/responsive.css'; 
+import {  BsArrowRight } from 'react-icons/bs';
 
 // Importation des images orange
 import imageOrangeTopLeft from '../../assets/images/Medic symbol circle.png'; // Image en haut à gauche
@@ -13,7 +15,7 @@ const SelectRolePage = () => {
     <div className="Selectrole">
       {/* Bannière bleu avec une image */}
       <div className="selecthead">
-        <div className="container d-flex">
+        <div className="container">
           <div>
           <img src={logomedtinz} alt="Bottom left orange" className="logomedtinz" />
           </div>
@@ -30,7 +32,7 @@ const SelectRolePage = () => {
       </div>
 
       {/* Section des rôles */}
-      <div className="rolesection mt-4">
+      <div className="rolesection container  mt-5">
         <h3 className="title text-center">Select your role to login</h3>
         <div className="role-selection container d-flex justify-content-center">
           <div className="row row-cols-1 row-cols-md-3 mt-3">
@@ -42,12 +44,12 @@ const SelectRolePage = () => {
             <button className="role-btn col">Patient</button>
           </div>
         </div>
-        <a className="continue-btn mx-auto">Continue</a>
+        <a className="continue-btn mx-auto d-flex align-items-center">Continue <BsArrowRight className='ms-2'/></a>
         <img src={imageOrangeBottomright} alt="Bottom right orange" className="image-orange-right" />
       </div>
 
       {/* Footer */}
-      <footer className="text-left container">
+      <footer className="text-left container d-flex ">
         <img src={BottomLeftmedication} alt="Bottom left orange" className="image-medication-left" />
         <p>&copy; 2024 Développé par ITTIQ</p>  
       </footer>

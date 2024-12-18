@@ -1,1 +1,10 @@
 // Here you can add other styles
+$sidebar-width:                            16rem !default;
+$sidebar-widths: (
+  sm: 12rem,
+  lg: 20rem,
+  xl: 24rem
+) !default;
+$sidebar-narrow-width:                     4rem !default;
+$sidebar-padding-y:                        5rem !default;
+$sidebar-padding-x:                        5rem !default;

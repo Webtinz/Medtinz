@@ -13,6 +13,8 @@ import DocsExample from './DocsExample'
 import ClientSidebar from './ClientSidebar'
 import ClientContent from './ClientContent'
 import ClientHeader from './ClientHeader'
+import ClientFooter from './ClientFooter'
+
 
 export {
   AppBreadcrumb,
@@ -29,5 +31,6 @@ export {
   // client side
   ClientSidebar,
   ClientContent,
-  ClientHeader
+  ClientHeader,
+  // ClientFooter
 }

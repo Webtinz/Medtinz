@@ -26,13 +26,31 @@ const Client_nav = [
   {
     component: CNavItem,
     name: 'Patient Management',
-    to: '/client/patientslist',
+    to: '/client/patientlist',
+    icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Department Management',
+    to: '/client/department',
+    icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Speciality Management',
+    to: '/client/speciality',
+    icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Staff Management',
+    to: '/client/stafflist',
     icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
     name: 'Appointment Scheduling',
-    to: '/charts',
+    to: '/client/patientfilemedical',
     icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
   },
   {

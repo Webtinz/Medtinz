@@ -1,0 +1,102 @@
+/* Conteneur de l'input flottant */
+.floating-input-container {
+  position: relative;
+  width: 100%;
+  margin-bottom: 20px; /* Espace entre les champs */
+}
+
+/* Style de l'input */
+.floating-input-container input {
+  box-sizing: border-box;
+  margin: 0;
+  border: 2px solid #0056B3; /* Bordure de l'input */
+  border-radius: 4px;
+  width: 100%;
+  background-color: transparent;
+  color: #333;
+  font-size: 16px;
+  padding: 12px 15px; /* Espacement à l'intérieur de l'input */
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.floating-input-container input:focus {
+  border-color: #0056B3;
+  outline: none;
+}
+
+/* Le label flottant */
+.floating-input-container span {
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  color: #333;
+  font-size: 16px;
+  transform: translateY(-50%); /* Centrer le texte verticalement */
+  transition: all 0.2s ease; /* Transition douce pour l'animation */
+}
+
+/* Lorsque l'input est focus ou contient une valeur, le label flotte au-dessus */
+.floating-input-container input:focus + span,
+.floating-input-container input:not(:placeholder-shown) + span {
+  top: 0;
+  font-size: 12px;
+  padding: 0 5px;
+  background-color: #fff;
+  color: #0056B3; /* Change la couleur du label lorsque l'input est focus */
+}
+
+/* Optionnel : ajout de styles supplémentaires pour les erreurs */
+.error {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+/* Responsivité : Media Queries */
+
+/* Petit écran (moins de 768px) */
+@media (max-width: 767px) {
+  .floating-input-container input {
+    font-size: 14px; /* Réduire la taille du texte de l'input */
+    padding: 10px 93px !important; /* Moins d'espacement horizontal */
+  }
+
+  .floating-input-container span {
+    font-size: 14px; /* Réduire la taille du label flottant */
+    top: 50%;
+  }
+
+  .floating-input-container input:focus + span,
+  .floating-input-container input:not(:placeholder-shown) + span {
+    font-size: 12px; /* Réduire la taille du label flottant sur petit écran */
+  }
+
+  /* Optionnel : réduction de la taille du champ d'erreur */
+  .error {
+    font-size: 12px; /* Taille réduite des messages d'erreur */
+  }
+}
+
+/* Écran moyen (768px à 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .floating-input-container input {
+    font-size: 15px; /* Réduire légèrement la taille du texte */
+    padding: 12px 15px; /* Espacement horizontal normal */
+  }
+
+  .floating-input-container span {
+    font-size: 15px; /* Réduire légèrement la taille du label flottant */
+  }
+}
+
+/* Grand écran (plus de 1024px) */
+@media (min-width: 1025px) {
+  .floating-input-container input {
+    font-size: 16px; /* Garder la taille normale pour les grands écrans */
+    padding: 12px 20px; /* Espacement standard */
+  }
+
+  .floating-input-container span {
+    font-size: 16px; /* Garder la taille normale du label flottant */
+  }
+}
