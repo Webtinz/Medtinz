@@ -34,8 +34,11 @@ module.exports = (router) => {
     const { email, otp } = req.body;
 
     // Validation des champs
-    if (!email || !otp) {
-      return res.status(400).json({ message: "Email et OTP sont requis." });
+    if (!email) {
+      return res.status(400).json({ message: "Email requis." });
+    }
+    if (!otp) {
+      return res.status(400).json({ message: "OTP requis." });
     }
 
     try {

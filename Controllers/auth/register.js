@@ -38,7 +38,7 @@ const upload = multer({
 
 // Fonction pour générer un OTP aléatoire à 4 chiffres
 function generateOTP() {
-  return Math.floor(100000 + Math.random() * 9000);
+  return Math.floor(0 + Math.random() * 900000);
 }
 
 // Fonction principale pour définir les routes
@@ -121,7 +121,7 @@ module.exports = (router) => {
         email,
         username,
         picture: req.file ? req.file.filename : null, // Stocker uniquement le nom du fichier
-        role: "Hospital Admin",
+        role: "675af740d873d3b0ae4ed163",
         password,
         otp, // Ajouter le code OTP
         is_otp_valid: false, // Par défaut, le champ is_otp_valid est faux

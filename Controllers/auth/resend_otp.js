@@ -5,7 +5,7 @@ const privateKey = process.env.JWT_SECRET;
 
 // Fonction pour générer un OTP aléatoire à 4 chiffres
 function generateOTP() {
-  return Math.floor(100000 + Math.random() * 9000);
+  return Math.floor(0 + Math.random() * 900000);
 }
 
 module.exports = async (req, res) => {
