@@ -24,7 +24,7 @@ let joinAndDisplayLocalStream = async (channelName) => {
     currentChannel = channelName
 
     // Générer et afficher un lien partageable
-    const shareLink = generateShareableLink(channelName)
+    const shareLink = generateShareableLink(channelName, 'join-call')
     document.getElementById('share-link').value = shareLink
     document.getElementById('share-details').style.display = 'block'
 
@@ -53,11 +53,31 @@ let joinAndDisplayLocalStream = async (channelName) => {
     }
 }
 
-let generateShareableLink = (channelName) => {
-    const currentURL = new URL(window.location.href)
-    currentURL.searchParams.set('channel', channelName)
-    return currentURL.href
-}
+
+// let generateShareableLink = (channelName) => {
+//     const currentURL = new URL(window.location.href)
+//     currentURL.searchParams.set('channel', channelName)
+//     return currentURL.href
+// } 
+
+let generateShareableLink = (channelName, customPath = '') => {
+    // Récupère la base de l'URL (protocole + domaine)
+    const currentURL = new URL(window.location.href);
+    const baseURL = `${currentURL.origin}/`; // Exemple : http://example.com/
+
+    // Construit l'URL complète avec le chemin personnalisé
+    const newURL = new URL(customPath, baseURL);
+
+    // Ajoute le paramètre de requête "channel"
+    newURL.searchParams.set('channel', channelName);
+
+    return newURL.href; // Retourne l'URL finale
+};
+
+// // Exemple d'utilisation
+// let shareableLink = generateShareableLink('myChannel', 'new-page');
+// console.log(shareableLink); // http://example.com/new-page?channel=myChannel
+
 
 let copyShareLink = async () => {
     const shareLinkInput = document.getElementById('share-link')

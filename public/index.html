@@ -9,7 +9,7 @@
 </head>
 <body>
     <div id="setup-form">
-        <h2>Create or Join a Call</h2>
+        <h2>Create a Call</h2>
         <input type="text" id="channel-input" placeholder="Enter call name">
         <button id="create-btn">Create Call</button>
     </div>
@@ -35,6 +35,31 @@
 </body>
 <!-- <script src="AgoraRTC_N-4.7.3.js"></script> -->
  <!-- <script src="https://download.agora.io/sdk/release/AgoraRTC_N.js"></script> -->
+
+ <script>
+    function generateRandomString1(length) {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let result = '';
+        for (let i = 0; i < length; i++) {
+            const randomIndex = Math.floor(Math.random() * characters.length);
+            result += characters[randomIndex];
+        }
+        return result;
+    }
+    // Fonction pour générer une chaîne aléatoire
+    function generateRandomString() {
+        const part1 = Math.random().toString(36).substring(2, 10); // caractères aléatoires
+        const part2 = this.generateRandomString1(10);   // chiffres aléatoires
+        const part3 = Math.random().toString(36).substring(2, 10).toUpperCase(); // caractères aléatoires en majuscules
+        return `${part1}-${part2}-${part3}`;
+    }
+
+    // Ajouter un écouteur d'événement au bouton
+    document.getElementById('create-btn').addEventListener('click', () => {
+        const inputField = document.getElementById('channel-input');
+        inputField.value = generateRandomString(); // Remplir le champ avec la chaîne générée
+    });
+</script>
   <script src="AgoraWebSDK_N-v4.22.2.js"></script>
 <script src='main2.js'></script>
 </html>

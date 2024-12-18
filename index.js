@@ -32,6 +32,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/call', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
+app.get('/join-call', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'join.html'));
+});
 
 // http://localhost:5000/call
 
