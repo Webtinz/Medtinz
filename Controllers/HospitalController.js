@@ -41,6 +41,38 @@ exports.getHospitals = async (req, res) => {
     }
 };
 
+// Récupérer la liste des hôpitaux pour un hospital_admin_id spécifique
+exports.getHospitalsByAdmin = async (req, res) => {
+    const { hospital_admin_id } = req.params;
+
+    try {
+        // Vérifier si hospital_admin_id est fourni
+        if (!hospital_admin_id) {
+            return res.status(400).json({
+                message: 'Admin ID is required',
+            });
+        }
+
+        // Rechercher les hôpitaux correspondant à l'hospital_admin_id
+        const hospitals = await Hospital.find({ hospital_admin_id });
+
+        // Vérifier si des hôpitaux ont été trouvés
+        if (!hospitals.length) {
+            return res.status(404).json({
+                message: 'No hospitals found for the given admin ID',
+            });
+        }
+
+        res.status(200).json(hospitals);
+    } catch (error) {
+        res.status(500).json({
+            message: 'Error fetching hospitals',
+            error: error.message,
+        });
+    }
+};
+
+
 // Désactiver un hôpital
 exports.deactivateHospital = async (req, res) => {
     try {
@@ -75,15 +107,17 @@ exports.deactivateHospital = async (req, res) => {
 
 // Choose plan
 exports.selectHospitalPlan = async (req, res) => {
-    const { hospitalSpecId, subscription_id: selectPlanParam } = req.body;
+    const { hospitalSpecId, subscription_id } = req.body;
+
+    console.log("HospId:" + hospitalSpecId + "---- SubscipId: " + subscription_id);
 
     // Vérification si hospitalSpecId est défini
     if (!hospitalSpecId) {
         return res.status(400).json({ error: 'hospitalSpecId parameter is required.' });
     }
 
-    // Vérification si l'ID est un ObjectId valide
-    if (!mongoose.Types.ObjectId.isValid(selectPlanParam)) {
+    // Vérification si subscription_id est un ObjectId valide
+    if (!mongoose.Types.ObjectId.isValid(subscription_id)) {
         return res.status(400).json({ message: 'The Subscription\'s plan that you selected is wrong.' });
     }
 
@@ -109,23 +143,22 @@ exports.selectHospitalPlan = async (req, res) => {
         }
 
         // Rechercher le plan sélectionné
-        const planChoose = await Subscription.findOne({ _id: selectPlanParam });
+        const planChoose = await Subscription.findOne({ _id: subscription_id });
 
         if (!planChoose) {
             return res.status(400).json({ message: 'You did not select an existing plan.' });
         }
 
-
         // Mettre à jour le champ subscription_id de l'hôpital
-        hospital.subscription_id = selectPlanParam;
+        hospital.subscription_id = subscription_id;
         await hospital.save();
 
         return res.status(200).json(hospital);
     } catch (error) {
         return res.status(500).json({ error: error.message || 'An error occurred while processing your request.' });
     }
-
 };
+
 
 // Configurer Multer pour gérer l'upload des fichiers
 const storage = multer.diskStorage({

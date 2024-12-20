@@ -7,6 +7,7 @@ const Department = require('../Models/Department');
 const Subscription = require('../Models/Subscription');
 
 const { Role } = require('../Models/Role');
+const { Feature } = require('../Models/Feature');
 const { Specialty } = require('../Models/Specialty');
 const { Schedule } = require('../Models/Schedule');
 
@@ -18,10 +19,11 @@ async function connectDB() {
     console.log('Connected to MongoDB');
 
     // Réinitialiser la collection User (optionnel)
+    // await Feature.deleteMany({}); // Supprime tous les Features existants
     // await Role.deleteMany({}); // Supprime tous les Roles existants
     // await Specialty.deleteMany({}); // Supprime tous les Specialtys existants
     // await Schedule.deleteMany({}); // Supprime tous les Schedules existants
-    // // await Department.deleteMany({}); // Supprime tous les Departments existants
+    // await Department.deleteMany({}); // Supprime tous les Departments existants
     // await User.deleteMany({}); // Supprime tous les utilisateurs existants
     // await Hospital.deleteMany({}); // Supprime tous les Hospitaux existants
     // await Subscription.deleteMany({}); // Supprime tous les Subscriptions existants

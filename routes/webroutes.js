@@ -6,6 +6,7 @@ const contentController = require('../Controllers/ContentController');
 const departmentController = require('../Controllers/DepartmentController');
 const userController = require('../Controllers/userController');
 const roleController = require('../Controllers/RoleController'); // Importer le contrôleur des rôles
+const featureController = require('../Controllers/FeatureController'); // Importer le contrôleur des rôles
 const specialtyController = require('../Controllers/SpecialityController'); // Import du contrôleur Specialty
 
 const resendOtpController = require('../Controllers/auth/resend_otp');
@@ -35,8 +36,11 @@ check_tokenController(router); // Ajoute la route pour vérifier le check_token
 
 // subscription admin manage
 router.post('/addsubscription', authMiddleware, subscriptionController.addSubscription); // Protégée par JWT
-router.get('/subscriptions', authMiddleware, subscriptionController.getAllSubscriptions); // Protégée par JWT
-router.get('/editsubscriptions/:id', authMiddleware, subscriptionController.getSubscriptionById); // Protégée
+router.get('/subscriptions', /* authMiddleware, */  subscriptionController.getAllSubscriptions); // Protégée par JWT
+// Route pour récupérer une souscription spécifique
+router.get('/subscriptions/:id', /* authMiddleware, */  subscriptionController.getSubscriptionById);
+
+router.get('/editsubscriptions/:id', authMiddleware, subscriptionController.getSubscriptionByIdForEdit); // Protégée
 router.put('/updatesubscriptions/:id', authMiddleware, subscriptionController.updateSubscription); // Protégée
 router.delete('/deletesubscriptions/:id', authMiddleware, subscriptionController.deleteSubscription); // Protégée
 
@@ -45,7 +49,12 @@ router.post('/addhospital', authMiddleware, hospitalController.addHospital); // 
 router.post('/addhospitallogo', authMiddleware, hospitalController.addHospitalLogo); // Protégée
 router.get('/hospitals', authMiddleware, hospitalController.getHospitals); // Protégée
 router.put('/deactivate/:hospitalId', authMiddleware, hospitalController.deactivateHospital); // Protégée
-router.post('/selectplan', authMiddleware, hospitalController.selectHospitalPlan); // Protégée
+// Récupérer les hôpitaux par hospital_admin_id
+router.get('/hospitals/admin/:hospital_admin_id', hospitalController.getHospitalsByAdmin);
+// router.get('/hospitals/admin/:hospital_admin_id', hospitalController.getHospitalsByAdmin);
+// router.get('/hospital/:hospitalAdminId', authMiddleware, hospitalController.getHospitalByAdminId);
+
+router.post('/selectplan',  authMiddleware,  hospitalController.selectHospitalPlan); // Protégée
 
 // Department Management Routes (ajoutées ici)
 router.post('/adddepartment', authMiddleware, departmentController.createDepartment); // Protégée
@@ -83,5 +92,17 @@ router.put('/updateroles/:id', authMiddleware, roleController.updateRoleById); /
 router.delete('/deleteroles/:id', authMiddleware, roleController.deleteRoleById); // Supprimer un rôle
 // Rechercher un rôle par name
 router.get('/roles/search', authMiddleware, roleController.searchRolesByName); // Protégée par JWT
+
+
+// Feature Management
+router.post('/addfeatures', /*authMiddleware,*/ featureController.createFeature); // Créer un rôle
+router.get('/getallfeatures', /*authMiddleware,*/ featureController.getAllFeatures); // Lire tous les rôles
+router.get('/getonefeatures/:id', /*authMiddleware,*/ featureController.getFeatureById); // Lire un rôle par ID
+router.put('/updatefeatures/:id', /*authMiddleware,*/ featureController.updateFeatureById); // Mettre à jour un rôle
+router.delete('/deletefeatures/:id', /*authMiddleware,*/ featureController.deleteFeatureById); // Supprimer un rôle
+// Rechercher un rôle par name
+router.get('/features/search', /*authMiddleware,*/ featureController.searchFeaturesByName); // Protégée par JWT
+
+
 
 module.exports = router;

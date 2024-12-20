@@ -52,6 +52,22 @@ exports.getAllSubscriptions = async (req, res) => {
     }
 };
 
+// Récupérer une souscription spécifique
+exports.getSubscriptionByIdForEdit = async (req, res) => {
+    try {
+        const { id } = req.params; // Récupère l'ID depuis les paramètres de la requête
+        const subscription = await Subscription.findById(id);
+
+        if (!subscription) {
+            return res.status(404).json({ message: "Subscription not found" });
+        }
+
+        res.status(200).json(subscription);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
 // Récupérer un abonnement par ID
 exports.getSubscriptionById = async (req, res) => {
     try {
