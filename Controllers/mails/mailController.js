@@ -12,6 +12,12 @@ const transporter = nodemailer.createTransport({
 
 // Fonction pour envoyer un email
 const sendMail = (to, subject, text, html) => {
+
+  if (!to) {
+    console.log('Erreur: Aucune adresse email spécifiée.');
+    return;
+  }
+  
   const mailOptions = {
     from: process.env.EMAIL_USER, // Utilisation de l'email configuré dans le fichier .env
     to: to, // L'email du destinataire

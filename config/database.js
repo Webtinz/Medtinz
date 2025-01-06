@@ -24,12 +24,12 @@ async function connectDB() {
     // await Specialty.deleteMany({}); // Supprime tous les Specialtys existants
     // await Schedule.deleteMany({}); // Supprime tous les Schedules existants
     // await Department.deleteMany({}); // Supprime tous les Departments existants
+    // await Subscription.deleteMany({}); // Supprime tous les Subscriptions existants
     // await User.deleteMany({}); // Supprime tous les utilisateurs existants
     // await Hospital.deleteMany({}); // Supprime tous les Hospitaux existants
-    // await Subscription.deleteMany({}); // Supprime tous les Subscriptions existants
 
     // Vérifier si l'utilisateur existe déjà
-    const existingUser = await User.findOne({ username: 'AdminHMS' });
+    const existingUser = await User.findOne({ username: 'Master_AdminHMS' });
     if (existingUser) {
         console.log('L\'utilisateur existe déjà avec ce username');
     } else {
@@ -37,9 +37,9 @@ async function connectDB() {
         // Création d'un utilisateur par défaut
         // const hashedPassword = await bcrypt.hash('AdmEvt@123', 10);
         const user = new User({
-            username: 'AdminHMS',
+            username: 'Master_AdminHMS',
             name: 'Degkof',
-            email: 'doctor@gmail.com',
+            email: 'masteradmin@gmail.com',
             otp: myDefaultOtp,
             is_otp_valid: true,
             type: 4,

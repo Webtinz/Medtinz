@@ -2,7 +2,7 @@ const paypal = require('paypal-rest-sdk');
 // const mongoose = require('mongoose');
 const Payment = require('../Models/Payment'); // Modèle Payment pour enregistrer les paiements
 
-// Configuration de PayPal
+// Configuration de PayPal 
 const { PAYPAL_MODE, PAYPAL_CLIENT_KEY, PAYPAL_SECRET_KEY, BASE_URL } = process.env;
 const configurePaypal = () => {
     paypal.configure({
