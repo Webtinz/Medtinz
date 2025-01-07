@@ -5,14 +5,17 @@ const supplierController = require('../Controllers/clientInterface/PharmacyManag
 const InventoryPharmaController = require('../Controllers/clientInterface/PharmacyManagment/InventoryController');
 const PurchaseOrderController = require('../Controllers/clientInterface/PharmacyManagment/PurchasePharmaController');
 const { body, validationResult } = require('express-validator');
-const appointmentController = require('../Controllers/clientInterface/AppointmentController');
+const AppointmentController = require('../Controllers/clientInterface/AppointmentController');
+const BillingController = require('../Controllers/clientInterface/BillingController');
+
 
 
 // const aiController = require('./controllers/aiController');
 
 // Routes pour gérer les patients
 router.post('/patients/register', patientController.registerPatient);
-router.get('/patients/:id', patientController.getPatientById);
+router.get('/patients', patientController.patientlists);
+router.get('/getpatients/:id', patientController.getPatientById);
 router.put('/updatepatients/:id', patientController.updatePatient);
 router.get('/patients/searchpatient', patientController.searchPatients);
 router.get('/patients/records/:id', patientController.getPatientRecords);
@@ -45,23 +48,32 @@ router.delete('/deleteSupplier/:id', supplierController.deleteSupplier);
 
 
 // Appointment Managment
+router.post('/createBaseAppointment', AppointmentController.createBaseAppointment);
+router.post('/assignNurseToAppointment', AppointmentController.assignNurseToAppointment);
+router.post('/assignDoctorToAppointment', AppointmentController.assignDoctorToAppointment);
+router.get('/getAppointmentlist', AppointmentController.getAppointmentlist);
 router.post('/addappointments', [
   body('patientId').isMongoId().withMessage('Invalid patient ID'),
   body('doctorId').isMongoId().withMessage('Invalid doctor ID'),
   body('appointmentDate').isDate().withMessage('Invalid appointment date'),
   body('appointmentTime').isString().withMessage('Invalid appointment time')
-], appointmentController.createAppointment);
+], AppointmentController.createAppointment);
 // Route pour mettre à jour un rendez-vous
 router.put('/updateappointments/:id', [
   body('appointmentDate').isDate().withMessage('Invalid appointment date'),
   body('appointmentTime').isString().withMessage('Invalid appointment time')
-], appointmentController.updateAppointment);
+], AppointmentController.updateAppointment);
 // Route pour annuler un rendez-vous
-router.put('/cancelappointments/:id', appointmentController.cancelAppointment);
+router.put('/cancelappointments/:id', AppointmentController.cancelAppointment);
 // Route pour voir un rendez-vous
-router.get('/getappointments/:id', appointmentController.viewAppointment);
+router.get('/getappointments/:id', AppointmentController.viewAppointment);
 // Route pour synchroniser les rendez-vous hors ligne
-router.post('/appointments/sync', appointmentController.syncOfflineAppointments);
+router.post('/appointments/sync', AppointmentController.syncOfflineAppointments);
+
+
+// payment
+router.post('/createPayment', BillingController.createPayment);
+
 
 
 

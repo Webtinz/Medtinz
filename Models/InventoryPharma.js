@@ -9,6 +9,8 @@ const inventorySchema = new mongoose.Schema({
     batchNumber: { type: String, required: true },
     expiryDate: { type: Date, required: true },
     supplierId: { type: mongoose.Schema.Types.ObjectId, ref: 'Supplier' }, // Référence vers un fournisseur
+}, {
+    timestamps: true,  // Pour gérer les dates de création et de mise à jour
 });
 
 const Inventory = mongoose.model('Inventory', inventorySchema);

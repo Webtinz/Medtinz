@@ -41,10 +41,32 @@ exports.registerPatient = async (req, res) => {
     }
 };
 
+exports.patientlists = async (req, res) => {
+    const { page = 1, limit = 10 } = req.query; // Récupérer les paramètres page et limit
+    try {
+        const patients = await Patient.find()
+            .populate('hospitalId')
+            .limit(limit * 1)
+            .skip((page - 1) * limit)
+            .exec();
+        const count = await Patient.countDocuments();
+
+        res.status(200).json({
+            patients,
+            totalPages: Math.ceil(count / limit),
+            currentPage: page,
+        });
+    } catch (error) {
+        console.error('Erreur lors de la récupération des patients:', error);
+        res.status(500).json({ message: 'Erreur serveur' });
+    }
+};
+
 
 // get patient info for edition
 exports.getPatientById = async (req, res) => {
     try {
+        console.log("Received ID:", req.params.id); // Vérifiez ici
         const patient = await Patient.findById(req.params.id);
 
         if (!patient) {
@@ -53,10 +75,11 @@ exports.getPatientById = async (req, res) => {
 
         res.status(200).json(patient);
     } catch (error) {
-        console.error(error);
+        console.error("Error fetching patient:", error);
         res.status(500).json({ message: 'Error fetching patient data', error: error.message });
     }
 };
+
 
 // update patient information
 exports.updatePatient = async (req, res) => {

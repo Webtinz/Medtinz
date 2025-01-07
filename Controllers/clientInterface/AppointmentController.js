@@ -5,6 +5,130 @@ const { validationResult } = require('express-validator');
 const nodemailer = require('nodemailer');
 
 // Créer un rendez-vous
+
+exports.createBaseAppointment = async (req, res) => {
+    try {
+        const { patientId, appointmentDate, appointmentTime , department, notes} = req.body;
+
+        // Vérifier si l'ID du patient existe
+        const patient = await Patient.findById(patientId);
+        if (!patient) {
+            return res.status(404).json({ message: 'Patient not found with the provided ID' });
+        }
+
+        const newAppointment = new Appointment({
+            patientId,
+            appointmentDate,
+            appointmentTime,
+            department,
+            notes,
+            status: 'Scheduled',
+        });
+
+        await newAppointment.save();
+
+        res.status(201).json({
+            message: 'Base appointment created successfully',
+            appointment: newAppointment,
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error creating base appointment', error: error.message });
+    }
+};
+
+exports.addPaymentToAppointment = async (req, res) => {
+    try {
+        const { appointmentId, paymentMethod, amount } = req.body;
+
+        // Vérifier si le rendez-vous existe
+        const appointment = await Appointment.findById(appointmentId);
+        if (!appointment) {
+            return res.status(404).json({ message: 'Appointment not found with the provided ID' });
+        }
+
+        // Ajouter les informations de paiement
+        appointment.payment = {
+            method: paymentMethod,
+            amount,
+            status: 'Paid', // Par défaut, marqué comme payé
+        };
+
+        await appointment.save();
+
+        res.status(200).json({
+            message: 'Payment added successfully',
+            appointment,
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error adding payment', error: error.message });
+    }
+};
+
+exports.assignNurseToAppointment = async (req, res) => {
+    try {
+        const { appointmentId, nurseId } = req.body;
+
+        // Vérifier si le rendez-vous existe
+        const appointment = await Appointment.findById(appointmentId);
+        if (!appointment) {
+            return res.status(404).json({ message: 'Appointment not found with the provided ID' });
+        }
+
+        // Vérifier si l'infirmier existe
+        // const nurse = await Nurse.findById(nurseId);
+        // if (!nurse) {
+        //     return res.status(404).json({ message: 'Nurse not found with the provided ID' });
+        // }
+
+        // Assignation
+        appointment.nurseId = nurseId;
+        await appointment.save();
+
+        res.status(200).json({
+            message: 'Nurse assigned successfully',
+            appointment,
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error assigning nurse', error: error.message });
+    }
+};
+
+exports.assignDoctorToAppointment = async (req, res) => {
+    try {
+        const { appointmentId, doctorId } = req.body;
+
+        // Vérifier si le rendez-vous existe
+        const appointment = await Appointment.findById(appointmentId);
+        if (!appointment) {
+            return res.status(404).json({ message: 'Appointment not found with the provided ID' });
+        }
+
+        // Vérifier si le docteur existe
+        // const doctor = await Doctor.findById(doctorId);
+        // if (!doctor) {
+        //     return res.status(404).json({ message: 'Doctor not found with the provided ID' });
+        // }
+
+        // Assignation
+        appointment.doctorId = doctorId;
+        appointment.status = 'Assigned to Doctor'; // Mise à jour du statut
+        await appointment.save();
+
+        res.status(200).json({
+            message: 'Doctor assigned successfully',
+            appointment,
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error assigning doctor', error: error.message });
+    }
+};
+
+
+
 exports.createAppointment = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -41,6 +165,17 @@ exports.createAppointment = async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Error scheduling appointment', error: error.message });
+    }
+};
+
+exports.getAppointmentlist = async (req, res) => {
+    try {
+        // Récupérer les rendez-vous et inclure les informations des patients
+        const appointments = await Appointment.find().populate('patientId'); // Récupère uniquement les champs nécessaires du patient
+        res.status(200).json(appointments);
+    } catch (error) {
+        console.error('Error fetching appointments:', error);
+        res.status(500).json({ message: 'Failed to fetch appointments' });
     }
 };
 
