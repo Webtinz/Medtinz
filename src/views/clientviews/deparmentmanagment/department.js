@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Link } from 'react-router-dom'
 import {
     CButton,
@@ -29,21 +29,69 @@ import * as icon from '@coreui/icons';
 import CIcon from '@coreui/icons-react'
 import '../../../assets/css/mainstyle.css';
 
+const getUserIdFromToken = () => {
+    const token = localStorage.getItem('access_token'); // Récupérer le token depuis le localStorage
+    if (token) {
+        const decodedToken = JSON.parse(atob(token.split('.')[1])); // Décoder le payload du JWT
+        return decodedToken.userId; // Retourner l'ID de l'utilisateur (assurez-vous que c'est bien ce qui est stocké dans le token)
+    }
+    return null; // Retourne null si aucun token n'est présent
+};
+
 const Department = () => {
     const [visible, setVisible] = useState(false);
     const [visible1, setVisible1] = useState(false);
-    const [modalContent, setModalContent] = useState('');  // Contenu dynamique du modal
+    const [hospitals, setHospitals] = useState([]);
+    const [formData, setFormData] = useState({
+        name: '',
+        description: '',
+        hospitalId: '', // Added for the hospital selection
+    });
 
-    // Fonction pour ouvrir le modal et définir le contenu
-    const handleIconClick = (content) => {
-        setModalContent(content);  // Définit le contenu du modal
-        setVisible1(true);  // Ouvre le modal
+    const userId = getUserIdFromToken(); // Récupérer l'ID de l'utilisateur à partir du token
+    console.log(userId);
+    
+    // Fonction pour récupérer la liste des hôpitaux pour l'administrateur
+    useEffect(() => {
+        const fetchHospitals = async () => {
+            if (!userId) {
+                console.log('Utilisateur non authentifié');
+                setMessage('Utilisateur non authentifié.');
+                return;
+            }
+            try {
+                const response = await axios.get(`http://localhost:5000/api/hospitals/admin/${userId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+                if (response.status === 200) {
+                    console.log("Réponse des hôpitaux:", response.data);
+                    setHospitals(response.data); // Sauvegarder les hôpitaux dans l'état
+                }
+            } catch (error) {
+                console.error('Erreur lors de la récupération des hôpitaux:', error);
+                setMessage('Erreur lors de la récupération des hôpitaux.');
+            }
+        };
+    
+        if (userId) {
+            fetchHospitals();
+        }
+    }, [userId]); // Dépendance sur userId pour recharger si nécessaire
+    
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
     };
 
-
-    // Our sample dropdown options
-    const options = ['Monday', 'Tuesday', 'Thursday',
-        'Friday', 'Saturday', 'Sunday']
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        // Logic to handle form submission
+        console.log(formData);
+        // Make API call to register the department
+    };
 
     return (
         <div className="dashboard-header" >
@@ -80,39 +128,51 @@ const Department = () => {
                                             <span className='me-3' style={{ width: '70px', height: '5px', background: '#0056B3' }}></span>
                                             <h4>Add Department</h4>
                                         </div>
-                                        <form>
+                                        <form onSubmit={handleSubmit}>
                                             <div className="form-group">
-                                                <label htmlFor="name">Name</label>
+                                                <label htmlFor="name">Department Name</label>
                                                 <input
                                                     type="text"
                                                     name="name"
                                                     id="name"
-                                                    placeholder="Casos Billal"
+                                                    value={formData.name}
+                                                    onChange={handleChange}
+                                                    placeholder="Department Name"
                                                 />
                                             </div>
 
-                                            <div className="form-group ">
-                                                <label htmlFor="role">Speciality</label>
-                                                <select name="role" id="role">
-                                                    <option value="">Select speciality</option>
-                                                    <option value="admin">Admin</option>
-                                                    <option value="doctor">Doctor</option>
-                                                    <option value="nurse">Nurse</option>
+                                            <div className="form-group">
+                                                <label htmlFor="hospitalId">Hospital</label>
+                                                <select
+                                                    name="hospitalId"
+                                                    id="hospitalId"
+                                                    value={formData.hospitalId}
+                                                    onChange={handleChange}
+                                                    required
+                                                >
+                                                    <option value="">Select Hospital</option>
+                                                    {hospitals.map((hospital) => (
+                                                        <option key={hospital._id} value={hospital._id}>
+                                                            {hospital.hospital_name}
+                                                        </option>
+                                                    ))}
                                                 </select>
                                             </div>
 
-                                            <div className="form-group ">
+                                            <div className="form-group">
                                                 <textarea
                                                     type="text"
                                                     name="description"
                                                     id="description"
+                                                    value={formData.description}
+                                                    onChange={handleChange}
                                                     placeholder="Description"
                                                 />
                                             </div>
 
                                             <div className="form-group d-flex justify-content-center">
-                                                <CButton type='submit' className="ms-auto d-flex align-items-center" active tabIndex={-1}>
-                                                    <BsPersonPlus className='mx-2' /> Register New user
+                                                <CButton type="submit" className="ms-auto d-flex align-items-center">
+                                                    <BsPersonPlus className='mx-2' /> Register New Department
                                                 </CButton>
                                             </div>
                                         </form>

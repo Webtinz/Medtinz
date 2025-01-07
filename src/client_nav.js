@@ -50,7 +50,7 @@ const Client_nav = [
   {
     component: CNavItem,
     name: 'Appointment Scheduling',
-    to: '/client/patientfilemedical',
+    to: '/client/addappointment',
     icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
   },
   {

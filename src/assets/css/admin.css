@@ -1,17 +1,14 @@
 .trois{
-  margin: 0;
-  padding: 0;
-  background-color: #EFF7FF !important; /* Couleur de fond */
-  overflow: hidden; /* Empêche le défilement global */
-  height: 100vh; /* Hauteur totale de l'écran */
-  width: 100%; /* Largeur complète */
-  box-sizing: border-box; /* Inclut padding et bordures */
+  background-color: #EFF7FF !important; 
+  overflow-x: hidden !important; 
+  box-sizing: border-box; 
+  height: 100% !important;
+  background-size: cover;
 }
 
-
-
-
-
+.right1{
+  padding: 2rem;
+}
 
 .inline-text {
     display: flex; /* Utilise flexbox pour aligner les éléments horizontalement */
@@ -62,35 +59,62 @@
   .link:hover {
     text-decoration: underline; /* Souligner le lien au survol */
   }
-
-
-  /* Classe cachée sur les mobiles */
-@media (max-width: 768px) {
-  .lefte {
-    display: none; /* Cache la classe gauche */
-  }
-
-  .right {
-    margin: 0 auto;
-    text-align: center;
-  }
-
-  .bodya {
-    overflow: hidden !important; /* Empêche tout défilement sur mobile */
-    overflow-x:hidden;
-    overflow-y: hidden;
-    height: 100vh; /* Ajuste à la hauteur de l'écran */
-  }
-
-  .Morije {
-    display: none; /* Cache l'image absolue */
-  }
-
-  .ninas {
-    font-size: 24px;
-    text-align: center;
-  }
-}
   
+
+  /* Section gauche avec l'image de fond */
+.lefte1 {
+  background-image: url('../images/Group%20208.png'); /* Utilisez %20 pour les espaces */
+  background-size: cover; /* L'image couvre toute la zone */
+  background-position: center; 
+  /* width: 50%;
+  height: 100%;  */
+  padding: 0;
+  margin: 0;
+
+}
+
+/* Texte principal */
+.ninas1 {
+  font-size: 32px;
+  font-weight: 500;
+  color: black;
+  text-align: end; /* Centre le texte */
+  
+  /* margin: 20px 0; */
+}
+
+/* Texte en vert */
+.toy1 {
+  color: #28A745;
+}
+
+/* Image ajustée */
+.Morije1 {
+  position: absolute;
+  width: 60%;
+  height: 80vh;
+  object-fit: cover;
+  left: 50%;
+  top: 20%;
+  filter: 0px 13px 61px rgba(48, 48, 48, 0.366013);
+}
+
+/* Classe cachée sur les mobiles */
+@media (max-width: 768px) {
+  .right1 {
+    margin:  auto;
+    text-align: center;
+  }
+
+    .when1{
+      display: flex !important;
+      justify-content:center !important;
+      align-items: center !important;
+      margin-left: 3rem !important;
+    }
+}
+
+
+ 
   
   

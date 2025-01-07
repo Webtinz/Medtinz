@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'
+import axios from 'axios';
+import AddPatientModal from './addPatient'; // Le composant modal
+
 import {
     CButton,
     CRow,
@@ -31,13 +34,94 @@ import '../../../assets/css/mainstyle.css';
 
 const PatientList = () => {
     const [visible, setVisible] = useState(false);
-    const [visible1, setVisible1] = useState(false);
-    const [modalContent, setModalContent] = useState('');  // Contenu dynamique du modal
+    const [appointments, setAppointments] = useState([]);
+    const [patients, setPatients] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(0);
+    const [totalPatients, setTotalPatients] = useState(0);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [loading, setLoading] = useState(false);
+    const limit = 10; // Nombre de patients par page
 
     // Fonction pour ouvrir le modal et définir le contenu
-    const handleIconClick = (content) => {
-        setModalContent(content);  // Définit le contenu du modal
-        setVisible1(true);  // Ouvre le modal
+    // const handleIconClick = (content) => {
+    //     setModalContent(content);  // Définit le contenu du modal
+    //     setVisible1(true);  // Ouvre le modal
+    // };
+
+    // GEt patients list
+    const fetchPatients = async (page = 1) => {
+        setLoading(true);
+        try {
+            const response = await axios.get(`http://localhost:5000/clinic/patients?page=${page}&limit=${limit}`);
+            setPatients(response.data.patients);
+            setTotalPages(response.data.totalPages);
+            setTotalPatients(response.data.totalPatients);
+            setCurrentPage(response.data.currentPage);
+        } catch (error) {
+            console.error('Erreur lors de la récupération des patients:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        const fetchAppointments = async () => {
+            try {
+                const response = await axios.get('http://localhost:5000/clinic/getAppointmentlist');
+                console.log('API Response:', response.data); // Vérifiez ce que l'API retourne
+                setAppointments(response.data); // Mettre à jour les données des rendez-vous
+            } catch (error) {
+                console.error('Error fetching appointments:', error);
+                alert('Failed to fetch appointments');
+            }
+        };
+
+        fetchAppointments();
+    }, []);
+
+
+
+    // search
+
+    const handleSearchChange = async (e) => {
+        const value = e.target.value;
+        setSearchTerm(value);
+
+        if (!value) {
+            // Si le champ est vide, rechargez la liste complète
+            fetchPatients(currentPage);
+            return;
+        }
+
+        setLoading(true);
+        try {
+            const response = await axios.get(`http://localhost:5000/clinic/patients/searchpatient`, {
+                params: { name: value, id: value, phone: value },
+            });
+            setPatients(response.data);
+        } catch (error) {
+            console.error('Erreur lors de la recherche des patients:', error);
+            setPatients([]); // Vide la liste en cas d'erreur
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchPatients(currentPage); // Récupère les données de la page actuelle au chargement
+    }, [currentPage]);
+
+    const goToNextPage = () => {
+        if (currentPage < totalPages) setCurrentPage((prevPage) => prevPage + 1);
+    };
+
+    const goToPreviousPage = () => {
+        if (currentPage > 1) setCurrentPage((prevPage) => prevPage - 1);
+    };
+
+    const handlePatientAdded = (newPatient) => {
+        setPatients((prev) => [...prev, newPatient]);
     };
 
     return (
@@ -81,23 +165,27 @@ const PatientList = () => {
                                                     <div className='patientlistline'>
                                                         <div className="search-container">
                                                             <div className="search-bar">
-                                                                <CIcon
-                                                                    icon={cilSearch}
-                                                                    size="sm"
-                                                                    className="search-icon" />
+                                                                <CIcon icon={cilSearch} size="sm" className="search-icon" />
                                                                 <input
                                                                     type="text"
                                                                     placeholder="Search for a patient (Enter ID, name or Tel)"
+                                                                    value={searchTerm}
+                                                                    onChange={handleSearchChange}
                                                                 />
                                                             </div>
                                                         </div>
 
                                                         <div className='registeruserbtn ms-auto'>
-                                                            <CButton onClick={() => setVisible(!visible)} className="registernewbtn ms-auto d-flex align-items-center" active tabIndex={-1}>
-                                                                <BsPersonPlus className='mx-2' /> Register New user
+                                                            <CButton onClick={() => setVisible(true)} className="registernewbtn ms-auto d-flex align-items-center" active tabIndex={-1}>
+                                                                <BsPersonPlus className='mx-2' /> Register New patient
                                                             </CButton>
                                                         </div>
                                                     </div>
+                                                    <AddPatientModal
+                                                        visible={visible}
+                                                        onClose={() => setVisible(false)}
+                                                        onPatientAdded={handlePatientAdded}
+                                                    />
                                                     <div className=''>
                                                         <div className="filter-bar">
                                                             <button className="filter-button">
@@ -113,112 +201,6 @@ const PatientList = () => {
                                                     </div>
 
 
-                                                    {/* modal */}
-
-                                                    <CModal className='newregistermodal'
-                                                        alignment="center"
-                                                        scrollable
-                                                        size='lg'
-                                                        visible={visible}
-                                                        onClose={() => setVisible(false)}
-                                                        aria-labelledby="VerticallyCenteredScrollableExample2"
-                                                    >
-                                                        <CModalHeader>
-                                                            <CModalTitle id="VerticallyCenteredScrollableExample2" className='Titleformsmodal'>Register new patient</CModalTitle>
-                                                        </CModalHeader>
-                                                        <CModalBody className='p-5'>
-                                                            <form>
-
-                                                                <div className="form-group">
-                                                                    <label htmlFor="name">Name</label>
-                                                                    <input
-                                                                        type="text"
-                                                                        name="name"
-                                                                        id="name"
-                                                                        placeholder="Casos Billal"
-                                                                    />
-                                                                </div>
-
-                                                                <div className="form-row row">
-                                                                    <div className="form-group col-md-4">
-                                                                        <label htmlFor="age">Age</label>
-                                                                        <input
-                                                                            type="text"
-                                                                            name="age"
-                                                                            id="age"
-                                                                            placeholder="23"
-                                                                        />
-                                                                    </div>
-                                                                    <div className="form-group col-md-4">
-                                                                        <label htmlFor="gender">Gender</label>
-                                                                        <select name="gender" id="Gender">
-                                                                            <option value="">Select Gender</option>
-                                                                            <option value="male">Male</option>
-                                                                            <option value="female">Female</option>
-                                                                            <option value="other">Other</option>
-                                                                        </select>
-                                                                    </div>
-
-                                                                    <div className="form-group col-md-4">
-                                                                        <label htmlFor="birth">Name</label>
-                                                                        <input
-                                                                            type="date"
-                                                                            name="birth"
-                                                                            id="birth"
-                                                                            placeholder="20-12-2000"
-                                                                        />
-                                                                    </div>
-                                                                </div>
-
-                                                                <div className="form-row row">
-                                                                    <div className="form-group col-md-6">
-                                                                        <label htmlFor="contact1">Contact 1</label>
-                                                                        <input
-                                                                            type="tel"
-                                                                            name="contact1"
-                                                                            id="contact1"
-                                                                            placeholder="+229 01 90 00 00 00"
-                                                                        />
-                                                                    </div>
-
-                                                                    <div className="form-group col-md-6">
-                                                                        <label htmlFor="contact2">Contact 2</label>
-                                                                        <input
-                                                                            type="tel"
-                                                                            name="contact2"
-                                                                            id="contact2"
-                                                                            placeholder="+229 01 90 00 00 00"
-                                                                        />
-                                                                    </div>
-                                                                </div>
-
-                                                                <div className="form-group">
-                                                                    <label htmlFor="address">Address</label>
-                                                                    <input
-                                                                        name="address"
-                                                                        id="address"
-                                                                        placeholder="Your address here"
-                                                                    />
-                                                                </div>
-
-                                                                <div className="form-group">
-                                                                    <label htmlFor="details">Details</label>
-                                                                    <input
-                                                                        name="details"
-                                                                        id="details"
-                                                                        placeholder="Your Details here"
-                                                                    />
-                                                                </div>
-
-                                                                <div className="savenewuser form-group d-flex justify-content-center">
-                                                                    <CButton type="submit">
-                                                                        Continue &nbsp; <BsArrowRight />
-                                                                    </CButton>
-                                                                </div>
-                                                            </form>
-                                                        </CModalBody>
-                                                    </CModal>
-
                                                     <div className='patientlisttable'>
                                                         <CTable className="mt-5 ctable-no-border " align="middle" responsive>
                                                             <CTableHead>
@@ -232,88 +214,116 @@ const PatientList = () => {
                                                                 </CTableRow>
                                                             </CTableHead>
                                                             <CTableBody>
-                                                                <CTableRow className='ctable-row'>
-                                                                    <CTableDataCell align="middle">00001</CTableDataCell>
-                                                                    <CTableDataCell>ASSESS Nourah</CTableDataCell>
-                                                                    <CTableDataCell>Houeyiho 1 carre 1104</CTableDataCell>
-                                                                    <CTableDataCell>04 Sep 2019</CTableDataCell>
-                                                                    <CTableDataCell >+229 90 00 00 00</CTableDataCell>
-                                                                    <CTableDataCell ><a className='openfilepatient'><BsArrowUpLeft />
-                                                                        Open patient file</a></CTableDataCell>
-                                                                </CTableRow>
-                                                                <CTableRow className='ctable-row'>
-                                                                    <CTableDataCell align="middle">00001</CTableDataCell>
-                                                                    <CTableDataCell>ASSESS Nourah</CTableDataCell>
-                                                                    <CTableDataCell>Houeyiho 1 carre 1104</CTableDataCell>
-                                                                    <CTableDataCell>04 Sep 2019</CTableDataCell>
-                                                                    <CTableDataCell >+229 90 00 00 00</CTableDataCell>
-                                                                    <CTableDataCell ><a className='openfilepatient'><BsArrowUpLeft />
-                                                                        Open patient file</a></CTableDataCell>
-                                                                </CTableRow>
-                                                                <CTableRow className='ctable-row'>
-                                                                    <CTableDataCell align="middle">00001</CTableDataCell>
-                                                                    <CTableDataCell>ASSESS Nourah</CTableDataCell>
-                                                                    <CTableDataCell>Houeyiho 1 carre 1104</CTableDataCell>
-                                                                    <CTableDataCell>04 Sep 2019</CTableDataCell>
-                                                                    <CTableDataCell >+229 90 00 00 00</CTableDataCell>
-                                                                    <CTableDataCell ><a className='openfilepatient'><BsArrowUpLeft />
-                                                                        Open patient file</a></CTableDataCell>
-                                                                </CTableRow>
-                                                                <CTableRow className='ctable-row'>
-                                                                    <CTableDataCell align="middle">00001</CTableDataCell>
-                                                                    <CTableDataCell>ASSESS Nourah</CTableDataCell>
-                                                                    <CTableDataCell>Houeyiho 1 carre 1104</CTableDataCell>
-                                                                    <CTableDataCell>04 Sep 2019</CTableDataCell>
-                                                                    <CTableDataCell >+229 90 00 00 00</CTableDataCell>
-                                                                    <CTableDataCell ><a className='openfilepatient'><BsArrowUpLeft />
-                                                                        Open patient file</a></CTableDataCell>
-                                                                </CTableRow>
-                                                                <CTableRow className='ctable-row'>
-                                                                    <CTableDataCell align="middle">00001</CTableDataCell>
-                                                                    <CTableDataCell>ASSESS Nourah</CTableDataCell>
-                                                                    <CTableDataCell>Houeyiho 1 carre 1104</CTableDataCell>
-                                                                    <CTableDataCell>04 Sep 2019</CTableDataCell>
-                                                                    <CTableDataCell >+229 90 00 00 00</CTableDataCell>
-                                                                    <CTableDataCell ><a className='openfilepatient'><BsArrowUpLeft />
-                                                                        Open patient file</a></CTableDataCell>
-                                                                </CTableRow>
-                                                                <CTableRow className='ctable-row'>
-                                                                    <CTableDataCell align="middle">00001</CTableDataCell>
-                                                                    <CTableDataCell>ASSESS Nourah</CTableDataCell>
-                                                                    <CTableDataCell>Houeyiho 1 carre 1104</CTableDataCell>
-                                                                    <CTableDataCell>04 Sep 2019</CTableDataCell>
-                                                                    <CTableDataCell >+229 90 00 00 00</CTableDataCell>
-                                                                    <CTableDataCell ><a className='openfilepatient'><BsArrowUpLeft />
-                                                                        Open patient file</a></CTableDataCell>
-                                                                </CTableRow>
-                                                                <CTableRow className='ctable-row'>
-                                                                    <CTableDataCell align="middle">00001</CTableDataCell>
-                                                                    <CTableDataCell>ASSESS Nourah</CTableDataCell>
-                                                                    <CTableDataCell>Houeyiho 1 carre 1104</CTableDataCell>
-                                                                    <CTableDataCell>04 Sep 2019</CTableDataCell>
-                                                                    <CTableDataCell >+229 90 00 00 00</CTableDataCell>
-                                                                    <CTableDataCell ><a className='openfilepatient'><BsArrowUpLeft />
-                                                                        Open patient file</a></CTableDataCell>
-                                                                </CTableRow>
+                                                                {patients.map((patient) => (
+                                                                    <CTableRow className='ctable-row'>
+                                                                        <CTableDataCell align="middle">{patient.patientId}</CTableDataCell>
+                                                                        <CTableDataCell>{patient.name}</CTableDataCell>
+                                                                        <CTableDataCell>{patient.address}</CTableDataCell>
+                                                                        <CTableDataCell>{patient.email}</CTableDataCell>
+                                                                        <CTableDataCell>{patient.phone}</CTableDataCell>
+                                                                        <CTableDataCell>
+                                                                            <Link to={`/client/patientfilemedical/${patient._id}`} className='openfilepatient'>
+                                                                                <BsArrowUpLeft /> Open patient file
+                                                                            </Link>
+                                                                        </CTableDataCell>
+                                                                    </CTableRow>
+                                                                ))}
                                                             </CTableBody>
                                                         </CTable>
                                                     </div>
                                                 </div>
                                             </CTabPanel>
-                                            <CTabPanel className="p-3" itemKey="Receptionist">
+                                            <CTabPanel className="p-3" itemKey="dayrecord">
+                                                <div className='tablist ' >
+                                                    <div className='patientlistline'>
+                                                        <div className="search-container">
+                                                            <div className="search-bar">
+                                                                <CIcon icon={cilSearch} size="sm" className="search-icon" />
+                                                                <input
+                                                                    type="text"
+                                                                    placeholder="Search for a patient (Enter ID, name or Tel)"
+                                                                    value={searchTerm}
+                                                                    onChange={handleSearchChange}
+                                                                />
+                                                            </div>
+                                                        </div>
 
+                                                        <div className='registeruserbtn ms-auto'>
+                                                            <CButton onClick={() => setVisible(true)} className="registernewbtn ms-auto d-flex align-items-center" active tabIndex={-1}>
+                                                                <BsPersonPlus className='mx-2' /> Register New patient
+                                                            </CButton>
+                                                        </div>
+                                                    </div>
+                                                    <AddPatientModal
+                                                        visible={visible}
+                                                        onClose={() => setVisible(false)}
+                                                        onPatientAdded={handlePatientAdded}
+                                                    />
+                                                    <div className=''>
+                                                        <div className="filter-bar">
+                                                            <button className="filter-button">
+                                                                Filter By<FaFilter className="icon" />
+                                                            </button>
+                                                            <button className="filter-button">
+                                                                Order Type<FaExchangeAlt className="icon" />
+                                                            </button>
+                                                            <button className="reset-button">
+                                                                <FaRedoAlt className="icon" /> Reset Filter
+                                                            </button>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div className='patientlisttable'>
+                                                        <CTable className="mt-5 ctable-no-border " align="middle" responsive>
+                                                            <CTableHead>
+                                                                <CTableRow className='tablehead'>
+                                                                    <CTableHeaderCell scope="col">ID</CTableHeaderCell>
+                                                                    <CTableHeaderCell scope="col">NAME</CTableHeaderCell>
+                                                                    <CTableHeaderCell scope="col">ADDRESS</CTableHeaderCell>
+                                                                    <CTableHeaderCell scope="col">Status</CTableHeaderCell>
+                                                                    <CTableHeaderCell scope="col">PHONE</CTableHeaderCell>
+                                                                    <CTableHeaderCell scope="col">STATUS</CTableHeaderCell>
+                                                                </CTableRow>
+                                                            </CTableHead>
+                                                            <CTableBody>
+                                                                {appointments.map((appointment) => (
+                                                                    <CTableRow className="ctable-row" key={appointment._id}>
+                                                                        <CTableDataCell>{appointment.patientId?.patientId|| 'N/A'}</CTableDataCell>
+                                                                        <CTableDataCell>{appointment.patientId?.name || 'Unknown'}</CTableDataCell>
+                                                                        <CTableDataCell>{appointment.patientId?.address || 'N/A'}</CTableDataCell>
+                                                                        <CTableDataCell>
+                                                                            <span className={appointment.status === 'Scheduled' ? 'coloredsucess' : 'coloredechec'}>
+                                                                                {appointment.status}
+                                                                            </span>
+                                                                        </CTableDataCell>
+                                                                        <CTableDataCell>{appointment.patientId?.phone || 'N/A'}</CTableDataCell>
+                                                                        <CTableDataCell>
+                                                                            <Link to={`/client/patientfilemedical/${appointment.patientId?._id}`} className="openfilepatient">
+                                                                                <BsArrowUpLeft /> Open patient file
+                                                                            </Link>
+                                                                        </CTableDataCell>
+                                                                    </CTableRow>
+                                                                ))}
+
+                                                            </CTableBody>
+                                                        </CTable>
+                                                    </div>
+                                                </div>
                                             </CTabPanel>
                                         </CTabContent>
                                     </CTabs>
                                     {/* paginate */}
                                     <div className='paginate me-5'>
-                                        <p className='mt-3'>Showing 1-09 of 78</p>
+                                        <p className='mt-3'>
+                                            Showing {(currentPage - 1) * limit + 1}-{Math.min(currentPage * limit, totalPatients)} of {totalPatients}
+                                        </p>
                                         <div className='actionbtn'>
-                                            <div className='left'>
-                                                < BsChevronLeft className='pagicon' />
+                                            <div className='left' onClick={goToPreviousPage}>
+                                                <BsChevronLeft className='pagicon' />
                                             </div>
-                                            <div className='right'>
-                                                < BsChevronRight className='pagicon' />
+                                            <div className='right' onClick={goToNextPage}>
+                                                <BsChevronRight className='pagicon' />
                                             </div>
                                         </div>
                                     </div>

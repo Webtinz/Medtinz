@@ -4,7 +4,7 @@ import '../../assets/css/FloatingInput.css'; // Assurez-vous que ce fichier cont
 const FloatingInput = ({ label, value, onChange, required }) => {
   return (
     <div className="floating-input-container">
-      <label className="pure-material-textfield-outlined col-lg-12">
+      <label className="pure-material-textfield-outlined col-12">
         <input
           type="text"
           value={value}

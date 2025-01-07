@@ -1,3 +1,12 @@
+.kenet {
+  background-color: #EFF7FF !important; 
+  overflow-x: hidden !important; 
+  box-sizing: border-box; 
+  height: 100% !important;
+  background-size: cover;
+}
+
+
 .tuaux {
     font-weight: bold;
     border-top-left-radius: 15px;
@@ -15,11 +24,16 @@
     position: relative;
     /* text-align: center; */
     object-fit: cover;
+    display: flex;
+    justify-content:center;
   }
   
   .torija {
     width: 100%; /* Assurez-vous que l'image est responsive */
-    max-width: 256px; /* Définir une largeur maximale */
+    max-width: 256px; 
+    display: flex;
+    justify-content: center;
+    object-fit: cover;
     height: 234px; /* Maintient la proportion de l'image */
     margin-bottom: 15px; /* Ajout d'un espacement entre l'image et le texte */
   }
@@ -27,56 +41,104 @@
   .pintagone {
     position: absolute;
     top: 3px;
-    left: 55%;
+    left: 65%;
     /* transform: translateX(-50%);  */
     padding: 20px;
   }
+
+  .btn-success{
+    background-color: #28A745 !important;
+  }
+
+  @media (max-width: 990px) {
+    .header {
+      display: flex;
+      justify-content: center;
+      text-align: center;
+      margin: 0px 0px 0px 74px;
+    }
+    .torija {
+      width: 50%;
+      height: auto;
+      margin-bottom: 15px;
+      display: flex !important;
+      justify-content: center !important;
+    }
+
+  
+    .pintagone {
+      display: none;
+    }
+  
+    .tuaux {
+      font-size: 14px;
+      padding: 12px 18px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+
+    .Dev{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .continue-btn {
+      font-size: 14px;
+      padding: 10px;
+      width: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+  
   
 
+
+
   
+/* Section gauche avec l'image de fond */
+.lefte3 {
+  background-image: url('./image/Group%20208.png'); /* Utilisez %20 pour les espaces */
+  background-size: cover; /* L'image couvre toute la zone */
+  background-position: center; /* Centrage */
+  /* width: 80%; */
+  height: 100vh; 
+  padding: 0;
+  margin: 0;
 
-
-
-/* Disparaître la section droite sur les petits écrans */
-@media (max-width: 767px) {
- 
-
-  .header {
-    text-align: center;
-    margin: 0px 0px 0px 74px;
-  }
-
- 
-
-  .torija {
-    /* max-width: 100%; */
-    height: auto;
-    margin-bottom: 15px;
-  }
-
-  .chaos {
-    position: relative;
-    text-align: center;
-  }
-
-  .pintagone {
-    position: absolute;
-    top: 0%;
-    left: 87%;
-    transform: translateX(-50%);
-    padding: 20px;
-  }
-
-  .tuaux {
-    font-size: 18px;
-    padding: 12px 18px;
-    font-weight: bold;
-    margin-top: 20px;
-  }
-
-  .continue-btn {
-    font-size: 14px;
-    padding: 10px;
-  }
 }
+
+/* Texte principal */
+.ninas3 {
+  font-size: 32px;
+  font-weight: 500;
+  color: black;
+  align-items: end;
+  text-align: end; /* Centre le texte */
+  margin: 20px 0;
+}
+
+/* Texte en vert */
+.toy3 {
+  color: #28A745;
+}
+
+/* Image ajustée */
+.Morije3 {
+  position: absolute;
+  width: 60%;
+  height: 80vh;
+  object-fit: cover;
+  left: 46%;
+  filter: 0px 13px 61px rgba(48, 48, 48, 0.366013);
+}
+
+
+  
+
+
+
+
 

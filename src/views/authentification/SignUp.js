@@ -9,11 +9,14 @@ import { Modal, Button } from 'react-bootstrap';
 
 const SignUp = () => {
   const [showModal, setShowModal] = useState(false); // Contrôle du modal
+
+  const [clinicName, setClinicName] = useState(''); // Valeur affichée dans l'input
   const [clinicAddress, setClinicAddress] = useState(''); // Valeur affichée dans l'input
   const [selectedCountry, setSelectedCountry] = useState(''); // Pays sélectionné
   const [selectedCity, setSelectedCity] = useState(''); // Ville sélectionnée
   const [selectedDepartment, setSelectedDepartment] = useState(''); // Département sélectionné
-
+  const [telephone1, setTelephone1] = useState(''); // Téléphone 1
+  const [telephone2, setTelephone2] = useState(''); // Téléphone 2
   const navigate = useNavigate(); // Navigation
 
   // Ouvrir et fermer le modal
@@ -30,22 +33,42 @@ const SignUp = () => {
   // Soumission du formulaire
   const handleSubmit = (e) => {
     e.preventDefault();
-    navigate('/ClientAdmin'); // Exemple de redirection
+    
+    // Préparer les données à envoyer
+    const formData = {
+      clinicName,
+      clinicAddress,
+      selectedCountry,
+      selectedCity,
+      selectedDepartment,
+      telephone1,
+      telephone2
+    };
+    // console.log(formData);
+    
+    
+    
+
+    // Rediriger avec les données du formulaire
+    navigate('/ClientAdmin', { state: formData }); // Exemple de redirection avec les données du formulaire
   };
 
   return (
-    <div className="bodya">
-      <div className="container-fluid signup mt-3">
-        <div className="row d-flex align-items-center">
+    <div className="">
+      <div className="container-fluid bodya ">
+        <div className="row d-flex">
           {/* Colonne droite */}
-          <div className="col-lg-4 right">
-            <div className="px-5">
-              <img src={logo} alt="Logo" className="when mb-2" />
+          <div className="col-lg-4 right me-auto">
+            <div className="">
+              <div className='when'>
+              <img src={logo} alt="Logo" className="img-fluid mb-4" />
+              </div>
+              
               <h3 className="genie mb-2">Create an account</h3>
               <p>
                 Already have an account?{' '}
                 <a href="#" className="cirus">
-                  Login
+                  Log in
                 </a>
               </p>
               <form onSubmit={handleSubmit}>
@@ -56,6 +79,8 @@ const SignUp = () => {
                     className="form-control geste"
                     id="floatingInput"
                     placeholder="Clinic's name"
+                    value={clinicName}
+                    onChange={(e) => setClinicName(e.target.value)} // Mettre à jour l'état
                   />
                   <label htmlFor="floatingInput">Clinic's name</label>
                 </div>
@@ -143,7 +168,6 @@ const SignUp = () => {
                     </select>
                   </Modal.Body>
                   <Modal.Footer>
-                   
                     <Button
                       variant="primary"
                       onClick={handleSaveAddress}
@@ -154,49 +178,53 @@ const SignUp = () => {
                   </Modal.Footer>
                 </Modal>
 
-                  <div className="row g-2 mb-3 mt-2">
+                {/* Téléphone */}
+                <div className="row g-2 mb-3 mt-2">
                   <div className="form-floating mb-3 col-md">
-                  <input
-                    type="text"
-                    className="form-control geste"
-                    id="floatingInput"
-                    placeholder="Telephone"
-                  />
-                  <label htmlFor="floatingInput">Telephone 1</label>
-                </div>
-                <div className="form-floating mb-3 col-md">
-                  <input
-                    type="text"
-                    className="form-control geste"
-                    id="floatingInput "
-                    placeholder="Telephone"
-                  />
-                  <label htmlFor="floatingInput">Telephone 2</label>
-                </div>
+                    <input
+                      type="text"
+                      className="form-control geste"
+                      id="floatingInput"
+                      placeholder="Telephone"
+                      value={telephone1}
+                      onChange={(e) => setTelephone1(e.target.value)} // Mettre à jour l'état
+                    />
+                    <label htmlFor="floatingInput">Telephone 1</label>
                   </div>
+                  <div className="form-floating mb-3 col-md">
+                    <input
+                      type="text"
+                      className="form-control geste"
+                      id="floatingInput "
+                      placeholder="Telephone"
+                      value={telephone2}
+                      onChange={(e) => setTelephone2(e.target.value)} // Mettre à jour l'état
+                    />
+                    <label htmlFor="floatingInput">Telephone 2</label>
+                  </div>
+                </div>
 
                 {/* Bouton de soumission */}
-                <button type="submit" className="btn  w-100 mt-3 vyne">
+                <div className='courtney'>
+                  <button type="submit" className="btn w-100 mt-3 vyne"> 
                   Continue <FaArrowRight />
-                </button>
+                  </button>
+                </div>
+                
               </form>
-              <p className=' mt-3'>© 2024 | Développé par ITTIQ </p>
+              <p className=' mt-5'>© 2024 | Développé par ITTIQ </p>
             </div>
           </div>
-
+          
           {/* Colonne gauche */}
-          <div className="col-lg-8 lefte d-none d-md-block">
+          <div className="col-lg-8 lefte ms-auto d-none d-lg-block">
             <div className="into mt-4">
-              <h3 className="ninas mx-5">
+              <h3 className="ninas ">
                 Manage your hospital with <span className="toy">ease</span> now..
               </h3>
-              
               <img src={rectangle15} alt="Group 208" className="Morije" />
-              
-             
             </div>
           </div>
-
         </div>
       </div>
     </div>
@@ -204,235 +232,3 @@ const SignUp = () => {
 };
 
 export default SignUp;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import React, { useState } from 'react';
-// import { useNavigate } from 'react-router-dom';
-// import FloatingInput from './FloatingInput';
-// import './SignUp.css'; // Assurez-vous que ce fichier contient les styles appropriés
-// import logo from './image/Logo.png';
-// import group208 from './image/Group 208.png';
-// import rectangle15 from './image/Rectangle 15.png';
-// import { FaArrowRight} from "react-icons/fa6";
-// import { FaMapMarkerAlt } from 'react-icons/fa';
-// import { Modal, Button } from 'react-bootstrap'; // Importez le Modal et Button de Bootstrap
-// import FloatingSelect from './FloatingSelect';
-// // import tabletImage from './assets/tablet-image.png'; // Image du tableau de bord ou l'image à droite
-
-// const SignUp = () => {
-//   const [clinicName, setClinicName] = useState('');
-//   const [clinicAddress, setClinicAddress] = useState('');
-//   const [tel1, setTel1] = useState('');
-//   const [tel2, setTel2] = useState('');
-//   const [pays, setPays] = useState('');
-//   const [ville, setVille] = useState('');
-//   const [departement, setDepartement] = useState('');
-//   const [errors, setErrors] = useState({});
-//   const [showModal, setShowModal] = useState(false);
-
-//   const villes = ['Paris', 'Lyon', 'Marseille', 'Toulouse'];
-//   const departements = ['Dept1', 'Dept2', 'Dept3'];
- 
-//   const navigate = useNavigate(); // Utilisation de useNavigate
-//   // Fonction pour ouvrir le modal
-//   const handleOpenModal = () => {
-//     setShowModal(true);
-//   };
-
-//   // Fonction pour fermer le modal automatiquement après mise à jour
-//   const handleCloseModal = () => {
-//     setShowModal(false);
-//   };
-
-//   // Mise à jour de l'adresse clinique lorsque le modal est rempli
-//   const handleChangeAddress = () => {
-//     // Mise à jour de l'adresse avec les données du modal
-//     const address = `${pays}, ${ville}, ${departement}`;
-//     setClinicAddress(address); // Met à jour clinicAddress
-//     handleCloseModal(); // Ferme le modal après la mise à jour de l'adresse
-//   };
-
-//   // Validation du formulaire
-//   const validateForm = () => {
-//     const newErrors = {};
-//     if (!clinicName) newErrors.clinicName = "Veuillez Saisir le nom de la clinique";
-//     if (!clinicAddress) newErrors.clinicAddress = "Veuillez saisir l'adresse de la clinique";
-//     if (!tel1) newErrors.tel1 = "Tel 1 is important";
-//     if (!tel2) newErrors.tel2 = "Tel 2 is important";
-//     setErrors(newErrors);
-//     return Object.keys(newErrors).length === 0; // Si aucune erreur, formulaire valide
-//   };
-
-//   // Fonction pour la soumission du formulaire et redirection vers /admin
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-//     if (validateForm()) {
-//       // Redirection vers la page Admin après la soumission
-//       navigate('/admin');
-//     }
-//   };
-
-//   return (
-//     <div className="sign-up-container">
-//         <div className='row'>
-//         <div className="left-section px-5 col-lg-6">
-//                 <div className="header">
-//                     <img src={logo} alt="Logo" className="logo mb-1 " />
-//                 </div>
-//                 <div className='mb-2'>
-//                     <h2 >Create an account</h2>
-//                     <p>Already have an account? <span className='hugue'><a href="#" className='hugue'>Log In</a></span></p>
-//                 </div>
-//                 <form onSubmit={handleSubmit}>
-//                     {/* Clinic's Name and Clinic's Address */}
-//                     <div className="row g-2 mb-4">
-//                       <div className="col-md-12 mb-2">
-//                         <FloatingInput
-//                           label="Clinic's Name"
-//                           value={clinicName}
-//                           onChange={(e) => setClinicName(e.target.value)}
-//                         />
-//                         {errors.clinicName && <span className="error">{errors.clinicName}</span>}
-//                       </div>
-//                       <div className="col-md-12 mb-2">
-//                           <div className="input-container">
-//                             {/* Input avec icône et placeholder */}
-//                             <input 
-//                             className='col-lg-12 inputs'
-//                               type="text"
-//                               value={clinicAddress}
-//                               onChange={(e) => setClinicAddress(e.target.value)}
-//                               onClick={handleOpenModal} // Ouvre le modal quand l'input est cliqué
-//                               readOnly
-//                               placeholder="Clinic's Address"
-//                               required
-//                             />
-//                             <FaMapMarkerAlt className="input-icon" />
-//                           </div>
-//                           {errors.clinicAddress && <span className="error">{errors.clinicAddress}</span>}
-
-//                           {/* Modal */}
-//                           {/* Modal sans bouton de fermeture ni sauvegarde */}
-//                           <Modal show={showModal} onHide={handleCloseModal} centered>
-//                             <Modal.Header>
-//                               <Modal.Title>
-//                                 Address <FaMapMarkerAlt className="tu-icon" />
-//                               </Modal.Title>
-//                             </Modal.Header>
-//                             <Modal.Body>
-//                                   <div className="mb-3 col-lg-12">
-//                                     <FloatingInput
-//                                       label="Country"
-//                                       value={pays}
-//                                       onChange={(e) => setPays(e.target.value)}
-//                                       onBlur={handleChangeAddress} // Met à jour l'adresse quand on quitte le champ
-//                                     />
-//                                   </div>
-//                                   <div className="mb-3 col-md-12">
-//                                     <FloatingSelect
-//                                       label="City"
-//                                       value={ville}
-//                                       onChange={(e) => setVille(e.target.value)}
-//                                       onBlur={handleChangeAddress}
-//                                       options={villes}
-//                                       required
-//                                     />
-//                                   </div>
-//                                   <div className="mb-3 col-md-12">
-//                                     <FloatingSelect
-//                                       label="Department"
-//                                       value={departement}
-//                                       onChange={(e) => setDepartement(e.target.value)}
-//                                       onBlur={handleChangeAddress}
-//                                       options={departements}
-//                                       required
-//                                     />
-//                                   </div>
-//                             </Modal.Body>
-//                             <Modal.Footer>
-//                               <Button variant="primary" onClick={handleChangeAddress}>
-//                                 Save Address
-//                               </Button>
-//                             </Modal.Footer>
-//                           </Modal>
-//                       </div>
-//                     </div>
-
-//                     {/* Tel 1 and Tel 2 */}
-//                     <div className="row g-2 ">
-//                       <div className="col-md-6">
-//                         <FloatingInput
-//                           label="Tel 1"
-//                           value={tel1}
-//                           onChange={(e) => setTel1(e.target.value)}
-//                         />
-//                         {errors.tel1 && <span className="error">{errors.tel1}</span>}
-//                       </div>
-//                       <div className="col-md-6">
-//                         <FloatingInput
-//                           label="Tel 2"
-//                           value={tel2}
-//                           onChange={(e) => setTel2(e.target.value)}
-//                         />
-//                         {errors.tel2 && <span className="error">{errors.tel2}</span>}
-//                       </div>
-//                     </div>
-
-//                     {/* Submit Button */}
-//                     <button type="submit" className="continue-btn mt-3 mb-2">Continue  <FaArrowRight /></button>
-//                     <p className='mt-5 '>© 2024 | Développé par ITTIQ </p>
-                    
-//               </form>
-            
-//         </div>
-//         <div className="right-section  col-lg-6">
-//             {/* <p>Manage your hospital with ease now..</p> */}
-//             <img src={group208} alt="Group 208" className="tablet-image" />
-//             <div className='polygone '>
-//             <p className=''>Manage your hospital with <span className='hugue'>ease</span> now..</p>
-//             </div>
-            
-//             <div className='intrigue mt-5'>
-//                 <img src={rectangle15} alt="Group 208" className="Morija img-fluid" />
-//             </div>
-//         </div>
-//         </div>
-        
-       
-//     </div>
-//   );
-// };
-
-// export default SignUp;

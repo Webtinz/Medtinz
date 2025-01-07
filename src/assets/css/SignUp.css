@@ -1,12 +1,11 @@
 /* Global styles */
-.bodya {
-  margin: 0;
-  padding: 0;
-  background-color: #EFF7FF !important; /* Couleur de fond */
-  overflow: hidden; /* Empêche le défilement global */
-  height: 100vh; /* Hauteur totale de l'écran */
-  width: 100%; /* Largeur complète */
-  box-sizing: border-box; /* Inclut padding et bordures */
+.bodya , body,html {
+  background-color: #EFF7FF !important; 
+  overflow: hidden !important; 
+  box-sizing: border-box; 
+  height: 100% !important;
+  width: 100%;
+  background-size: cover;
 }
 
 /* .right{
@@ -19,9 +18,9 @@
   padding: 10px !important;
 }
 
-.form{
+/* .form{
   margin: 50px;
-}
+} */
 
 .dill{
   color: #0056B3;
@@ -55,24 +54,29 @@
 
 /* Section gauche avec l'image de fond */
 .lefte {
-  background-image: url('./image/Group%20208.png'); /* Utilisez %20 pour les espaces */
+  background-image: url('../images/Group%20208.png'); /* Utilisez %20 pour les espaces */
   background-size: cover; /* L'image couvre toute la zone */
   background-position: center; /* Centrage */
-  /* width: 100%; */
+  width: 60%;
   height: 100vh; 
   padding: 0;
   margin: 0;
-  overflow: hidden; /* Empêche le débordement */
+
 }
+
+/* .into{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+} */
 
 /* Texte principal */
 .ninas {
   font-size: 32px;
   font-weight: 500;
   color: black;
-  align-items: end;
-  text-align: end; /* Centre le texte */
   margin: 20px 0;
+  text-align: left !important;
 }
 
 /* Texte en vert */
@@ -81,43 +85,28 @@
 }
 
 /* Image ajustée */
-.Morije {
+.into .Morije{
   position: absolute;
-  display: block;
-  width: 60%;
-  height: 80vh;
-  object-fit: cover;
-  margin: 0 !important;
-  padding: 0 !important;
-  left: 50%;
-  
-  filter: 0px 13px 61px rgba(48, 48, 48, 0.366013);
+  right: 50;
+  width: 50%;
+  height: 70vh;
+  display: flex;
+  justify-content: end  !important;
 }
 
 /* Classe cachée sur les mobiles */
 @media (max-width: 768px) {
-  .lefte {
-    display: none; /* Cache la classe gauche */
-  }
+ 
 
   .right {
-    margin: 0 auto;
+    margin:  auto;
     text-align: center;
   }
 
-  .bodya {
-    overflow: hidden !important; /* Empêche tout défilement sur mobile */
-    overflow-x:hidden;
-    overflow-y: hidden;
-    height: 100vh; /* Ajuste à la hauteur de l'écran */
-  }
-
-  .Morije {
-    display: none; /* Cache l'image absolue */
-  }
-
-  .ninas {
-    font-size: 24px;
-    text-align: center;
-  }
+    .when{
+      display: flex !important;
+      justify-content:center !important;
+      align-items: center !important;
+      margin-left: 3rem !important;
+    }
 }

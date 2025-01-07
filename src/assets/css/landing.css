@@ -1,0 +1,145 @@
+
+
+
+.crainte{
+
+}
+
+.time{
+    background-image: url('./image/Group 33751.png'); /* Utilisez %20 pour les espaces */
+  background-size: cover; /* L'image couvre toute la zone */
+  background-position: center; /* Centrage */
+  width: 100%;
+  height: 100vh; /* Hauteur de la fenêtre */
+  padding: 0;
+  margin: 0;
+}
+
+.mexi{
+    color: #0056B3;
+    font-weight: bold;
+    font-size: 14px;
+    border-radius: 8px;
+    padding: 12px 45px;
+    border: 1px solid #ffffff;
+    background-color: #ffffff;
+}
+
+.nav-link{
+    color: #ffffff;
+    font-weight: 400;
+    font-size: 16px;
+}
+
+.navbar-brand{
+    font-size: 28px;
+    font-weight: 800;
+    color: #ffffff;
+}
+.tchou{
+    color: #000000;
+}
+
+.chill{
+    width: 182px;
+    height: 174px;
+    object-fit: cover;
+    filter: drop-shadow(0px 13px 10px rgba(48, 48, 48, 0.366013));
+}
+
+.stil{
+    font-weight: 600;
+    font-size: 23px;
+    color: #FF9800;
+}
+
+.sod{
+    font-weight: 700;
+    font-size: 40px;
+    color: #000000;
+}
+
+.story{
+    font-weight: 400;
+    font-size: 14px;
+    color: #596780;
+    padding: 0px 0px 0px 150px;
+}
+
+.chille{
+    width: 100%;
+    height: auto;
+}
+.kan{
+    font-weight: 600;
+    color: #000000;
+    font-size: 24px;
+}
+
+.ketou{
+    font-weight: 400;
+    font-size: 16px;
+    color: #596780;
+}
+
+.colombe{
+    background-image: url('./image/how.png'); /* Utilisez %20 pour les espaces */
+  background-size: cover; /* L'image couvre toute la zone */
+  background-position: center; /* Centrage */
+  width: 100%;
+  height: auto; /* Hauteur de la fenêtre */
+  padding: 0;
+  margin: 0; 
+}
+
+.chou{
+    width: 100%;
+    height: 80vh;
+    object-fit: cover;
+    align-items: center;
+}
+
+.hui{
+    margin-top: 66px;
+    margin-left: 70px;
+}
+.yasmine{
+    color: #FF9800;
+    font-weight: 600;
+    font-size: 22px;
+}
+
+.reda{
+    font-weight: 700;
+    font-size: 25px;
+    color: #ffffff;
+}
+
+.kady{
+    font-weight: 400;
+    font-size: 16px;
+    color: #ffffff;
+}
+
+.trio{
+    color: #ffffff;
+}
+.redan{
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.sonic{
+    display: flex;
+    justify-content: space-between;
+}
+
+.aurelie{
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+}
+
+.lara{
+    font-size: 16px;
+}

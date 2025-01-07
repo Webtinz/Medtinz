@@ -735,6 +735,10 @@ textarea:focus {
     width: 100% !important;
 }
 
+.cashpayment h3{
+    margin-bottom: 0px !important;
+}
+
 /* download receipt */
 
 .receipt {

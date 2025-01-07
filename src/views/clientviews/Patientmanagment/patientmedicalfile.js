@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom'
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import AddAppointmentModal from '../appointmentmanagment/addappointment'; // Le composant modal
 import {
     CButton,
     CRow,
@@ -21,18 +22,43 @@ import {
     CTableHeaderCell,
     CTableRow,
     CModal, CModalHeader, CModalBody, CModalFooter, CModalTitle, CFormCheck
-} from '@coreui/react'
-import { cilSearch } from '@coreui/icons';
+} from '@coreui/react';
 import { FaArrowLeft } from "react-icons/fa";
-import { BsPersonPlus, BsChevronRight, BsArrowRight } from 'react-icons/bs';
-import * as icon from '@coreui/icons';
-import CIcon from '@coreui/icons-react'
+import { BsPersonPlus, BsChevronRight } from 'react-icons/bs';
 import '../../../assets/css/mainstyle.css';
+import axios from 'axios';
 
 const Patientfilemedical = () => {
     const [visible, setVisible] = useState(false);
-    const [paymentoption, setpaymentoption] = useState(false);
+    const [appointments, setAppointments] = useState([]);
     const [ticket, setticket] = useState(false);
+    const { patientId } = useParams(); // Récupère l'ID du patient depuis l'URL
+    const [patientData, setPatientData] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        // Charge les données du patient
+        const fetchPatientData = async () => {
+            try {
+                const response = await axios.get(`http://localhost:5000/clinic/getpatients/${patientId}`);
+                setPatientData(response.data);
+            } catch (error) {
+                console.error('Erreur lors de la récupération des données du patient:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchPatientData();
+    }, [patientId]);
+
+    if (loading) {
+        return <p>Chargement...</p>;
+    }
+
+    const handleAppointmentAdded = (newAppointment) => {
+        setAppointments((prev) => [...prev, newAppointment]);
+    };
 
     return (
         <div className="dashboard-header" >
@@ -58,6 +84,7 @@ const Patientfilemedical = () => {
                 </CContainer>
             </CHeader>
 
+
             <div className="Patientlist filemedical mt-2"  >
                 <div className='tabsection'>
                     <CRow>
@@ -66,7 +93,7 @@ const Patientfilemedical = () => {
                                 <CCardBody>
                                     <div className='topbtn'>
                                         <div className="retourbtn">
-                                            <CButton className=" retourbtn">
+                                            <CButton className="retourbtn" onClick={() => (navigate(-1) || navigate('/'))}>
                                                 <FaArrowLeft /> Retour
                                             </CButton>
                                         </div>
@@ -76,273 +103,82 @@ const Patientfilemedical = () => {
                                                 <BsPersonPlus className='mx-2' /> New Appointment
                                             </CButton>
                                         </div>
-
-                                        {/* modal */}
-
-                                        <CModal className='newregistermodal '
-                                            alignment="center"
-                                            scrollable
-                                            size='lg'
-                                            visible={visible}
-                                            onClose={() => setVisible(false)}
-                                            aria-labelledby="VerticallyCenteredScrollableExample2"
-                                        >
-                                            <CModalHeader>
-                                                <CModalTitle id="VerticallyCenteredScrollableExample2" className='Titleformsmodal'>Register New Appointment</CModalTitle>
-                                            </CModalHeader>
-                                            <CModalBody className='p-5'>
-                                                <form>
-
-                                                    <div className="form-group">
-                                                        <label htmlFor="name">Name</label>
-                                                        <input
-                                                            type="text"
-                                                            name="name"
-                                                            id="name"
-                                                            placeholder="Casos Billal"
-                                                        />
-                                                    </div>
-
-                                                    <div className="form-group">
-                                                        <label htmlFor="department">Department</label>
-                                                        <select name="department" id="department">
-                                                            <option value="male">ORL</option>
-                                                            <option value="female">Cardiology</option>
-                                                            <option value="other">Onthology</option>
-                                                        </select>
-                                                    </div>
-
-                                                    <div className="form-group">
-                                                        <label htmlFor="birth">Name</label>
-                                                        <input
-                                                            type="date"
-                                                            name="birth"
-                                                            id="birth"
-                                                            placeholder="20-12-2000"
-                                                        />
-                                                    </div>
-
-                                                    <div className="form-group">
-                                                        <label htmlFor="triage">Triage</label>
-                                                        <select name="Triage" id="Triage">
-                                                            <option value="">Select Triage</option>
-                                                            <option value="male">Male</option>
-                                                            <option value="female">Female</option>
-                                                            <option value="other">Other</option>
-                                                        </select>
-                                                    </div>
-
-                                                    <div className="savenewuser form-group d-flex justify-content-center">
-                                                        <CButton onClick={() => setpaymentoption(!paymentoption)} type="submit">
-                                                            Continue &nbsp; <BsArrowRight />
-                                                        </CButton>
-                                                    </div>
-                                                </form>
-                                            </CModalBody>
-                                        </CModal>
-
-                                        <CModal className='paymentbycash newregistermodal'
-                                            alignment="center"
-                                            scrollable
-                                            size='lg'
-                                            visible={paymentoption}
-                                            onClose={() => setpaymentoption(false)}
-                                            aria-labelledby="VerticallyCenteredScrollableExample2"
-                                        >
-                                            <CModalHeader className='text-center'>
-                                                <CModalTitle id="VerticallyCenteredScrollableExample2" className='Titleformsmodal'>New appointment</CModalTitle>
-                                            </CModalHeader>
-                                            <CModalBody className='p-5'>
-                                                <section className='pamentoption'>
-                                                    <div className='selectpaymentoption'>
-                                                        <h4>Choose payment method</h4>
-                                                        <div className='momopayment'>
-                                                            <input type="radio" name="momopayment" id="momopayment1" value="option1" />
-                                                            <img src="src/assets/images/MoMo_Logo_RGB_Horizontal-on_LIGHT_BG 1.png" className='cardicon' alt="Consultation Icon" />
-                                                        </div>
-
-                                                        <div className='cashpayment'>
-                                                            <input className="d-flex align-items-center" type="radio" name="cashpayment" id="cashpayment1" value="option1" defaultChecked />
-                                                            <h3 className='cashtext'>Cash</h3>
-                                                        </div>
-
-                                                    </div>
-                                                </section>
-
-                                                <form>
-
-                                                    <div className="form-row row">
-                                                        <div className="form-group col-md-4">
-                                                            <label htmlFor="devise">Choisissez la devise</label>
-                                                            <select name="devise" id="devise">
-                                                                <option value="XOF">XOF</option>
-                                                                <option value="USD">USD</option>
-                                                                <option value="EUR">EUR</option>
-                                                            </select>
-                                                        </div>
-
-                                                        <div className="form-group col-md-8">
-                                                            <label htmlFor="amount">Entrez le montant a payer</label>
-                                                            <input
-                                                                type="tel"
-                                                                name="amount"
-                                                                id="amount"
-                                                                placeholder="+229 01 90 00 00 00"
-                                                            />
-                                                        </div>
-                                                    </div>
-
-                                                    <div className="form-group">
-                                                        <label htmlFor="motif">Motif</label>
-                                                        <select name="motif" id="motif">
-                                                            <option value="consultation">Consultation</option>
-                                                            <option value="Operation">Operation</option>
-                                                        </select>
-                                                    </div>
-
-                                                    <div className="form-group d-flex justify-content-center">
-                                                        <CButton onClick={() => setticket(!ticket)} className='w-100' type="submit">
-                                                            Valider &nbsp; <BsArrowRight />
-                                                        </CButton>
-                                                    </div>
-                                                </form>
-                                            </CModalBody>
-                                        </CModal>
-
-                                        {/* ticket after cash payment */}
-                                        <CModal className='ticket newregistermodal'
-                                            alignment="center"
-                                            scrollable
-                                            size='lg'
-                                            visible={ticket}
-                                            onClose={() => setticket(false)}
-                                            aria-labelledby="VerticallyCenteredScrollableExample2"
-                                        >
-                                            <CModalHeader className='text-center'>
-                                                <CModalTitle id="VerticallyCenteredScrollableExample2" className='Titleformsmodal'>New appointment</CModalTitle>
-                                            </CModalHeader>
-                                            <CModalBody className='p-5'>
-                                                <section className='modal'>
-
-                                                    <div className='receipt'>
-                                                        <div className="logo">
-                                                            
-                                                        </div>
-                                                        <h3>Payment receipt</h3>
-                                                        <div className="details">
-                                                            <p><strong>Date:</strong> 12 / 12 / 2024</p>
-                                                            <p><strong>Heure:</strong> 17h 31m 12s</p>
-                                                            <p><strong>Motif:</strong> Consultation</p>
-                                                            <p><strong>Department:</strong> Gynecology</p>
-                                                            <p><strong>Payment method:</strong> Cash</p>
-                                                            <p><strong>Amount:</strong> 20.000 XOF</p>
-                                                            <p><strong>Lorea:</strong> Lorea</p>
-                                                        </div>
-
-                                                    </div>
-                                                    <div className="mt-5 form-group d-flex justify-content-center">
-                                                        <CButton className='w-100' type="submit">
-                                                            Download Receipt &nbsp; <BsArrowRight />
-                                                        </CButton>
-                                                    </div>
-                                                </section>
-                                            </CModalBody>
-                                        </CModal>
-
-                                        {/* <CModal className='paymentbymomo newregistermodal'
-                                            alignment="center"
-                                            scrollable
-                                            size='lg'
-                                            visible={ticket}
-                                            onClose={() => setticket(false)}
-                                            aria-labelledby="VerticallyCenteredScrollableExample2"
-                                        >
-                                            <CModalHeader className='text-center'>
-                                                <CModalTitle id="VerticallyCenteredScrollableExample2" className='Titleformsmodal'>New appointment</CModalTitle>
-                                            </CModalHeader>
-                                            <CModalBody className='p-5'>
-                                                <section className='pamentoption'>
-                                                    <div className='selectpaymentoption'>
-                                                        <h4>Choose payment method</h4>
-                                                        <div className='momopayment'>
-                                                            <input type="radio" name="momopayment" id="momopayment1" value="option1" />
-                                                            <img src="src/assets/images/MoMo_Logo_RGB_Horizontal-on_LIGHT_BG 1.png" className='cardicon' alt="Consultation Icon" />
-                                                        </div>
-
-                                                        <div className='cashpayment'>
-                                                            <input className="d-flex align-items-center" type="radio" name="cashpayment" id="cashpayment1" value="option1" defaultChecked />
-                                                            <h3 className='cashtext'>Cash</h3>
-                                                        </div>
-
-                                                    </div>
-                                                </section>
-
-                                                <form>
-
-                                                    <div className="form-group">
-                                                        <label htmlFor="motif">Motif</label>
-                                                        <select name="motif" id="motif">
-                                                            <option value="consultation">Consultation</option>
-                                                            <option value="Operation">Operation</option>
-                                                        </select>
-                                                    </div>
-
-                                                    <div className="form-group d-flex justify-content-center">
-                                                        <CButton className='w-100' type="submit">
-                                                            Valider &nbsp; <BsArrowRight />
-                                                        </CButton>
-                                                    </div>
-                                                </form>
-                                            </CModalBody>
-                                        </CModal> */}
                                     </div>
+
+                                    <AddAppointmentModal
+                                        visible={visible}
+                                        onClose={() => setVisible(false)}
+                                        onAppointmentAdded={handleAppointmentAdded}
+                                    />
+
                                     <div className='patientdetails'>
                                         <div className='d-flex align-items-center cardheader mb-5'>
                                             <span className='me-3' style={{ width: '70px', height: '5px', background: 'green' }}></span>
                                             <h4>Medical history</h4>
                                         </div>
-                                        <CRow className="my-3 patientinfo mb-5">
-                                            <CCol xs={12} md={2}>
-                                                <div className="flexcoldisposition">
-                                                    <p>Nom :</p>
-                                                    <p><b>Badoss</b></p>
-                                                </div>
-                                            </CCol>
-                                            <CCol xs={12} md={2}>
-                                                <div classname="flexcoldisposition">
-                                                    <p>Prénom : </p>
-                                                    <p><b>Austin Miller</b></p>
-                                                </div>
-                                            </CCol>
-                                            <CCol xs={12} md={2}>
-                                                <div classname="flexcoldisposition">
-                                                    <p>Date of birth: </p>
-                                                    <p><b>Dermatologist</b></p>
-                                                </div>
-                                            </CCol>
-                                            <CCol xs={12} md={2}>
-                                                <div classname="flexcoldisposition">
-                                                    <p>Address : </p>
-                                                    <p><b>Austin Miller</b></p>
-                                                </div>
-                                            </CCol>
-                                            <CCol xs={12} md={2}>
-                                                <div classname="flexcoldisposition">
-                                                    <p>Gender :</p>
-                                                    <p><b>Dermatologist</b></p>
-                                                </div>
-                                            </CCol>
-                                        </CRow>
+
+                                        {patientData ? (
+                                            <CRow className="my-3 patientinfo mb-5">
+                                                <CCol xs={12} md={2}>
+                                                    <div className="flexcoldisposition">
+                                                        <p>Name :</p>
+                                                        <p><b>{patientData.name}</b></p>
+                                                    </div>
+                                                </CCol>
+                                                <CCol xs={12} md={2}>
+                                                    <div className="flexcoldisposition">
+                                                        <p>Email : </p>
+                                                        <p><b>{patientData.email}</b></p>
+                                                    </div>
+                                                </CCol>
+                                                <CCol xs={12} md={2}>
+                                                    <div className="flexcoldisposition">
+                                                        <p>Date of birth: </p>
+                                                        <p><b>{patientData.age.split("T")[0]}</b></p>
+                                                    </div>
+                                                </CCol>
+                                                <CCol xs={12} md={2}>
+                                                    <div className="flexcoldisposition">
+                                                        <p>Address : </p>
+                                                        <p><b>{patientData.address}</b></p>
+                                                    </div>
+                                                </CCol>
+                                                <CCol xs={12} md={2}>
+                                                    <div className="flexcoldisposition">
+                                                        <p>Gender :</p>
+                                                        <p><b>{patientData.gender}</b></p>
+                                                    </div>
+                                                </CCol>
+                                            </CRow>
+
+                                        ) : (
+                                            <p>No data available</p>
+                                        )}
                                     </div>
                                     <div className='mt-5'>
                                         <div className='d-flex align-items-center cardheader'>
                                             <span className='me-3' style={{ width: '70px', height: '5px', background: 'green' }}></span>
                                             <h4>Medical history</h4>
                                         </div>
-                                        <div className='d-flex align-items-center justify-content-center' style={{ height: '300px' }}>
-                                            <h4>No medical history yet</h4>
-                                            <img src="src/assets/images/Group 207.png" className='cardicon' alt="Consultation Icon" width={'100'} height={'100'} />
-                                        </div>
+
+                                        {patientData?.medicalHistory && patientData.medicalHistory.length > 0 ? (
+                                            // Affichez la liste des antécédents médicaux si disponible
+                                            <div className='medical-history-list'>
+                                                {patientData.medicalHistory.map((history, index) => (
+                                                    <div key={index} className='history-item'>
+                                                        <p><strong>Condition:</strong> {history.condition || 'N/A'}</p>
+                                                        <p><strong>Description:</strong> {history.description || 'No description'}</p>
+                                                        <p><strong>Date Diagnosed:</strong> {history.dateDiagnosed ? new Date(history.dateDiagnosed).toLocaleDateString() : 'Unknown'}</p>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        ) : (
+                                            // Affichez la div alternative si pas d'antécédents médicaux
+                                            <div className='d-flex align-items-center justify-content-center' style={{ height: '300px' }}>
+                                                <h4>No medical history yet</h4>
+                                                <img src="src/assets/images/Group 207.png" className='cardicon' alt="Consultation Icon" width={'100'} height={'100'} />
+                                            </div>
+                                        )}
                                     </div>
                                 </CCardBody>
                             </CCard>
@@ -351,8 +187,6 @@ const Patientfilemedical = () => {
                 </div>
             </div>
         </div >
-
-
     );
 }
 
