@@ -62,6 +62,7 @@ const getAllDepartments = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
 const getDepartmentById = async (req, res) => {
     try {
       const { department_id } = req.body; // ID du département dans le corps de la requête
