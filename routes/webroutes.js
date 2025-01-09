@@ -8,6 +8,7 @@ const userController = require('../Controllers/userController');
 const roleController = require('../Controllers/RoleController'); // Importer le contrôleur des rôles
 const departmentController = require('../Controllers/clientInterface/DepartmentController');
 const specialtyController = require('../Controllers/clientInterface/SpecialityController'); // Import du contrôleur Specialty
+const featureController = require('../Controllers/FeatureController'); // Importer le contrôleur des rôles
 
 const resendOtpController = require('../Controllers/auth/resend_otp');
 const forgotPasswordController = require('../Controllers/auth/forgot_password');
@@ -38,6 +39,7 @@ check_tokenController(router); // Ajoute la route pour vérifier le check_token
 // Add subscription
 router.post('/addsubscription', subscriptionController.addSubscription);
 router.get('/subscriptions', subscriptionController.getAllSubscriptions);
+router.get('/subscriptions/:id', /* authMiddleware, */  subscriptionController.getSubscriptionById);
 router.get('/editsubscriptions/:id', subscriptionController.getSubscriptionById);
 router.put('/updatesubscriptions/:id', subscriptionController.updateSubscription);
 router.delete('/deletesubscriptions/:id', subscriptionController.deleteSubscription);
@@ -68,6 +70,8 @@ router.get('/hospitals/admin/:hospital_admin_id', hospitalController.getHospital
 // router.get('/hospitals/admin/:hospital_admin_id', hospitalController.getHospitalsByAdmin);
 // router.get('/hospital/:hospitalAdminId', authMiddleware, hospitalController.getHospitalByAdminId);
 
+router.post('/selectplan',  authMiddleware,  hospitalController.selectHospitalPlan); // Protégée
+
 // Pathologie Managment
 // Créer une pathologie
 router.post('/addpathologies', pathologieController.createPathologie);
@@ -92,6 +96,19 @@ router.get('/specialitiy/:id',/* authMiddleware,*/ specialtyController.getSpecia
 router.get('/specialities/search',/* authMiddleware,*/ specialtyController.searchSpecialtiesByName); // Rechercher par nom
 router.put('/specialities/:id',/* authMiddleware,*/ specialtyController.updateSpecialtyById); // Mettre à jour une spécialité
 router.delete('/specialities/:id',/* authMiddleware,*/ specialtyController.deleteSpecialtyById); // Supprimer une spécialité
+
+
+
+// Feature Management
+router.post('/addfeatures', /*authMiddleware,*/ featureController.createFeature); // Créer un rôle
+router.get('/getallfeatures', /*authMiddleware,*/ featureController.getAllFeatures); // Lire tous les rôles
+router.get('/getonefeatures/:id', /*authMiddleware,*/ featureController.getFeatureById); // Lire un rôle par ID
+router.put('/updatefeatures/:id', /*authMiddleware,*/ featureController.updateFeatureById); // Mettre à jour un rôle
+router.delete('/deletefeatures/:id', /*authMiddleware,*/ featureController.deleteFeatureById); // Supprimer un rôle
+// Rechercher un rôle par name
+router.get('/features/search', /*authMiddleware,*/ featureController.searchFeaturesByName); // Protégée par JWT
+
+
 
 
 module.exports = router;

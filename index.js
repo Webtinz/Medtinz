@@ -3,9 +3,11 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const webRoutes = require('./routes/webroutes');
+const paymentRoute = require('./routes/paymentRoute');
 const clinicAdmin = require('./routes/clinicadmin');
 const {connectDB} = require('./config/database');
 require('dotenv').config();
+const bodyParser = require('body-parser');
 
 const app = express();
 
@@ -16,6 +18,7 @@ app
 
 app.use(express.json()); // Pour analyser les requêtes JSON
 app.use('/api', webRoutes);  // Routes d'API principales
+app.use('/payment',paymentRoute);
 app.use('/clinic', clinicAdmin);  // Routes de gestion de la clinique
 
 /* Start code for call */
