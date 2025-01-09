@@ -1,0 +1,71 @@
+/* Conteneur des flèches pour le placer sur la même ligne */
+
+.reviews-container {
+    background-color: #fff;
+  }
+  
+  .review-card {
+    border: 1px solid #f1f1f1;
+    transition: all 0.3s ease;
+    margin-bottom: 50px;
+    margin-top: 25px;
+  }
+  
+  .review-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+  }
+
+
+.reviews-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px; /* Espacement inférieur */
+  }
+  
+  .reviews-header h2 {
+    margin: 0; /* Supprime les marges par défaut */
+  }
+  
+  /* Positionnement des boutons de navigation Swiper */
+  .swiper-button-next,
+  .swiper-button-prev {
+    position: relative; /* Relative au conteneur parent */
+    color: #000; /* Couleur des flèches */
+    background-color: #FF98004D;
+    border-radius: 50%;
+    padding: 20px;
+    margin: 0 16px; /* Espace horizontal entre les flèches */
+    z-index: 10;
+  }
+  
+  .swiper-button-next::after,
+  .swiper-button-prev::after {
+    font-size: 20px; /* Taille des flèches */
+  }
+  
+  .reviews-container {
+    position: relative; /* Parent pour positionner les flèches */
+  }
+  
+  /* Pagination */
+  .swiper-pagination-bullet {
+    background-color: #e0e0e0;
+    opacity: 0.7;
+    bottom: 0px;
+    
+  }
+  
+  .swiper-pagination-bullet-active {
+    background-color: #ffb900; /* Couleur active */
+    opacity: 1;
+  }
+
+  .swiper-pagination {
+    position: absolute;
+    text-align: center;
+    transition: 300ms opacity;
+    transform: translate3d(0, 0, 0);
+    z-index: 40;
+}

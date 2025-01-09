@@ -1,0 +1,85 @@
+/* Conteneur du select flottant */
+.floating-select-container {
+  position: relative;
+  width: 100%;
+  margin-bottom: 20px; /* Ajout d'un espacement entre les éléments */
+}
+
+/* Style du select */
+.floating-select-container select {
+  box-sizing: border-box;
+  margin: 0;
+  border: 2px solid #0056B3; /* Bordure du select */
+  border-radius: 8px;
+  padding: 15px 15px; /* Espacement à l'intérieur du select */
+  width: 100%;
+  background-color: transparent;
+  color: #333;
+  font-size: 16px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.floating-select-container select:focus {
+  border-color: #0056B3;
+  outline: none;
+}
+
+/* Le label flottant */
+.floating-select-container span {
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  color: #333;
+  font-size: 16px;
+  transform: translateY(-50%); /* Centrer le texte verticalement */
+  transition: all 0.2s ease; /* Transition douce pour l'animation */
+}
+
+/* Lorsque le select est focus ou une option est sélectionnée, le label flotte au-dessus */
+.floating-select-container select:focus + span,
+.floating-select-container select:not(:placeholder-shown) + span {
+  top: 0;
+  font-size: 12px;
+  padding: 0 5px;
+  background-color: #fff;
+  color: #0056B3; /* Change la couleur du label lorsque l'input est focus */
+}
+
+/* Optionnel : ajout de styles supplémentaires pour les erreurs */
+.error {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+/* Media Queries pour la réactivité */
+
+/* Sur petits écrans (moins de 768px) */
+@media (max-width: 767px) {
+  /* Ajustement de la taille du label et de l'input sur mobile */
+  .floating-select-container select {
+    padding: 14px 150px; /* Réduire l'espace pour mieux s'adapter aux petits écrans */
+    font-size: 14px;
+  }
+
+  .floating-select-container span {
+    font-size: 14px;
+  }
+
+  /* Réduire la taille du texte d'erreur */
+  .error {
+    font-size: 12px;
+  }
+}
+
+/* Sur tablettes et écrans moyens (768px à 1024px) */
+@media (max-width: 1024px) and (min-width: 768px) {
+  .floating-select-container select {
+    padding: 16px 12px; /* Réduire l'espace légèrement pour les tablettes */
+    font-size: 15px;
+  }
+
+  .floating-select-container span {
+    font-size: 15px;
+  }
+}

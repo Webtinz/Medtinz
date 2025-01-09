@@ -1,0 +1,342 @@
+/* Global Styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #ffffff;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+/* CSS pour retirer les points de liste */
+.no-bullet {
+  list-style-type: none;
+  padding-left: 0;  /* Supprime le retrait par défaut */
+}
+
+.coule {
+  position: relative;
+  background-color: #0056B3;
+  padding: 5% 5%;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.medical {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  position: absolute;
+  top: -10px;
+  right: 0;
+}
+
+.container.ones {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.prunel {
+  align-items: start;
+  font-weight: bold;
+  font-size: 2rem;
+}
+
+.fou1 {
+  background: linear-gradient(90deg, #00D2FF 0%, #FFFFFF 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.fou2 {
+  color: #FFFFFF;
+}
+
+.claudia {
+  align-items: center;
+  font-weight: 600;
+  color: #FFFFFF;
+  font-size: 1.875rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.riches {
+  text-align: center;
+  color: #FFFFFF;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+/* Styles pour les sections de paiement et le contenu */
+.yaourt {
+  width: 70%;
+  height: auto;
+  border-radius: 10px;
+  padding: 20px 30px 20px 49px;
+  border: 2px solid #28A745;
+  background: var(--Transparent-White, #F3F3F340);
+  margin: 0px 0px 0px 80px;
+}
+
+.tibus {
+  font-weight: 500;
+  color: #28A745;
+}
+
+.ray {
+  font-size: 8px;
+  font-weight: 500;
+}
+
+.tern {
+  font-size: 28px;
+  font-weight: 500;
+}
+
+.rio {
+  font-size: 10px;
+  font-weight: 400;
+}
+
+.pingo {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.shilo {
+  font-weight: 600;
+  font-size: 18px;
+  color: black;
+}
+
+.nina {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cards {
+  background-color: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.tiens {
+  display: flex;
+  flex-direction: column;
+}
+
+.tiens input {
+  border: 1px solid #979797 !important;
+  border-radius: 4px !important;
+  padding: 12px;
+}
+
+.form-select {
+  padding: 12px;
+}
+
+.gigo {
+  color: #ffffff !important;
+  background-color: black !important;
+  padding: 20px 86px 20px 86px !important;
+  border-radius: 4px !important;
+  align-items: center !important;
+}
+
+.gigo:hover {
+  color: #ffffff !important;
+  background-color: black !important;
+}
+
+.plonge {
+  color: #ACACAC;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.joy {
+  font-weight: 600;
+  font-size: 40px;
+}
+
+.miel {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.honey {
+  align-items: center;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+
+.success {
+  width: 50%;
+  height: auto;
+  object-fit: cover;
+}
+
+.troy {
+  background-color: #000000;
+  color: #ffffff;
+  border-radius: 4px;
+  align-items: center;
+}
+
+.troy:hover {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.train {
+  color: #000000;
+}
+
+.traine {
+  color: #000000;
+  font-weight: bold;
+}
+
+.sonic {
+  color: #574b4b8f;
+  font-size: 24px;
+}
+
+/* Masquer les divs tigres et tigress sur les petits écrans */
+.tigre{
+    position: absolute;
+    width: 10vw;  /* Utilisation de la largeur en pourcentage pour plus de fluidité */
+    height: 10vw;
+    object-fit: cover;
+    top: 38%;
+}
+
+
+.tigres{
+    position: absolute;
+  width: 11vw;
+  height: 11vw;
+  object-fit: cover;
+  left: 5%;
+}
+
+.tigress {
+    position: absolute;
+  width: 12vw;
+  height: 12vw;
+  object-fit: cover;
+  top: 100%;
+  right: 3%;
+}
+
+@media (max-width: 768px) {
+  /* Masquer les divs tigres et tigress sur mobile */
+  .tigres,
+  .tigress {
+    display: none;
+  }
+  .tigre{
+    position: absolute;
+    width: 3vw;  /* Utilisation de la largeur en pourcentage pour plus de fluidité */
+    height: 4vw;
+    object-fit: cover;
+    top: 20%;
+}
+
+  /* Ajustements pour le contenu */
+  .yaourt {
+    width: 100%;
+    padding: 10px;
+    margin: 0;
+  }
+
+  .prunel {
+    font-size: 1.5rem;
+  }
+
+  .claudia {
+    font-size: 1.5rem;
+  }
+
+  .riches {
+    font-size: 0.875rem;
+  }
+
+  .pingo {
+    font-size: 20px;
+  }
+
+  .gigo {
+    padding: 15px 50px;
+  }
+
+  .tibus {
+    font-size: 1.25rem;
+  }
+
+  .tern {
+    font-size: 1.75rem;
+  }
+
+  .troy {
+    padding: 15px 40px;
+  }
+
+  /* Ajuster la taille des images pour mobile */
+  .medical {
+    width: 80px;
+    height: 80px;
+  }
+
+  .success {
+    width: 100%;
+    height: auto;
+  }
+
+  .honey img {
+    width: 50%;
+  }
+
+  .container.ones {
+    flex-direction: column; /* Pour la réorganisation en une colonne */
+    margin: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Ajuster encore pour les petits écrans */
+  .yaourt {
+    padding: 10px;
+  }
+
+  .tibus {
+    font-size: 1rem;
+  }
+
+  .tern {
+    font-size: 1.5rem;
+  }
+
+  .pingo {
+    font-size: 18px;
+  }
+
+  .claudia {
+    font-size: 1.25rem;
+  }
+
+  .troy {
+    padding: 10px 30px;
+  }
+
+  .gigo {
+    padding: 15px 40px;
+  }
+}

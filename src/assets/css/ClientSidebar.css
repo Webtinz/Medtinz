@@ -1,0 +1,73 @@
+/* mainstyle.css */
+
+.nav-icon {
+    font-size: 20px;
+    /* Taille de l'icône */
+    margin-right: 10px;
+    /* Espace entre l'icône et le texte */
+}
+
+.sidebar-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 300px;
+    height: 100%;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    border-radius: 30px;
+    overflow: hidden; 
+    box-sizing: border-box; /* Assurez-vous que box-sizing est défini */
+  }
+  
+
+.sidebartop {
+    display: flex;
+    grid-gap: 60px;
+    padding: 40px 20px;
+}
+
+/* .sidebar-container.closed {
+    width: 80px;
+} */
+
+.sidebar-toggle-icon {
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.sidebar-menu-container {
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.sidebar-menu ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-menu ul li {
+    margin: 15px 0;
+}
+
+.sidebar-menu ul li a {
+    text-decoration: none;
+    color: #202224;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    padding:5px 20px;
+    border-radius: 4px;
+}
+
+.sidebar-menu ul li:hover {
+    background-color: #0056B3;
+    color: white !important;
+    padding: 10px 0px;
+}
+.sidebar-menu ul li a:hover {
+    background-color: #0056B3;
+    color: white !important;
+}

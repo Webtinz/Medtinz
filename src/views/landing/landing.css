@@ -1,0 +1,358 @@
+.time{
+    background-image: url('../../assets/images/Group 33751.png'); /* Utilisez %20 pour les espaces */
+  background-size: cover; /* L'image couvre toute la zone */
+  background-position: center; /* Centrage */
+  width: 100%;
+  height: 79vh; /* Hauteur de la fenêtre */
+  padding: 0;
+  margin: 0;
+}
+
+.mexi{
+    color: #0056B3;
+    font-weight: bold;
+    font-size: 14px;
+    border-radius: 8px;
+    padding: 12px 45px;
+    border: 1px solid #ffffff;
+    background-color: #ffffff;
+}
+
+.nav-link{
+    color: #ffffff;
+    font-weight: 400;
+    font-size: 16px;
+}
+
+.navbar-brand{
+    font-size: 28px;
+    font-weight: 800;
+    color: #ffffff;
+}
+.tchou{
+    color: #000000;
+}
+
+.chill{
+    width: 182px;
+    height: 174px;
+    object-fit: cover;
+    filter: drop-shadow(0px 13px 10px rgba(48, 48, 48, 0.366013));
+}
+
+.stil{
+    font-weight: 600;
+    font-size: 23px;
+    color: #FF9800;
+}
+
+.sod{
+    font-weight: 700;
+    font-size: 40px;
+    color: #000000;
+}
+
+.story{
+    font-weight: 400;
+    font-size: 14px;
+    color: #596780;
+    padding: 0px 0px 0px 150px;
+}
+
+.chille{
+    width: 100%;
+    height: auto;
+}
+.kan{
+    font-weight: 600;
+    color: #000000;
+    font-size: 24px;
+}
+
+.ketou{
+    font-weight: 400;
+    font-size: 16px;
+    color: #596780;
+}
+
+.colombe{
+    background-image: url('../../assets/images/how.png'); /* Utilisez %20 pour les espaces */
+  background-size: cover; /* L'image couvre toute la zone */
+  background-position: center; /* Centrage */
+  width: 100%;
+  height: auto; /* Hauteur de la fenêtre */
+  padding: 0;
+  margin: 0; 
+}
+
+.chou{
+    width: 100%;
+    height: 80vh;
+    object-fit: cover;
+    align-items: center;
+}
+
+.hui{
+    margin-top: 66px;
+    margin-left: 70px;
+}
+.yasmine{
+    color: #FF9800;
+    font-weight: 600;
+    font-size: 22px;
+}
+
+.reda{
+    font-weight: 700;
+    font-size: 25px;
+    color: #ffffff;
+}
+
+.kady{
+    font-weight: 400;
+    font-size: 16px;
+    color: #ffffff;
+}
+
+.trio{
+    color: #ffffff;
+}
+.redan{
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.sonic{
+    display: flex;
+    justify-content: space-between;
+}
+
+.aurelie{
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+}
+
+.lara{
+    font-size: 16px;
+}
+
+
+/* Section hero */
+/* Section avec l'image de fond */
+.chrome {
+    background-image: url("../../assets/images/get.png");
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 350px;
+    border-radius: 10px;
+    position: relative;
+  }
+  
+  /* Conteneur principal */
+  .colline {
+    position: relative;
+  }
+  
+  /* Image en absolute */
+  .man {
+    position: absolute;
+    top: -27%;
+    width: 60%;
+    height: auto;
+    transition: all 0.3s ease;
+  }
+  
+  /* Texte principal */
+  .afro {
+    font-size: 45px;
+    font-weight: 600;
+    color: #ffffff;
+  }
+  
+  /* Boutons */
+  .boya {
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #ffffff;
+    color: #000;
+    font-weight: 600;
+    border: 1px solid #fff;
+  }
+  
+  .chro {
+    color: #ffffff;
+    text-decoration: underline;
+    font-weight: 500;
+  }
+  
+  /* Styles Responsifs */
+  @media (max-width: 992px) {
+    .man {
+      display: none; /* Cache l'image */
+    }
+  
+    .afro {
+      font-size: 35px; /* Réduction de la taille du texte */
+      text-align: center;
+    }
+  
+    .chron {
+      display: flex;
+      justify-content: center; /* Centre les boutons */
+      flex-wrap: wrap;
+    }
+  
+    .boya, .chro {
+      margin-bottom: 10px; /* Espacement entre les éléments */
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .chrome {
+      height: auto; /* Hauteur dynamique */
+      padding: 20px;
+    }
+  
+    .afro {
+      font-size: 28px; /* Taille plus petite du texte */
+      text-align: center;
+    }
+  
+    .chron {
+      flex-direction: column;
+      align-items: center; /* Centre les éléments */
+    }
+  
+    .boya {
+      width: 80%;
+      text-align: center;
+    }
+  
+    .chro {
+      margin-top: 10px;
+      text-align: center;
+    }
+  }
+
+
+ .cloris{
+        color: #ffffff;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        padding: 30px;
+ }
+
+ .junior {
+  position: relative;
+  display: flex;
+  flex-direction: column; /* Par défaut en colonne pour la responsivité */
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+}
+
+.doty {
+  font-size: 2rem; /* Taille par défaut du titre */
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.coton {
+  text-align: center;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  color: #6c757d; /* Couleur de texte douce */
+}
+
+.tout {
+  color: #FFA700;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.neux {
+  padding: 10px 24px;
+  background-color: transparent;
+  color: #ffffff;
+  border: 1px solid #ffffff;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.neux:hover {
+  background-color: #ffffff;
+  color: #FFA700;
+}
+
+.tchip {
+  position: absolute;
+  top: 0px;
+  left: 65%;
+}
+
+.shut {
+  width: 70%;
+  height: 60vh;
+  object-fit: cover;
+  transition: opacity 0.3s ease;
+}
+
+@media (max-width: 1024px) {
+  .tchip {
+    left: 55%;
+    top: 10%;
+  }
+
+  .shut {
+    width: 50%;
+    height: 50vh;
+  }
+}
+
+@media (max-width: 768px) {
+  .tchip {
+    display: none; /* Masquer l'image pour les petits écrans */
+  }
+
+  .doty {
+    font-size: 1.5rem; /* Réduire la taille du titre */
+  }
+
+  .coton {
+    font-size: 0.9rem; /* Réduire la taille du texte */
+  }
+
+  .neux {
+    padding: 8px 20px; /* Réduire la taille du bouton */
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .junior {
+    padding: 10px;
+  }
+
+  .doty {
+    font-size: 1.2rem; /* Réduire davantage la taille du titre */
+  }
+
+  .coton {
+    font-size: 0.8rem;
+  }
+
+  .neux {
+    font-size: 0.8rem;
+    padding: 6px 16px;
+  }
+}
+
+  
+  
+  

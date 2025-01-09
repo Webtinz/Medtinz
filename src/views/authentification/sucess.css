@@ -1,0 +1,82 @@
+.tuaux {
+    font-weight: bold;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+    background-color: #ffffff;
+    padding: 10px 20px;
+    display: inline-block;
+    box-shadow: 0px 13px 61px rgba(48, 48, 48, 0.366013);
+
+  }
+  
+  .chaos {
+    position: relative;
+    /* text-align: center; */
+    object-fit: cover;
+  }
+  
+  .torija {
+    width: 100%; /* Assurez-vous que l'image est responsive */
+    max-width: 256px; /* Définir une largeur maximale */
+    height: 234px; /* Maintient la proportion de l'image */
+    margin-bottom: 15px; /* Ajout d'un espacement entre l'image et le texte */
+  }
+  
+  .pintagone {
+    position: absolute;
+    top: 3px;
+    left: 55%;
+    /* transform: translateX(-50%);  */
+    padding: 20px;
+  }
+  
+
+  
+
+
+
+/* Disparaître la section droite sur les petits écrans */
+@media (max-width: 767px) {
+ 
+
+  .header {
+    text-align: center;
+    margin: 0px 0px 0px 74px;
+  }
+
+ 
+
+  .torija {
+    /* max-width: 100%; */
+    height: auto;
+    margin-bottom: 15px;
+  }
+
+  .chaos {
+    position: relative;
+    text-align: center;
+  }
+
+  .pintagone {
+    position: absolute;
+    top: 0%;
+    left: 87%;
+    transform: translateX(-50%);
+    padding: 20px;
+  }
+
+  .tuaux {
+    font-size: 18px;
+    padding: 12px 18px;
+    font-weight: bold;
+    margin-top: 20px;
+  }
+
+  .continue-btn {
+    font-size: 14px;
+    padding: 10px;
+  }
+}
+

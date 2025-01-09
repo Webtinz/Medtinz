@@ -1,0 +1,196 @@
+/* Styles pour la page et les images orange */
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.Selectrole {
+    font-family: 'Lexend', sans-serif;
+    height: 100%;
+    /* Utiliser 100% de la hauteur */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.selecthead {
+    padding: 50px 0px;
+    display: flex;
+    justify-content: center;
+    background-color: #0056B3;
+    color: white;
+    position: relative;
+}
+
+.selecthead h2 {
+    font-weight: 600;
+    font-size: 30px;
+    text-align: center;
+}
+
+.selecthead p {
+    font-weight: 400;
+    font-size: 18px;
+    text-align: center;
+    color: rgb(255, 255, 255, 0.8);
+}
+
+.image-orange-bottom-left {
+    position: absolute;
+    top: 22%;
+    left: 0px;
+    width: 70px;
+    /* Ajustez la taille de l'image en bas à gauche */
+    height: auto;
+}
+
+.image-orange-top-right {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 130px;
+    /* Ajustez la taille selon votre besoin */
+    height: auto;
+}
+
+.rolesection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.rolesection h3.title {
+    font-weight: 400;
+    font-size: 25px;
+    text-align: center;
+}
+
+.rolesection .row {
+    display: flex;
+    flex-wrap: wrap;
+    /* Cela permet aux éléments de passer à la ligne suivante si l'espace est insuffisant */
+    gap: 20px;
+    /* Ajouter de l'espace entre les éléments */
+}
+
+.role-btn {
+    padding: 40px 10px;
+    border: 1.5px solid #0056B3;
+    background-color: rgb(0, 86, 179, 0.05);
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    flex: 1 1 calc(33% - 20px);
+    /* Chaque bouton prend 33% de la largeur de son conteneur avec un espacement */
+    max-width: calc(33% - 10px);
+    /* Assure que les boutons ne s'étirent pas trop */
+    margin-bottom: 20px;
+    /* Espacement en bas entre les boutons */
+}
+
+.role-btn:hover {
+    background-color: #00308f;
+    color: white !important;
+}
+
+.continue-btn,
+.formcontinue-btn {
+    padding: 12px;
+    background-color: #0048b5;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    text-decoration: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    width: 25%;
+    margin-top: 1%;
+}
+
+.image-orange-right {
+    position: absolute;
+    bottom: 10%;
+    right: 25%;
+    width: 150px;
+    /* Ajustez la taille de l'image en bas à gauche */
+    height: auto;
+}
+
+/* Footer - ajustement du texte sur l'image */
+.image-medication-left {
+    position: absolute;
+    bottom: 0px;
+    width: 150px;
+    height: auto;
+    z-index: 0;
+}
+
+/* Ajout de style pour s'assurer que le texte est lisible sur l'image */
+/* Footer - placer le footer en bas de la page */
+footer {
+    position: absolute;
+    bottom: 0%;
+    padding: 0% 5% !important;
+}
+
+footer p {
+    position: absolute;
+    margin-top: -4%;
+    font-family: ABeeZee;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+footer img {
+    width: 150px;
+    height: auto;
+}
+
+/* loginpage */
+
+.loginfoms {
+    padding: 0px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2%;
+}
+
+.loginfoms form {
+    width: 60%;
+}
+
+.loginfoms .input-group {
+    margin-bottom: 40px;
+    width: 100%;
+}
+
+.loginfoms .input-group input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 10px;
+    border: 2px solid #00308f !important;
+}
+
+.loginfoms .remember-me {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2%;
+}
+
+.loginfoms .remember-me input {
+    margin-right: 10px;
+}
+
+.loginfoms .forgetpass{
+    color: #00308f;
+}
+
+.loginfoms .formcontinue-btn {
+    width: 100% !important;
+}

@@ -1,0 +1,98 @@
+/* Section avec fond */
+.feu {
+    background-image: url("../../assets/images/Section 2.png");
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: auto;
+    padding: 20px 0;
+   
+  }
+
+  .claudine{
+    padding:0px 20px;
+  }
+  
+  .planing {
+    width: 140px; /* Largeur fixe */
+    height: 35px; /* Hauteur fixe */
+    font-size: 14px;
+    padding: 5px 16px;
+    color: #ffffff;
+    font-weight: bold;
+  }
+  
+  /* Colonne gauche */
+  .faq-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #000;
+  }
+  
+  .faq-text {
+    font-size: 14px;
+    font-weight: 400;
+    color: #6c757d;
+  }
+  
+  .faq-btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+  }
+  
+  /* Accordéon */
+  .faq-accordion {
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  .faq-item {
+    border-bottom: 1px solid #ddd;
+    padding: 15px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .faq-item:last-child {
+    border-bottom: none;
+  }
+  
+  .faq-item.open {
+    background-color: #fff8e1;
+  }
+  
+  .faq-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .faq-number {
+    font-weight: bold;
+    color:#3C3C4380;
+    margin-right: 10px;
+  }
+  
+  .faq-question {
+    font-size: 1.1rem;
+    color: #000;
+  }
+  
+  .faq-toggle {
+    font-size: 1.5rem;
+    color: #000;
+    font-weight: bold;
+    background-color: #ddd;
+    border-radius: 50%;
+    padding: 10px;
+    transition: transform 0.3s ease;
+  }
+  
+  .faq-answer {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #555;
+    padding-left: 30px;
+  }
+  

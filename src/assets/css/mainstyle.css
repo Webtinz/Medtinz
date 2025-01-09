@@ -1,0 +1,779 @@
+/* dashboardclient */
+body,html{
+    height: 100%;
+    width: 100%;
+}
+/* .container-lg,
+.container {
+    min-width: 95%;
+} */
+
+.allmyclientpage {
+    background-color: #DFEAF5 !important;
+    /* padding-top: 2%; */
+    height: 100%;
+}
+.dashboard-header{
+    max-width: 100% !important;
+
+}
+
+.dashboard-header ul{
+    list-style: none !important;
+}
+
+.header-background {
+    background-color: #0056B3;
+    border-radius: 10px;
+    width: 100%;
+    padding: 50px 0;
+    margin-top: 2%;
+    color: white;
+}
+
+
+.header-text h2 {
+    font-size: 36px;
+    font-weight: 600;
+}
+
+.header-text p {
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.header-date {
+    margin-top: 20px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.stats-cards {
+    margin-top: 3%;
+}
+
+.stats-cards .topimgcard {
+    position: absolute;
+    top: 0%;
+    right: 0%;
+    height: auto;
+}
+
+.stats-cards .cardicon {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+}
+
+.stats-cards .card {
+    height: 220px;
+    border-radius: 20px;
+}
+
+.stats-cards .card .card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.stats-cards .card .textcontent .increase {
+    font-family: Nunito Sans;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 21.82px;
+    color: #00B69B;
+}
+
+.stats-cards .card .textcontent .chiffre {
+    font-family: Nunito Sans;
+    font-size: 32px;
+    font-weight: 700;
+    color: #202224;
+
+}
+
+.stats-cards .card .textcontent .module {
+    font-family: Nunito Sans;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 32.74px;
+    color: #202224;
+}
+
+.stats-cards .card .imgcontent {
+    display: flex;
+    flex-direction: column;
+}
+
+.stats-cards .card.orange {
+    border: 2px solid #FF9800;
+}
+
+.stats-cards .card.purple {
+    border: 2px solid #7732BB;
+}
+
+.stats-cards .card.red {
+    border: 2px solid #FF9871;
+}
+
+/*  patient managment page */
+
+
+.Patientlist .search-container {
+    display: flex;
+    margin: 20px 0;
+}
+
+.Patientlist .registernewbtn {
+    background-color: #0056B3;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.Patientlist .coloredsucess {
+    background-color: rgb(0, 182, 155, 0.2);
+    padding: 5px 15px;
+    color: #00B69B;
+    border-radius: 5px;
+}
+
+.Patientlist .coloredechec {
+    background-color: rgb(239, 56, 38, 0.2);
+    padding: 5px 15px;
+    color: #EF3826;
+    border-radius: 5px;
+}
+
+.Patientlist .trows {
+    padding: 10px 0px !important;
+}
+
+.Patientlist .search-bar {
+    display: flex;
+    align-items: center;
+    background-color: #0056B329;
+    /* Light blue background */
+    padding: 10px 20px;
+    border-radius: 25px;
+    /* Rounded corners */
+    width: 100%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    /* Subtle shadow */
+}
+
+.search-icon {
+    color: #1d3557;
+    /* Icon color */
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+.search-bar input {
+    border: none;
+    outline: none;
+    background-color: transparent;
+    flex-grow: 1;
+    font-size: 1rem;
+    color: #1d3557;
+    /* Text color */
+}
+
+.search-bar input::placeholder {
+    color: #5a7184;
+    /* Placeholder color */
+    font-size: 0.9rem;
+}
+
+.pagetittle h4 {
+    color: #191B1C;
+    font-family: Public Sans;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.pagetittle p {
+    font-family: Public Sans;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 20px;
+    color: #626C70;
+}
+
+.actionbtn {
+    display: flex;
+}
+
+.actionbtn div {
+    border: 1px solid #B9B9B9;
+    background-color: rgb(185, 185, 185, 0.2);
+    padding: 6px 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.actionbtn div.left {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    padding: 4px 10px !important;
+}
+
+.actionbtn div.right {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    padding: 4px 10px !important;
+}
+
+.paginate .pagicon {
+    font-size: 15px !important;
+}
+
+/* Retirer les bordures par défaut des cellules */
+.Patientlist .ctable-no-border {
+    border: 1px solid #D5D5D5 !important;
+
+}
+
+
+.Patientlist .card {
+    border-radius: 30PX;
+}
+
+/* sidebar footer menu */
+.footersid {
+    border: 0.6px solid #E0E0E0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 5px !important;
+    padding-bottom: 2px !important;
+}
+
+.footermenu {
+    display: flex;
+    justify-content: center;
+    grid-gap: 50px;
+    margin-bottom: 8%;
+}
+
+.footermenu h4 {
+    font-family: Nunito Sans;
+    font-size: 17px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.blueband {
+    background-color: #0056B3;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    color: white;
+    height: auto;
+    width: 100%;
+}
+
+.blueband p {
+    font-family: Nunito Sans;
+    font-size: 12px;
+    font-weight: 500;
+    text-align: left;
+    color: rgb(255, 255, 255, 0.8);
+    padding: 0px 20px;
+}
+
+.blueband .boitemed {
+    display: flex;
+    align-items: center;
+}
+
+.footersid .blueband .footersidebtn {
+    padding: 2px 10px;
+    background-color: white;
+    font-family: Nunito Sans;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 20px;
+}
+
+.blueband .medocfooterimg {
+    width: 100px;
+    height: auto;
+    margin-top: -30%;
+}
+
+.paginate {
+    display: flex;
+    justify-content: end;
+    grid-gap: 20px;
+    align-items: center;
+}
+
+.paginate .actionbtn div {
+    border: 1px solid #B9B9B9;
+    background-color: white;
+    padding: 0px 10px;
+}
+
+/* new register modal style */
+
+/* Disposition en flexbox pour les éléments du formulaire */
+.newregistermodal .form-group {
+    margin-bottom: 20px;
+    /* Espacement entre chaque champ */
+    position: relative;
+}
+
+.newregistermodal .Titleformsmodal {
+    font-family: Public Sans;
+    font-size: 17px;
+    font-weight: 500;
+}
+
+/* Champs de saisie avec bordure bleue */
+.newregistermodal input,
+.newregistermodal select,
+textarea, .loginfoms input{
+    width: 100%;
+    padding: 10px 10px 10px 10px;
+    /* Espacement à gauche pour le texte */
+    border-radius: 10px;
+    border: 2px solid #0056B3;
+    /* Bordure bleue */
+    font-size: 14px;
+    margin-top: 30px;
+}
+
+/* Pour les champs "floating" */
+.newregistermodal label {
+    position: absolute;
+    top: 18px;
+    /* Position du label au-dessus du champ */
+    left: 20px;
+    /* Alignement avec l'entrée */
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    background-color: white;
+    padding: 0 8px;
+    /* Petites marges autour du texte */
+}
+
+/* Améliorer l'affichage du focus */
+.newregistermodal input:focus,
+.newregistermodal select:focus,
+textarea:focus {
+    outline: none;
+    border-color: #4CAF50;
+    /* Changer la couleur de la bordure au focus */
+}
+
+/* Lorsque le champ est rempli, le label se déplace */
+.newregistermodal input:not(:placeholder-shown)+label,
+.newregistermodal select:not(:placeholder-shown)+label,
+.newregistermodal textarea:not(:placeholder-shown)+label {
+    top: -20px;
+    /* Le label se déplace vers le haut quand il y a du texte */
+    font-size: 12px;
+    color: #0056B3;
+}
+
+/* Bouton Continue */
+.newregistermodal button[type="submit"] {
+    background-color: #4CAF50;
+    /* Vert */
+    color: white;
+    padding: 12px 0px;
+    font-size: 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    border: none;
+    width: 60%;
+    text-align: center;
+    margin-top: 2%;
+}
+
+/* Image de profil circulaire */
+.newregistermodal .profile-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.newregistermodal .profile-photo label {
+    position: absolute;
+    top: 20%;
+    /* Position du label au-dessus du champ */
+    left: 19%;
+    /* Alignement avec l'entrée */
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    background-color: transparent;
+    padding: 0 0px;
+}
+
+/* Texte pour l'upload de photo */
+.newregistermodal .profile-photo p {
+    font-size: 14px;
+    color: #333;
+    margin-top: 30%;
+}
+
+/* Cacher le champ de fichier */
+.newregistermodal #file-input {
+    display: none;
+}
+
+/* Styling du texte de l'input */
+.newregistermodal input::placeholder,
+.newregistermodal select::placeholder {
+    color: #A1A1A1;
+    font-size: 14px;
+}
+
+/* PATIENTMEDICAL HISTORY */
+
+/* Pour les éléments de profil */
+.medicalhistory img {
+    border: 4px solid #fff;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.medicalhistory .retourbtn {
+    background-color: #0056B3;
+    color: white;
+    border-radius: 50px;
+    padding: 10px 20px;
+    margin-bottom: 20px;
+}
+
+/* Container du profil utilisateur */
+.medicalhistory h3 {
+    font-family: Nunito, sans-serif;
+    color: #191B1C;
+}
+
+/* Tableau de l'historique médical */
+.medicalhistory .history-item {
+    display: flex;
+    align-items: center;
+    /* Centre verticalement */
+    padding: 10px 10%;
+    background-color: #E4F9E1;
+    /* Optionnel, pour le fond */
+    border-radius: 10px;
+    /* Optionnel, pour les bords arrondis */
+    margin-bottom: 30px;
+    /* Espacement entre les éléments */
+    border: 1px solid #28A745;
+}
+
+.medicalhistory .history-item span {
+    font-family: Nunito Sans, sans-serif;
+    color: #191B1C;
+}
+
+.medicalhistory .history-item div:first-child {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.medicalhistory .history-item div:last-child {
+    font-size: 14px;
+    color: #757575;
+}
+
+.history-item .col {
+    flex: 1;
+}
+
+.history-item p {
+    margin: 0;
+    /* Retirer les marges par défaut sur les paragraphes */
+}
+
+.medicalhistory .patientinfo {
+    display: flex;
+    align-items: end;
+}
+
+.medicalhistory .cardheader h4 {
+    font-family: Public Sans;
+    font-size: 17px;
+    font-weight: 500;
+    text-align: left;
+}
+
+
+/* department style */
+.adddepartment button[type="submit"] {
+    background-color: #0056B3;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    width: 15%;
+    text-align: center;
+}
+
+.listdepartment .ctable-row {
+    padding: 50px 20px !important;
+}
+
+.speciality-select-container {
+    width: 100%;
+    max-width: 400px;
+}
+
+.select-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 2px solid #1D4ED8;
+    border-radius: 10px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.select-box input {
+    border: none;
+    background: transparent;
+    outline: none;
+    width: 100%;
+}
+
+.arrow {
+    font-size: 16px;
+}
+
+.dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    border: 2px solid #1D4ED8;
+    border-radius: 10px;
+    background: #fff;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.search-input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.checkbox-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.checkbox-container input {
+    margin-right: 8px;
+}
+
+
+/* patientlistline */
+.patientlistline {
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: center;
+}
+
+.patientlistline .search-container {
+    width: 80%;
+}
+
+.patientlisttable .ctable-no-border {
+    border: 0.6px solid rgb(0, 86, 179, 0.2) !important;
+}
+
+.patientlisttable .ctable-no-border th {
+    background: #0056B329 !important;
+}
+
+.patientlisttable .ctable-no-border td {
+    padding: 20px;
+}
+
+/* Conteneur des filtres */
+.filter-bar {
+    display: flex;
+    align-items: center;
+    background-color: #0056B329;
+    /* Couleur de fond bleue */
+    padding: 8px;
+    border-radius: 30px;
+    /* Arrondir les bords du conteneur */
+    width: 30%;
+    margin-top: 2%;
+}
+
+/* Style général pour les boutons */
+.filter-button,
+.reset-button {
+    border: none;
+    background-color: transparent;
+    color: #17426F;
+    font-size: 14px;
+    padding: 8px 20px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    cursor: pointer;
+}
+
+/* Changer la couleur au survol des boutons */
+.filter-button:hover,
+.reset-button:hover {
+    background-color: #0056B3;
+    color: white;
+}
+
+/* Bouton Reset avec couleur spécifique */
+.reset-button {
+    color: #EA0234;
+    /* Rouge pour le bouton Reset */
+    border-color: #EA0234;
+}
+
+/* Ajouter un séparateur vertical entre les boutons */
+.filter-button:not(:last-child) {
+    border-right: 1px solid #B0B0B0;
+    /* Séparateur vertical */
+}
+
+
+/* medical file page */
+.topbtn {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5%;
+}
+
+.topbtn .retourbtn {
+    background-color: white;
+    color: #0056B3;
+    border: 1px solid #0056B3;
+    border-radius: 30px;
+}
+
+/* payfor new appointment */
+.selectpaymentoption {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #DFEAF5;
+    border-radius: 10px;
+    height: 80px;
+    grid-gap: 10%;
+    margin-bottom: 3%;
+}
+
+.selectpaymentoption img{
+    width: 100px;
+    height: auto;
+}
+
+.selectpaymentoption h4 {
+    font-family: Inter;
+    font-size: 20px;
+    font-weight: 600;
+    color: #0A0D13;
+}
+
+.selectpaymentoption .cashtext {
+    font-family: Inter;
+    font-size: 26px;
+    font-weight: 600;
+    color: #17426F;
+}
+.selectpaymentoption .cashpayment,.selectpaymentoption .momopayment{
+    display: flex;
+    justify-content: center;
+    align-items: center !important;
+    grid-gap:5px;
+}
+
+.selectpaymentoption .cashpayment input,.selectpaymentoption .momopayment input {
+    width: auto;
+    padding: 5px 5px 5px 5px;
+    /* Espacement à gauche pour le texte */
+    border: 1px solid rgb(0, 0, 0,.5) !important;
+    /* Bordure bleue */
+    margin-top: 0px;
+}
+
+.selectpaymentoption .cashpayment input:checked,.selectpaymentoption .momopayment input:checked{
+    background-color: #2FBD6A;
+    border: 1px solid #2FBD6A;
+}
+
+.selectpaymentoption  button[type="submit"]{
+    width: 100% !important;
+}
+
+.cashpayment h3{
+    margin-bottom: 0px !important;
+}
+
+/* download receipt */
+
+.receipt {
+    position: relative;
+}
+
+.logo img {
+    width: 50%;
+    margin: 0 auto 20px;
+}
+
+h3 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.details {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.details p {
+    font-size: 14px;
+    margin: 5px 0;
+}
+
+.download-btn {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.download-btn:hover {
+    background-color: #218838;
+}

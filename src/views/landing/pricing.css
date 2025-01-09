@@ -1,0 +1,66 @@
+
+.btn-primary {
+    background-color: #0d6efd; /* Bleu par défaut */
+    color: white;
+    border: none;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0b5ed7;
+  }
+  
+  .btn-orange {
+    background-color: #ffc107; /* Orange pour le plan sélectionné */
+    color: white;
+    border: none;
+  }
+  
+  .btn-orange:hover {
+    background-color: #e0a800;
+  }
+  
+
+  .marjolaine {
+    background:#0056B30F;
+    padding: 30px;
+  }
+
+  /* Personnalisation du switch */
+.form-check-input {
+    width: 6rem !important; /* Largeur du switch */
+    height: 2rem !important; /* Hauteur du switch */
+    background-color: #ffffff !important; /* Couleur de fond orange */
+    border: none; /* Supprime la bordure */
+  }
+  
+  /* Couleur du bouton interne (toggle) */
+  .form-check-input:checked {
+    background-color: #ffffff !important; /* Couleur de fond active */
+    border-color: #e0a800 !important; /* Bordure active */
+  }
+  
+  .form-check-input:checked::before {
+    background-color: #e0a800 !important; /* Couleur du bouton interne (toggle) */
+  }
+  
+  .form-check-input:focus {
+    background-color: #e0a800 !important;
+  }
+  
+ /* Griser l'icône */
+.icon-muted {
+    color: #a0a0a0 !important; /* Gris pour l'icône */
+  }
+  
+  /* Barrer le texte */
+  .strikethrough {
+    text-decoration: line-through; /* Barrer le texte */
+    color: #a0a0a0; /* Couleur gris clair */
+  }
+  
+  /* Rendre tout uniforme */
+  .text-muted {
+    color: #a0a0a0 !important; /* Force le gris */
+  }
+  
+  
