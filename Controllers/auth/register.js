@@ -55,7 +55,10 @@ module.exports = (router) => {
   }, async (req, res) => {
     try {
       const {
-        name,
+        lastname,
+        firstname,
+        title,
+        civility,
         email,
         username,
         phone,
@@ -74,7 +77,10 @@ module.exports = (router) => {
       
       // Liste des champs obligatoires et leurs messages d'erreur
       const requiredFields = {
-        name: "Le champ 'name' est obligatoire.",
+        lastname: "Le champ 'lastname' est obligatoire.",
+        firstname: "Le champ 'firstname' est obligatoire.",
+        title: "Le champ 'title' est obligatoire.",
+        civility: "Le champ 'civility' est obligatoire.",
         email: "Le champ 'email' est obligatoire.",
         username: "Le champ 'username' est obligatoire.",
         // role: "Le champ 'role' est obligatoire.",
@@ -117,7 +123,10 @@ module.exports = (router) => {
 
       // Créer un nouvel utilisateur avec OTP et is_otp_valid
       const newUser = new User({
-        name,
+        lastname,
+        firstname,
+        title,
+        civility,
         email,
         username,
         picture: req.file ? req.file.filename : null, // Stocker uniquement le nom du fichier
@@ -134,6 +143,8 @@ module.exports = (router) => {
 
       // Enregistrer l'utilisateur dans la base de données
       await newUser.save();
+
+      // console.log(newUser);
 
       // Récupérer l'ID du nouvel utilisateur
       const userIdGet = newUser._id;
@@ -181,8 +192,8 @@ module.exports = (router) => {
 
       await newHospital.save();
 
-      console.log('newUser: ' + newUser);
-      console.log('newHospital: ' + newHospital);
+      // console.log('newUser: ' + newUser);
+      // console.log('newHospital: ' + newHospital);
 
       return res.status(201).json({
         message: "L'utilisateur a été créé avec succès.",

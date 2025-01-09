@@ -78,20 +78,20 @@ router.delete('/deletepathologies/:id', pathologieController.deletePathologie);
 
 // Department Management Routes (ajoutées ici)
 router.post('/adddepartment', authMiddleware, departmentController.createDepartment); // Protégée
-router.get('/myhospitaldepartments', authMiddleware, departmentController.getMyHospitalAllDepartments); // Protégée
+// router.get('/myhospitaldepartments', authMiddleware, departmentController.getMyHospitalAllDepartments); // Protégée
 router.get('/departments', authMiddleware, departmentController.getAllDepartments); // Protégée
 router.get('/department', authMiddleware, departmentController.getDepartmentById); // Protégée
 router.put('/updatedepartment', authMiddleware, departmentController.updateDepartment); // Protégée
 router.delete('/deletedepartment', authMiddleware, departmentController.deleteDepartment); // Protégée
 
 // CRUD Specialty
-router.post('/specialities', authMiddleware, specialtyController.createSpecialty); // Créer une spécialité
-router.get('/specialities', authMiddleware, specialtyController.getAllSpecialties); // Lire toutes les spécialités
-router.get('/specialitiesbydepartment/:departmentId', authMiddleware, specialtyController.getAllSpecialtiesByDepartment); // Lire toutes les spécialités par departement specifie
-router.get('/specialitiy/:id', authMiddleware, specialtyController.getSpecialtyById); // Lire une spécialité par ID
-router.get('/specialities/search', authMiddleware, specialtyController.searchSpecialtiesByName); // Rechercher par nom
-router.put('/specialities/:id', authMiddleware, specialtyController.updateSpecialtyById); // Mettre à jour une spécialité
-router.delete('/specialities/:id', authMiddleware, specialtyController.deleteSpecialtyById); // Supprimer une spécialité
+router.post('/specialities',/* authMiddleware,*/ specialtyController.createSpecialty); // Créer une spécialité
+router.get('/specialities',/* authMiddleware,*/ specialtyController.getAllSpecialties); // Lire toutes les spécialités
+router.get('/specialitiesbydepartment/:departmentId',/* authMiddleware,*/ specialtyController.getAllSpecialtiesByDepartment); // Lire toutes les spécialités par departement specifie
+router.get('/specialitiy/:id',/* authMiddleware,*/ specialtyController.getSpecialtyById); // Lire une spécialité par ID
+router.get('/specialities/search',/* authMiddleware,*/ specialtyController.searchSpecialtiesByName); // Rechercher par nom
+router.put('/specialities/:id',/* authMiddleware,*/ specialtyController.updateSpecialtyById); // Mettre à jour une spécialité
+router.delete('/specialities/:id',/* authMiddleware,*/ specialtyController.deleteSpecialtyById); // Supprimer une spécialité
 
 
 module.exports = router;

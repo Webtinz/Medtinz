@@ -7,7 +7,7 @@ const bcrypt = require('bcrypt');
 // Ajouter un utilisateur
 exports.addUser = async (req, res) => {
     try {
-        const { hospital_id, name, username, email, password, role, specialties, contact, picture, departementId } = req.body;
+        const { hospital_id, lastname, firstname, username, email, password, role, specialties, contact, picture, departementId } = req.body;
 
         
         // Décoder le JWT depuis l'en-tête Authorization
@@ -37,7 +37,8 @@ exports.addUser = async (req, res) => {
 
         // Création de l'utilisateur
         const user = new User({
-            name,
+            lastname,
+            firstname,
             username,
             email,
             password,
@@ -113,7 +114,7 @@ exports.updateUser = async (req, res) => {
         
 
         const { userId } = req.params;
-        const { hospital_id, name, username, email, password, role, specialties, contact, picture, departementId } = req.body;
+        const { hospital_id, lastname, firstname, username, email, password, role, specialties, contact, picture, departementId } = req.body;
 
         // Récupérer l'utilisateur à mettre à jour
         const user = await User.findById(userId);
@@ -133,7 +134,8 @@ exports.updateUser = async (req, res) => {
         }
 
         // Mise à jour des informations
-        user.name = name || user.name;
+        user.lastname = lastname || user.lastname;
+        user.firstname = firstname || user.firstname;
         user.username = username || user.username;
         user.email = email || user.email;
         user.password = password; // ? await bcrypt.hash(password, 10) : user.password;

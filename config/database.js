@@ -24,7 +24,7 @@ async function connectDB() {
     // await Specialty.deleteMany({}); // Supprime tous les Specialtys existants
     // await Schedule.deleteMany({}); // Supprime tous les Schedules existants
     // await Department.deleteMany({}); // Supprime tous les Departments existants
-    await User.deleteMany({}); // Supprime tous les utilisateurs existants
+    // await User.deleteMany({}); // Supprime tous les utilisateurs existants
     // await Hospital.deleteMany({}); // Supprime tous les Hospitaux existants
     // await Subscription.deleteMany({}); // Supprime tous les Subscriptions existants
 
@@ -38,7 +38,8 @@ async function connectDB() {
         // const hashedPassword = await bcrypt.hash('AdmEvt@123', 10);
         const user = new User({
             username: 'AdminHMS',
-            name: 'Degkof',
+            lastname: 'KOFFI',
+            firstname: 'Degkof',
             email: 'doctor@gmail.com',
             otp: myDefaultOtp,
             is_otp_valid: true,

@@ -17,7 +17,14 @@ const userSchema = new mongoose.Schema({
         required: true, 
         unique: true 
     },
-    name: {
+    lastname: {
+        type: String,
+        required: true,
+        minlength: 3,
+        maxlength: 200,
+        trim: true,
+    },
+    firstname: {
         type: String,
         required: true,
         minlength: 3,
@@ -30,6 +37,16 @@ const userSchema = new mongoose.Schema({
         minlength: 3,
         maxlength: 100,
         unique: true,
+        trim: true,
+    },
+    title: {
+        type: String,
+        required: false,
+        trim: true,
+    },
+    civility: {
+        type: String,
+        required: false,
         trim: true,
     },
     picture: {
@@ -63,8 +80,9 @@ const userSchema = new mongoose.Schema({
         required: true,
         maxlength: 128,  // Limite de 128 caractères
         validate: {
-            validator: (value) =>
-                /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$!%*?&])[A-Za-z\d@#$!%*?&]{8,}$/.test(value),
+            validator: (value) =>{
+                return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$!%*?&])[A-Za-z\d@#$!%*?&]{8,}$/.test(value);
+            },
             message:
                 'Le mot de passe doit contenir au moins 8 caractères, avec une majuscule, une minuscule, un chiffre, et un caractère spécial compris dans ce lot(@,#,$,!,%,*,?,&).',
         },

@@ -1,4 +1,4 @@
-const { Specialty } = require('../../Models/Specialty');
+const Specialty = require('../../Models/Specialty');
 const { Hospital } = require('../../Models/Hospital');
 
 // Vérifie si l'utilisateur authentifié est l'admin de l'hôpital
@@ -16,14 +16,19 @@ async function verifyHospitalOwnership(hospitalId, userId) {
 exports.createSpecialty = async (req, res) => {
     try {
         const { name, description, departementId, hospital_id } = req.body;
+        
+        // console.log(req.body);
 
-        await verifyHospitalOwnership(hospital_id, req.user.id);
+        // Vérification de l'autorisation de l'hôpital seulement si hospital_id est défini
+        if (hospital_id) {
+            await verifyHospitalOwnership(hospital_id, req.user.id);
+        }
 
         const specialty = new Specialty({
             name,
             description,
             departementId,
-            hospital_id
+            hospital_id // Ajout du champ hospital_id si nécessaire
         });
         await specialty.save();
 
@@ -46,11 +51,10 @@ exports.getAllSpecialties = async (req, res) => {
 // Lire toutes les spécialités par département spécifié
 exports.getAllSpecialtiesByDepartment = async (req, res) => {
     try {
-        const { departmentId, hospital_id } = req.params;
+        const { departmentId } = req.params;
 
-        await verifyHospitalOwnership(hospital_id, req.user.id);
-
-        const specialties = await Specialty.find({ departementId: departmentId, hospital_id });
+        // Requête pour filtrer les spécialités par département
+        const specialties = await Specialty.find({ departementId });
         res.status(200).json(specialties);
     } catch (error) {
         res.status(400).json({ message: error.message });
@@ -67,7 +71,8 @@ exports.getSpecialtyById = async (req, res) => {
             return res.status(404).json({ message: 'Spécialité non trouvée.' });
         }
 
-        await verifyHospitalOwnership(specialty.hospital_id, req.user.id);
+        // Vous pouvez ajouter la vérification de l'hôpital ici si nécessaire
+        // await verifyHospitalOwnership(specialty.hospital_id, req.user.id);
 
         res.status(200).json(specialty);
     } catch (error) {
@@ -97,7 +102,10 @@ exports.updateSpecialtyById = async (req, res) => {
             return res.status(404).json({ message: 'Spécialité non trouvée.' });
         }
 
-        await verifyHospitalOwnership(hospital_id, req.user.id);
+        // Vérification de l'autorisation de l'hôpital avant la mise à jour, si hospital_id est défini
+        if (hospital_id) {
+            await verifyHospitalOwnership(hospital_id, req.user.id);
+        }
 
         specialty.name = name || specialty.name;
         specialty.description = description || specialty.description;
@@ -122,7 +130,10 @@ exports.deleteSpecialtyById = async (req, res) => {
             return res.status(404).json({ message: 'Spécialité non trouvée.' });
         }
 
-        await verifyHospitalOwnership(hospital_id, req.user.id);
+        // Vérification de l'autorisation de l'hôpital avant la suppression, si hospital_id est défini
+        if (hospital_id) {
+            await verifyHospitalOwnership(hospital_id, req.user.id);
+        }
 
         await Specialty.findByIdAndDelete(id);
         res.status(200).json({ message: 'Spécialité supprimée avec succès.' });
