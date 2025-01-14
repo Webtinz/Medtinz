@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 
 const patientSchema = new mongoose.Schema({
     hospitalId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Hospital' }, // L'ID de l'hôpital est requis
+    patientNPI: { type: String, unique: true, required: true },
+    otherdetails: { type: String, required: false },
     patientId: { type: String, unique: true, required: true },
     name: { type: String, required: true },
     gender: { type: String, required: true },

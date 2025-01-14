@@ -11,10 +11,12 @@ const pdfFonts = require('pdfmake/build/vfs_fonts');
 // patientController.js
 exports.registerPatient = async (req, res) => {
     try {
-        const { hospitalId, name, gender, age, phone, email, address, medicalHistory, allergies, ongoingMedications, surgeries, familyMedicalHistory } = req.body;
+        const { hospitalId, patientNPI, otherdetails, name, gender, age, phone, email, address, medicalHistory, allergies, ongoingMedications, surgeries, familyMedicalHistory } = req.body;
 
         const newPatient = new Patient({
             hospitalId,
+            patientNPI,
+            otherdetails,
             name,
             gender,
             age,
