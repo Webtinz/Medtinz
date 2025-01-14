@@ -1,24 +1,22 @@
 import React, { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css'; // Styles Toastify
-import '../../assets/css/selectroledash.css';
-import '../../assets/css/responsive.css';
+import '../../assets/css/selectroledash.css'; 
+import '../../assets/css/responsive.css'; 
 import { BsArrowRight } from 'react-icons/bs';
 import api from '../../service/caller'; // Axios instance configurée
+import { useNavigate } from 'react-router-dom';
 
-import imageOrangeTopLeft from '../../assets/images/Medic symbol circle.png';
-import imageOrangeBottomLeft from '../../assets/images/Checklist.png';
-import imageOrangeBottomright from '../../assets/images/DNA.png';
-import BottomLeftmedication from '../../assets/images/Pil.png';
-import logomedtinz from '../../assets/images/MedTinz.png';
+import imageOrangeTopLeft from '../../assets/images/Medic symbol circle.png'; 
+import imageOrangeBottomLeft from '../../assets/images/Checklist.png'; 
+import imageOrangeBottomright from '../../assets/images/DNA.png'; 
+import BottomLeftmedication from '../../assets/images/Pil.png'; 
+import logomedtinz from '../../assets/images/MedTinz.png'; 
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [rememberMe, setRememberMe] = useState(false);
-
-    // Initialisation du hook navigate
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
@@ -31,8 +29,7 @@ const LoginPage = () => {
             if (accessToken) {
                 localStorage.setItem('access_token', accessToken);
                 toast.success('Connexion réussie !'); // Toast succès
-                // Redirection après une connexion réussie
-                navigate('/hospitaladmin/dashboard'); // Remplace '/dashboard' par le chemin de la page cible
+                navigate('/hospitaladmin/dashboard');
             } else {
                 throw new Error('Access token manquant dans la réponse');
             }
@@ -44,7 +41,7 @@ const LoginPage = () => {
 
     return (
         <div className="Selectrole">
-            <ToastContainer /> {/* Conteneur pour afficher les toasts */}
+            {/* <ToastContainer /> Conteneur pour afficher les toasts */}
             <div className="selecthead">
                 <div className="container">
                     <div>
@@ -85,7 +82,7 @@ const LoginPage = () => {
                                 required
                             />
                         </div>
-                        <div className='sousmenus d-flex  mb-3'>
+                        <div className='sousmenus d-flex mt-2 mb-3'>
                             <div className="remember-me me-auto">
                                 <input
                                     type="checkbox"
@@ -95,7 +92,7 @@ const LoginPage = () => {
                                 <span>Remember me</span>
                             </div>
                             <div className='ms-auto forgetpass'>
-                                <a href='#'>Forget password</a>
+                                <a>Forget password</a>
                             </div>
                         </div>
 

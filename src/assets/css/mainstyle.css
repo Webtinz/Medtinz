@@ -18,6 +18,14 @@ body,html{
     height: 100% !important;
 }
 
+.dashboard-header .tabs .nav-link{
+    color: #17426F !important;
+}
+
+.dashboard-header .tabs .nav-link.active{
+    color: #28A745 !important;
+}
+
 .dashboard-header ul{
     list-style: none !important;
 }
@@ -563,6 +571,7 @@ textarea:focus {
     /* max-height: 200px; */
     /* overflow-y: auto; */
 }
+
 
 .search-input {
     width: 100%;

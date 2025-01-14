@@ -163,7 +163,7 @@ const Admin = () => {
                       </select>
                       <label>Civilité</label>
                     </div> */}
-                    {errors.civility && <span className="error">{errors.civility}</span>}
+                    {/* {errors.civility && <span className="error">{errors.civility}</span>} */}
                   </div>
 
                   <div className="col-md-6">
