@@ -15,7 +15,7 @@ body,html{
 }
 .dashboard-header{
     max-width: 100% !important;
-
+    height: 100% !important;
 }
 
 .dashboard-header ul{
@@ -555,18 +555,13 @@ textarea:focus {
     font-size: 16px;
 }
 
-.dropdown {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    border: 2px solid #1D4ED8;
-    border-radius: 10px;
+.hospital .dropdown, .girla .dropdown{
+    border-radius: 20px;
     background: #fff;
-    padding: 10px;
+    padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    max-height: 200px;
-    overflow-y: auto;
+    /* max-height: 200px; */
+    /* overflow-y: auto; */
 }
 
 .search-input {

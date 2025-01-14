@@ -6,7 +6,7 @@ const api = axios.create({
     'Content-Type': 'application/json',
   },
 });
-
+ 
 // Ajouter un intercepteur pour gérer le token d'authentification
 api.interceptors.request.use(
   (config) => {
@@ -28,7 +28,7 @@ api.interceptors.response.use(
       localStorage.removeItem('access_token');
 
       // Rediriger vers la page de connexion
-      window.location.href = '/api/login'; // Assurez-vous que '/login' est la bonne route
+      window.location.href = '/Clientlogin'; // Assurez-vous que '/login' est la bonne route
 
       // Optionnel : Afficher un message d'alerte
       alert('Votre session a expiré. Veuillez vous reconnecter.');

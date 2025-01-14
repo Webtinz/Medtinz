@@ -29,7 +29,8 @@ const ClientSidebar = () => {
       <div className={`sidebar-menu-container ${sidebarOpen ? 'visible' : 'hidden'}`}>
         <div className="sidebar-menu">
           <ul>
-            <li><Link to="/hospitaladmin/Dashboardclient"><MdDashboard className="nav-icon" />Dashboard</Link></li>
+            <li><Link to="/hospitaladmin/dashboard"><MdDashboard className="nav-icon" />Dashboard</Link></li>
+            <li><Link to="/hospitaladmin/hospitalsetting"><MdDashboard className="nav-icon" />Hospital Settings</Link></li>
             <li><Link to="/hospitaladmin/patientlist"><MdPerson className="nav-icon" />Patient Management</Link></li>
             <li><Link to="/hospitaladmin/department"><MdPeople className="nav-icon" />Department Management</Link></li>
             <li><Link to="/hospitaladmin/speciality"><MdAddBox className="nav-icon" />Speciality Management</Link></li>

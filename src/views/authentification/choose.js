@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import './choose1.css'; // Importer les styles pour Choose1
-import { FaCircleCheck, FaCircle } from "react-icons/fa6";
+// import { FaCircleCheck, FaCircle } from "react-icons/fa6";
 import medic from '../../assets/images/Medic.png';
 import success from '../../assets/images/success.png';
 import paypal from '../../assets/images/paypal.png';
 import mtn from '../../assets/images/mtn.png';
 import bank from '../../assets/images/bank.png';
-import { FaFile } from "react-icons/fa6";
+// import { FaFile } from "react-icons/fa6";
 import { motion } from 'framer-motion';
 import api from '../../service/caller'; // Axios instance configurée
 
@@ -21,6 +21,8 @@ const Choose1 = ({ planId }) => {
     const fetchPlan = async () => {
       try {
         const subscriptionResponse = await api.get(`/api/subscriptions/${planId}`);
+        console.log(planId);
+        
         setSubscriptionDetails(subscriptionResponse.data);
       } catch (error) {
         console.error('Error fetching subscription plan:', error);

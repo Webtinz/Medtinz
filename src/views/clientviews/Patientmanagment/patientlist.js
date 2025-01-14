@@ -134,17 +134,17 @@ const PatientList = () => {
                         {/* Profil utilisateur */}
 
                         <div className=' d-flex col justify-content-end'>
-                        <CHeaderNav>
-                            <CNavItem>
-                                <CNavLink href="#" className="d-flex align-items-center ms-auto">
-                                    <img src={Adminprofil} className='cardicon' alt="Consultation Icon" width={'50'} height={'50'} />
-                                    <div>
-                                        <span className="ms-2">Semia BOKO</span>
-                                        <p className="ms-2">Admin</p>
-                                    </div>
-                                </CNavLink>
-                            </CNavItem>
-                        </CHeaderNav>
+                            <CHeaderNav>
+                                <CNavItem>
+                                    <CNavLink href="#" className="d-flex ms-auto">
+                                        <img src={Adminprofil} className='cardicon' alt="Consultation Icon" width={'50'} height={'50'} />
+                                        <div>
+                                            <span className="ms-2" style={{ color: 'black' }}>Semia BOKO</span>
+                                            <p className="ms-2" style={{ color: 'black' }}>Admin</p>
+                                        </div>
+                                    </CNavLink>
+                                </CNavItem>
+                            </CHeaderNav>
                         </div>
                     </div>
                 </CContainer>

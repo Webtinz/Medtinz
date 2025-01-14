@@ -29,7 +29,7 @@ const DashboardPage = () => {
                     {/* Ajout du bouton pour ouvrir/fermer la sidebar */}
                     <FaBars onClick={toggleSidebar} className='sidebar-toggle-btn' />
                   </div>
-                  <div className="form-outline col-md-10">
+                  <div className="form-outline d-flex col-md-10">
                     <input
                       type="search"
                       id="form1"
@@ -41,8 +41,8 @@ const DashboardPage = () => {
                     />
                     <FaSearch
                       size="sm"
-                      className="search-icon"
-                      style={{ width: '20px', height: '20px', position: 'absolute', transform: 'translateY(-50%)', top: '4.5%', left: '60%' }}
+                      className="search-icon "
+                      style={{ width: '20px', height: '20px', position: 'absolute', transform: 'translateY(-50%)', top: '7%', left: '64%' }}
                     />
                   </div>
                 </div>
@@ -70,7 +70,6 @@ const DashboardPage = () => {
             </div>
           </div>
 
-          {/* Cards section */}
           <div className="stats-cards">
             <div className="row row-cols-1 row-cols-md-3 g-5">
               <div className="col">

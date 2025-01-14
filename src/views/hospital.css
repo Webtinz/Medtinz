@@ -1,0 +1,542 @@
+
+.girls {
+  padding: 0px !important;
+  margin: 0px !important;
+  background-color: #DFEAF5;
+  min-height: 100vh; /* Minimum hauteur : 100% de la fenêtre */
+  width: 100%;
+}
+ .girls .container {
+  width: 100% !important;
+ }
+
+/* .clean {
+    width:100%;
+    height: auto;
+    border: 30px;
+    background-color: #FFFFFF;
+    border: 1px solid #d4cdcd;
+} */
+
+.hospital-name label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+  }
+  
+  .hospital .badge1 {
+    background-color: #FF980029;
+    padding: 10px 15px;
+    font-size: 14px;
+    border-radius: 5px;
+  }
+
+  .hospital .badge2{
+    background: #28A7452B;
+    padding: 10px 15px;
+    font-size: 14px;
+    border-radius: 5px;
+  }
+  
+  .hospital .dropdown-menu {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .hospital .dropdown-item {
+    margin-bottom: 15px;
+  }
+  
+  .hospital .btn-success {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .switcase{
+    color: #04468E !important;
+    font-weight: bold !important;
+    font-size: 14px;
+  }
+  .chronique{
+    padding: 14px !important;
+    border: 2px solid #0056B3 !important;
+    background-color: #EFF7FF !important;
+  }
+   
+  .cos{
+    position: absolute;
+    top: 1%;
+    left: 50px;
+    background-color:#EFF7FF;
+    padding: 0px 12px;
+  }
+
+  .produit{
+    display: flex;
+    justify-content: end;
+  }
+
+  .primero {
+    background-color: #0056B3;
+    color: #ffffff;
+    border-radius: 46px;
+    padding: 12px 16px;
+  }
+
+  .primero:hover{
+    background-color: #0056B3;
+    color: #ffffff;
+    border-radius: 46px;
+    padding: 12px 16px;
+  }
+
+  .bottle{
+    display: flex;
+    justify-content: end;
+  }
+
+  .soccer{
+    background-color: #0056B3;
+    color: #ffffff;
+    border-radius: 46px;
+    padding: 12px 16px;
+  }
+  .soccer:hover{
+    background-color: #0056B3;
+    color: #ffffff;
+    border-radius: 46px;
+    padding: 12px 16px;
+  }
+  /* Pour le modal de departement */
+  .christian{
+    width: 100%;
+    padding: 0px 80px !important;
+  }
+
+  .yuri{
+  font-size: 17px;
+  }
+
+  .secondo{
+    position: absolute;
+    top: 4%;
+    left: 35px;
+    background-color:#ffffff;
+    padding: 0px 12px;
+    font-size: 12px;
+  }
+
+  .arome{
+    padding: 14px !important;
+    border: 2px solid #0056B3 !important;
+    background-color: #ffffff !important;
+  }
+
+  .fraise{
+    position: absolute;
+    top: 23%;
+    left: 35px;
+    background-color:#ffffff;
+    padding: 0px 12px;
+    font-size:  12px;
+  }
+
+  .tercio{
+    padding: 14px !important;
+    border: 2px solid #0056B3 !important;
+    background-color: #ffffff !important;
+  }
+
+  .menthe{
+    position: absolute;
+    top: 38%;
+    left: 35px;
+    background-color:#ffffff;
+    padding: 0px 12px;
+    font-size:  12px;
+  }
+
+  .quartio{
+    padding: 14px !important;
+    border: 2px solid #0056B3 !important;
+    background-color: #ffffff !important;
+  }
+
+  .banane{
+    position: absolute;
+    top: 57%;
+    left: 35px;
+    background-color:#ffffff;
+    padding: 0px 12px;
+    font-size:  12px;
+    z-index: 4;
+  }
+
+  .cinquo{
+    /* position: relative; */
+    padding: 14px !important;
+    border: 2px solid #0056B3 !important;
+    background-color: #ffffff !important;
+  }
+
+  .raisin{
+    border: 2px solid #0056B3 !important;
+    background-color: #ffffff !important;
+  }
+
+
+  .nearby{
+    background-color: #28A745;
+    color: #ffffff;
+    padding: 12px 30px;
+  }
+
+  .nearby:hover{
+    background-color: #28A745;
+    color: #ffffff;
+    padding: 12px 30px;
+  }
+
+/* Pour le modal de speciality */
+
+  .canne{
+    font-size: 17px;
+  }
+
+  .dress{
+    position: absolute;
+    top: 4%;
+    left: 35px;
+    background-color:#ffffff;
+    padding: 0px 12px;
+    font-size:  12px;
+  }
+
+  .store{
+    padding: 14px !important;
+    border: 2px solid #0056B3 !important;
+    background-color: #ffffff !important;
+  }
+
+  .straight{
+    border: 2px solid #0056B3 !important;
+    background-color: #ffffff !important;
+  }
+
+  .bob{
+    background-color: #28A745;
+    color: #ffffff;
+    padding: 12px 30px;
+  }
+
+  .bob:hover{
+    background-color: #28A745;
+    color: #ffffff;
+    padding: 12px 30px;
+  }
+
+  /* Dropdown service */
+
+  .milk {
+    position: absolute;
+    top: -10px; /* Positionne le label au-dessus de l'input */
+    left: 12px; /* Ajuste l'espacement horizontal */
+    background-color: #ffffff;
+    padding: 0px 8px;
+    font-size: 12px;
+    color: #0056b3; /* Couleur du texte */
+    z-index: 1;
+  }
+  
+  .flower {
+    padding: 14px !important;
+    border: 2px solid #0056b3 !important;
+    background-color: #ffffff !important;
+    border-radius: 5px;
+    font-size: 14px;
+    position: relative;
+    z-index: 0;
+  }
+  
+  .flower:focus + .milk {
+    color: #003d7a; /* Change la couleur du label lors du focus */
+  }
+  
+
+  .coktail {
+    position: absolute;
+    top: -10px; /* Positionner le label au-dessus de l'input */
+    left: 12px; /* Ajuste la position horizontale */
+    background-color: #ffffff;
+    padding: 0 8px;
+    font-size: 12px;
+    color: #0056b3;
+    z-index: 1; /* Met le label au-dessus de l'input */
+  }
+  
+  .bisola {
+    padding: 14px !important;
+    border: 2px solid #0056b3 !important;
+    background-color: #ffffff !important;
+    border-radius: 5px;
+    font-size: 14px;
+    position: relative; /* Conteneur pour le label en absolute */
+    z-index: 0; /* Met l'input derrière le label */
+  }
+  
+  .bisola:focus + .coktail {
+    color: #003d7a; /* Change la couleur du label lors du focus */
+  }
+  
+  .input-group-text {
+    font-weight: bold;
+    background-color: #f8f9fa;
+    color: #495057;
+  }
+
+  
+  /* Modal concernant le detail du departement */
+  .pamela{
+    background-color: #EFF7FF;
+  }
+
+  .duolingo{
+    position: absolute;
+    top: 5%;
+    background-color: #f8f9fa;
+    left: 20%;
+    padding: 0 8px;
+    font-size: 12px;
+    z-index: 1;
+  }
+
+  .vikram{
+    position: absolute;
+    top: 22%;
+    background-color: #f8f9fa;
+    left: 5%;
+    padding: 0 8px;
+    font-size: 12px;
+    z-index: 1; 
+  }
+
+  .lisa{
+    position: absolute;
+    top: 5%;
+    background-color: #f8f9fa;
+    left: 62%;
+    padding: 0 8px;
+    font-size: 12px;
+    z-index: 1;
+  }
+  .group{
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+  }
+
+
+  .vacation{
+    font-size: 17px;
+    font-weight: 500;
+  }
+  .department-details-modal .form-control {
+   position: relative;
+    padding: 14px;
+    border: 2px solid #0056b3;
+    border-radius: 5px;
+    background-color: #f8f9fa;
+    z-index: 0; 
+  }
+  
+  .thibo{
+    position: absolute;
+    top: 50%;
+    background-color: #f8f9fa;
+    left: 4%;
+    padding: 0 8px;
+    font-size: 12px;
+    z-index: 1;
+  }
+  .department-details-modal .input-group-text {
+    position: relative;
+    background-color: #ffffff;
+    border: 2px solid #0056b3;
+    color: #0056b3;
+    font-weight: bold;
+    z-index: 0; 
+  }
+  
+  .department-details-modal .btn-primary {
+    background-color: #0056b3;
+    border: none;
+  }
+  
+  .department-details-modal .btn-danger {
+    background-color: #ff4d4f;
+    border: none;
+  }
+  
+  .department-details-modal .btn-success {
+    background-color: #28a745;
+    border: none;
+  }
+
+  .biosso{
+    background-color: #EFF7FF;
+    font-size: 16px;
+    font-weight: 900;
+  }
+
+  .chetif{
+    background-color: #ffffff;
+    color: #ff4d4f;
+  }
+
+  .chute{
+    padding: 12px 45px;
+  }
+  
+  /* La section question le deuxieme dropdown */
+
+  .fiona{
+    display: flex;
+    border: 1px solid #ffffff;
+    background-color: #ffffff;
+    border-radius: 30px;
+    padding: 30px;
+
+  }
+
+ 
+/* Optionnel : Pour l'espacement entre les boutons et le label */
+.form-check-label {
+  margin-left: 0.5em;
+  font-weight: bold;
+  color: #000; /* Noir pour le texte */
+}
+
+
+  label {
+    font-weight: bold;
+  }
+  
+  .dropdown button {
+    text-transform: uppercase;
+  }
+  
+  .text-muted {
+    font-size: 14px;
+  }
+  
+  .btn-primary {
+    background-color: #0056B3;
+    border: none;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0056b3;
+  }
+  
+  .input-group-text {
+    background-color: #eaf1f8;
+    border: 1px solid #ced4da;
+  }
+
+  .soglo{
+    background-color: #28A745;
+    color: #ffffff;
+    padding: 20px 80px;
+  }
+
+  .soglo:hover{
+    background-color: #28A745;
+    color: #ffffff;
+    padding: 20px 80px;
+  }
+
+  .tiji{
+    position: absolute;
+    top: 13%;
+    left: 4%;
+    background-color: #ffffff;
+    padding: 0px 10px;
+  }
+
+  
+  .teletoon{
+    border: 2px solid #0056B3 !important;
+    border-radius: 10px !important;
+    padding: 12px;
+  }
+
+  .jone{
+      position: absolute;
+      top: 50%;
+    left: 3%;
+    background-color: #ffffff;
+    padding: 0px 10px;
+  }
+
+  .rtl{
+    border: 2px solid #0056B3 !important;
+    border-radius: 10px !important;
+    padding: 12px;
+  }
+
+  .disney{
+    position: absolute;
+      top: 60%;
+    left: 3%;
+    background-color: #ffffff;
+    padding: 0px 10px;
+  }
+  
+  .cartoon{
+    border: 2px solid #0056B3 !important;
+    border-radius: 10px !important;
+    padding: 12px;
+  }
+
+  .pop{
+    position: absolute;
+    top: 60%;
+    left: 20%;
+    background-color: #ffffff;
+    padding: 0px 10px;
+  }
+
+  .boomrang{
+    border: 2px solid #0056B3 !important;
+    border-radius: 10px !important;
+    padding: 12px;
+  }
+
+
+  .mtv{
+    position: absolute;
+    top: 61%;
+    left: 68%;
+    background-color: #ffffff;
+    padding: 0px 10px;
+  }
+
+  .cstar{
+    border: 2px solid #0056B3 !important;
+    border-radius: 10px !important;
+    padding: 12px; 
+  }
+
+  .tf1{
+    border: 2px solid #0056B3 !important;
+    border-radius: 10px !important;
+    padding: 12px; 
+  }
+
+
+
+
+  

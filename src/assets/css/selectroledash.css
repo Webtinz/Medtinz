@@ -177,14 +177,13 @@ footer img {
     border: 2px solid #00308f !important;
 }
 
-.loginfoms .remember-me {
-    display: flex;
-    align-items: center;
-    margin-bottom: 2%;
+.loginfoms .rememory {
+    display: flex; 
+    align-items: center !important; 
 }
 
-.loginfoms .remember-me input {
-    margin-right: 10px;
+.loginfoms .rememory input {
+    margin-right: 8px;
 }
 
 .loginfoms .forgetpass{

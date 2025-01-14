@@ -10,6 +10,9 @@ import Medicalhistory from '../views/clientviews/Patientmanagment/patientmedical
 import PaymentCaisse from '../views/clientviews/billingmanagement/payment'; // Page Patient Management
 import ReceiptPayment from '../views/clientviews/billingmanagement/receipt'; // Page Patient Management
 import Department from '../views/clientviews/deparmentmanagment/department'; // Page Patient Management
+import HospitalSetting from '../views/hospitalsetting'; // Page Patient Management
+import PatientCard from '../views/clientviews/Patientmanagment/patientcard'; // Page Patient Management
+
 
 
 
@@ -30,6 +33,10 @@ const ClientRoutesWithDash = [
   { path: '/hospitaladmin/medicalhistory', name: 'Medicalhistory', element: Medicalhistory , exact: true },
   { path: '/hospitaladmin/payment', name: 'PaymentCaisse', element: PaymentCaisse },
   { path: '/hospitaladmin/receiptpay', name: 'ReceiptPayment', element: ReceiptPayment },
+  { path: '/hospitaladmin/hospitalsetting', name: 'HospitalSetting', element: HospitalSetting },
+  { path: '/patientcard/:patientId', name: 'PatientCard', element: PatientCard },
+
+
 
   // Ajoutez ici d'autres routes qui nécessitent un sidebar
 ];

@@ -1,31 +1,50 @@
 import React, { useState } from 'react';
-import '../../assets/css/selectroledash.css'; 
-import '../../assets/css/responsive.css'; 
-import {  BsArrowRight } from 'react-icons/bs';
+import { ToastContainer, toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+import 'react-toastify/dist/ReactToastify.css'; // Styles Toastify
+import '../../assets/css/selectroledash.css';
+import '../../assets/css/responsive.css';
+import { BsArrowRight } from 'react-icons/bs';
+import api from '../../service/caller'; // Axios instance configurée
 
-// Importation des images orange
-import imageOrangeTopLeft from '../../assets/images/Medic symbol circle.png'; // Image en haut à gauche
-import imageOrangeBottomLeft from '../../assets/images/Checklist.png'; // Image en bas à gauche
-import imageOrangeBottomright from '../../assets/images/DNA.png'; // Image en bas à gauche
-import BottomLeftmedication from '../../assets/images/Pil.png'; // Image en bas à gauche
-import logomedtinz from '../../assets/images/MedTinz.png'; // Image en bas à gauche
+import imageOrangeTopLeft from '../../assets/images/Medic symbol circle.png';
+import imageOrangeBottomLeft from '../../assets/images/Checklist.png';
+import imageOrangeBottomright from '../../assets/images/DNA.png';
+import BottomLeftmedication from '../../assets/images/Pil.png';
+import logomedtinz from '../../assets/images/MedTinz.png';
 
 const LoginPage = () => {
-
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [rememberMe, setRememberMe] = useState(false);
 
-    const handleLogin = (e) => {
-        e.preventDefault();
-        // Ajouter la logique de connexion ici
-        console.log('Login details:', { email, password, rememberMe });
-    };
+    // Initialisation du hook navigate
+    const navigate = useNavigate();
 
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        try {
+            const loginData = { email, password };
+            const response = await api.post('/api/login', loginData);
+
+            const accessToken = response.data.token;
+            if (accessToken) {
+                localStorage.setItem('access_token', accessToken);
+                toast.success('Connexion réussie !'); // Toast succès
+                // Redirection après une connexion réussie
+                navigate('/hospitaladmin/dashboard'); // Remplace '/dashboard' par le chemin de la page cible
+            } else {
+                throw new Error('Access token manquant dans la réponse');
+            }
+        } catch (error) {
+            const errorMessage = error.response?.data?.message || 'Erreur de connexion, vérifiez vos informations.';
+            toast.error(errorMessage); // Toast erreur
+        }
+    };
 
     return (
         <div className="Selectrole">
-            {/* Bannière bleu avec une image */}
+            <ToastContainer /> {/* Conteneur pour afficher les toasts */}
             <div className="selecthead">
                 <div className="container">
                     <div>
@@ -33,23 +52,21 @@ const LoginPage = () => {
                     </div>
                     <div>
                         <h2>Connect Now To Your<br /> Dashboard</h2>
-                        <br></br>
+                        <br />
                         <p className="container">
                             Choose the plan that's right for your business. Whether you're just getting started with email marketing <br /> or well down the path to personalization, we've got you covered.
                         </p>
                     </div>
                 </div>
-                {/* Image orange en haut à gauche */}
                 <img src={imageOrangeTopLeft} alt="Top right orange" className="image-orange-top-right" />
             </div>
 
-            {/* Section des rôles */}
             <div className="formslogin mt-5">
                 <h3 className="title text-center">Enter your credentials</h3>
-                <div className="loginfoms  container">
+                <div className="loginfoms container">
                     <form onSubmit={handleLogin} className="login-form">
                         <label>Email</label>
-                        <div className="input-group ">
+                        <div className="input-group">
                             <input
                                 type="email"
                                 placeholder="Enter your email"
@@ -68,7 +85,7 @@ const LoginPage = () => {
                                 required
                             />
                         </div>
-                        <div className='sousmenus d-flex mt-2 mb-3'>
+                        <div className='sousmenus d-flex  mb-3'>
                             <div className="remember-me me-auto">
                                 <input
                                     type="checkbox"
@@ -78,27 +95,26 @@ const LoginPage = () => {
                                 <span>Remember me</span>
                             </div>
                             <div className='ms-auto forgetpass'>
-                                <a>Forget password</a>
+                                <a href='#'>Forget password</a>
                             </div>
                         </div>
 
-
-                        <button type="submit" className="formcontinue-btn mx-auto d-flex align-items-center">Continue<BsArrowRight className='ms-2'/></button>
+                        <button type="submit" className="formcontinue-btn mx-auto d-flex align-items-center">
+                            Continue<BsArrowRight className='ms-2' />
+                        </button>
                     </form>
                 </div>
                 <img src={imageOrangeBottomright} alt="Bottom right orange" className="image-orange-right" />
             </div>
 
-            {/* Footer */}
             <footer className="text-left container">
                 <img src={BottomLeftmedication} alt="Bottom left orange" className="image-medication-left" />
                 <p>&copy; 2024 Développé par ITTIQ</p>
             </footer>
 
-            {/* Image orange en bas à gauche */}
             <img src={imageOrangeBottomLeft} alt="Bottom left orange" className="image-orange-bottom-left" />
         </div>
     );
-}
+};
 
 export default LoginPage;

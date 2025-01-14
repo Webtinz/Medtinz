@@ -16,25 +16,22 @@ import {
     CTableDataCell,
     CTableHead,
     CTableHeaderCell,
-    CTableRow,
-    CModal, CModalHeader, CModalBody, CModalFooter, CModalTitle
+    CTableRow
 } from '@coreui/react'
 import { FaEdit, FaSearch } from "react-icons/fa";
-import { BsPersonPlus, BsChevronRight, BsChevronLeft, BsArrowRight, BsTrash3 } from 'react-icons/bs';
+import { BsPersonPlus, BsChevronRight, BsChevronLeft, BsTrash3 } from 'react-icons/bs';
 import '../../../assets/css/mainstyle.css';
-import Profilimg from  '../../../assets/images/man-438081_960_720.png';
 import Doctorvector from '../../../assets/images/doctorvector.png';
 import Adminprofil from '../../../assets/images/adminprofil.png';
+import AddStaffModal from './adduserstaff'; // Le composant modal
 
 const StaffList = () => {
     const [visible, setVisible] = useState(false);
     const [visible1, setVisible1] = useState(false);
-    const [modalContent, setModalContent] = useState('');  // Contenu dynamique du modal
+    const [Staffs, setStaffs] = useState([]);
 
-    // Fonction pour ouvrir le modal et définir le contenu
-    const handleIconClick = (content) => {
-        setModalContent(content);  // Définit le contenu du modal
-        setVisible1(true);  // Ouvre le modal
+    const handleStaffAdded = (newStaff) => {
+        setStaffs((prev) => [...prev, newStaff]);
     };
 
     return (
@@ -46,14 +43,14 @@ const StaffList = () => {
                             <h4><b>Staff Management</b></h4>
                             <p>Home <BsChevronRight className='mx-2' style={{ fontSize: "12px" }} />  Dashboard <BsChevronRight style={{ fontSize: "12px" }} className='mx-2' />  <span style={{ color: '#191B1C' }}>Staff Management</span></p>
                         </div>
-                        <div className=' d-flex col justify-content-end'>
+                        <div className=' d-flex col justify-content-end' >
                             <CHeaderNav>
                                 <CNavItem>
-                                    <CNavLink href="#" className="d-flex align-items-center ms-auto">
+                                    <CNavLink href="#" className="d-flex ms-auto">
                                         <img src={Adminprofil} className='cardicon' alt="Consultation Icon" width={'50'} height={'50'} />
                                         <div>
-                                            <span className="ms-2">Semia BOKO</span>
-                                            <p className="ms-2">Admin</p>
+                                            <span className="ms-2" style={{ color: 'black' }}>Semia BOKO</span>
+                                            <p className="ms-2" style={{ color: 'black' }}>Admin</p>
                                         </div>
                                     </CNavLink>
                                 </CNavItem>
@@ -79,139 +76,15 @@ const StaffList = () => {
                                             <CTabPanel className="p-3" itemKey="Allusers">
                                                 <div className='tablist' >
                                                     <div className='d-flex mt-4'>
-                                                        <CButton onClick={() => setVisible(!visible)} className="registernewbtn ms-auto d-flex align-items-center" active tabIndex={-1}>
+                                                        <CButton onClick={() => setVisible(true)} className="registernewbtn ms-auto d-flex align-items-center" active tabIndex={-1}>
                                                             <BsPersonPlus className='mx-2' /> Register New user
                                                         </CButton>
                                                     </div>
-
-                                                    {/* modal */}
-
-                                                    <CModal className='newregistermodal'
-                                                        alignment="center"
-                                                        scrollable
-                                                        size='lg'
+                                                    <AddStaffModal
                                                         visible={visible}
                                                         onClose={() => setVisible(false)}
-                                                        aria-labelledby="VerticallyCenteredScrollableExample2"
-                                                    >
-                                                        <CModalHeader>
-                                                            <CModalTitle id="VerticallyCenteredScrollableExample2" className='Titleformsmodal'>Register new user</CModalTitle>
-                                                        </CModalHeader>
-                                                        <CModalBody className='p-5'>
-                                                            <form>
-                                                                <div className="form-group">
-                                                                    <div className="profile-photo d-flex">
-                                                                        <div className="photo-container">
-                                                                            <img src={Profilimg} alt="Profile" className="profile-image" />
-                                                                        </div>
-                                                                        <div className='photoedit'>
-                                                                            <div>
-                                                                                <label htmlFor="file-input">
-                                                                                    <FaEdit />
-                                                                                </label>
-                                                                                <input type="file" id="file-input" accept="image/*" />
-                                                                            </div>
-                                                                            <p className='ms-2'>Upload profile photo (jpg, png, jpeg)</p>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div className="form-group">
-                                                                    <label htmlFor="name">Name</label>
-                                                                    <input
-                                                                        type="text"
-                                                                        name="name"
-                                                                        id="name"
-                                                                        placeholder="Casos Billal"
-                                                                    />
-                                                                </div>
-
-                                                                <div className="form-row row">
-                                                                    <div className="form-group col-md-6">
-                                                                        <label htmlFor="role">Role</label>
-                                                                        <select name="role" id="role">
-                                                                            <option value="">Select Role</option>
-                                                                            <option value="admin">Admin</option>
-                                                                            <option value="doctor">Doctor</option>
-                                                                            <option value="nurse">Nurse</option>
-                                                                        </select>
-                                                                    </div>
-
-                                                                    <div className="form-group col-md-6">
-                                                                        <label htmlFor="department">Department</label>
-                                                                        <select name="department" id="department">
-                                                                            <option value="">Select Department</option>
-                                                                            <option value="cardiology">Cardiology</option>
-                                                                            <option value="dermatology">Dermatology</option>
-                                                                            <option value="neurology">Neurology</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div className="form-row row">
-                                                                    <div className="form-group col-md-6">
-                                                                        <label htmlFor="email">Email</label>
-                                                                        <input
-                                                                            type="email"
-                                                                            name="email"
-                                                                            id="email"
-                                                                            placeholder="email"
-                                                                        />
-                                                                    </div>
-
-                                                                    <div className="form-group col-md-6">
-                                                                        <label htmlFor="gender">Gender</label>
-                                                                        <select name="gender" id="gender">
-                                                                            <option value="">Select Gender</option>
-                                                                            <option value="male">Male</option>
-                                                                            <option value="female">Female</option>
-                                                                            <option value="other">Other</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-
-
-
-                                                                <div className="form-row row">
-                                                                    <div className="form-group col-md-6">
-                                                                        <label htmlFor="contact1">Contact 1</label>
-                                                                        <input
-                                                                            type="tel"
-                                                                            name="contact1"
-                                                                            id="contact1"
-                                                                            placeholder="+229 01 90 00 00 00"
-                                                                        />
-                                                                    </div>
-
-                                                                    <div className="form-group col-md-6">
-                                                                        <label htmlFor="contact2">Contact 2</label>
-                                                                        <input
-                                                                            type="tel"
-                                                                            name="contact2"
-                                                                            id="contact2"
-                                                                            placeholder="+229 01 90 00 00 00"
-                                                                        />
-                                                                    </div>
-                                                                </div>
-
-                                                                <div className="form-group">
-                                                                    <label htmlFor="address">Address</label>
-                                                                    <input
-                                                                        name="address"
-                                                                        id="address"
-                                                                        placeholder="Your address here"
-                                                                    />
-                                                                </div>
-
-                                                                <div className="savenewuser form-group d-flex justify-content-center">
-                                                                    <CButton type="submit">
-                                                                        Continue &nbsp; <BsArrowRight />
-                                                                    </CButton>
-                                                                </div>
-                                                            </form>
-                                                        </CModalBody>
-                                                    </CModal>
-
+                                                        onPatientAdded={handleStaffAdded}
+                                                    />
 
                                                     <div className="search-container">
                                                         <div className="search-bar">
@@ -225,7 +98,7 @@ const StaffList = () => {
                                                         </div>
                                                     </div>
                                                     <div>
-                                                        <CTable className="mt-5 ctable-no-border " align="middle" responsive>
+                                                        <CTable hover className='mt-5' align="middle" responsive>
                                                             <CTableHead>
                                                                 <CTableRow>
                                                                     <CTableHeaderCell scope="col">Profile</CTableHeaderCell>
@@ -248,29 +121,12 @@ const StaffList = () => {
                                                                     <CTableDataCell align="middle" >
                                                                         <div className='actionbtn'>
                                                                             <div className='left'>
-                                                                                <FaEdit onClick={() => handleIconClick('Left icon clicked')} />
+                                                                                <FaEdit />
                                                                             </div>
                                                                             <div className='right'>
-                                                                                <BsTrash3 onClick={() => handleIconClick('right icon clicked')} style={{ color: '#EF3826' }} />
+                                                                                <BsTrash3  style={{ color: '#EF3826' }} />
                                                                             </div>
                                                                         </div>
-
-                                                                        {/* Modal */}
-                                                                        <CModal
-                                                                            alignment="center"
-                                                                            visible={visible1}
-                                                                            onClose={() => setVisible1(false)}
-                                                                            aria-labelledby="TooltipsAndPopoverExample"
-                                                                        >
-                                                                            <CModalHeader>
-                                                                                <CModalTitle id="TooltipsAndPopoverExample">Modal title</CModalTitle>
-                                                                            </CModalHeader>
-                                                                            <CModalBody>
-                                                                                <h5>Popover in a modal</h5>
-                                                                                <hr />
-                                                                                <h5>Tooltips in a modal</h5>
-                                                                            </CModalBody>
-                                                                        </CModal>
                                                                     </CTableDataCell>
                                                                 </CTableRow>
                                                                 <CTableRow className=''>
@@ -282,10 +138,10 @@ const StaffList = () => {
                                                                     <CTableDataCell align="middle" >
                                                                         <div className='actionbtn'>
                                                                             <div className='left'>
-                                                                                <FaEdit onClick={() => handleIconClick('Left icon clicked')} />
+                                                                                <FaEdit />
                                                                             </div>
                                                                             <div className='right'>
-                                                                                <BsTrash3 onClick={() => handleIconClick('right icon clicked')} style={{ color: '#EF3826' }} />
+                                                                                <BsTrash3  style={{ color: '#EF3826' }} />
                                                                             </div>
                                                                         </div>
                                                                     </CTableDataCell>                                                                </CTableRow>
@@ -298,10 +154,10 @@ const StaffList = () => {
                                                                     <CTableDataCell align="middle" >
                                                                         <div className='actionbtn'>
                                                                             <div className='left'>
-                                                                                <FaEdit onClick={() => handleIconClick('Left icon clicked')} />
+                                                                                <FaEdit />
                                                                             </div>
                                                                             <div className='right'>
-                                                                                <BsTrash3 onClick={() => handleIconClick('right icon clicked')} style={{ color: '#EF3826' }} />
+                                                                                <BsTrash3  style={{ color: '#EF3826' }} />
                                                                             </div>
                                                                         </div>
                                                                     </CTableDataCell>
@@ -314,145 +170,21 @@ const StaffList = () => {
                                             <CTabPanel className="p-3" itemKey="Receptionist">
                                                 <div className='tablist' >
                                                     <div className='d-flex mt-4'>
-                                                        <CButton onClick={() => setVisible(!visible)} className="registernewbtn ms-auto d-flex align-items-center" active tabIndex={-1}>
+                                                        <CButton onClick={() => setVisible(true)} className="registernewbtn ms-auto d-flex align-items-center" active tabIndex={-1}>
                                                             <BsPersonPlus className='mx-2' /> Register New user
                                                         </CButton>
                                                     </div>
-
-                                                    {/* modal */}
-
-                                                    <CModal className='newregistermodal'
-                                                        alignment="center"
-                                                        scrollable
-                                                        size='lg'
+                                                    <AddStaffModal
                                                         visible={visible}
                                                         onClose={() => setVisible(false)}
-                                                        aria-labelledby="VerticallyCenteredScrollableExample2"
-                                                    >
-                                                        <CModalHeader>
-                                                            <CModalTitle id="VerticallyCenteredScrollableExample2" className='Titleformsmodal'>Register new user</CModalTitle>
-                                                        </CModalHeader>
-                                                        <CModalBody className='p-5'>
-                                                            <form>
-                                                                <div className="form-group">
-                                                                    <div className="profile-photo d-flex">
-                                                                        <div className="photo-container">
-                                                                            <img src={Profilimg} alt="Profile" className="profile-image" />
-                                                                        </div>
-                                                                        <div className='photoedit'>
-                                                                            <div>
-                                                                                <label htmlFor="file-input">
-                                                                                    <FaEdit />
-                                                                                </label>
-                                                                                <input type="file" id="file-input" accept="image/*" />
-                                                                            </div>
-                                                                            <p className='ms-2'>Upload profile photo (jpg, png, jpeg)</p>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div className="form-group">
-                                                                    <label htmlFor="name">Name</label>
-                                                                    <input
-                                                                        type="text"
-                                                                        name="name"
-                                                                        id="name"
-                                                                        placeholder="Casos Billal"
-                                                                    />
-                                                                </div>
-
-                                                                <div className="form-row row">
-                                                                    <div className="form-group col-md-6">
-                                                                        <label htmlFor="role">Role</label>
-                                                                        <select name="role" id="role">
-                                                                            <option value="">Select Role</option>
-                                                                            <option value="admin">Admin</option>
-                                                                            <option value="doctor">Doctor</option>
-                                                                            <option value="nurse">Nurse</option>
-                                                                        </select>
-                                                                    </div>
-
-                                                                    <div className="form-group col-md-6">
-                                                                        <label htmlFor="department">Department</label>
-                                                                        <select name="department" id="department">
-                                                                            <option value="">Select Department</option>
-                                                                            <option value="cardiology">Cardiology</option>
-                                                                            <option value="dermatology">Dermatology</option>
-                                                                            <option value="neurology">Neurology</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div className="form-row row">
-                                                                    <div className="form-group col-md-6">
-                                                                        <label htmlFor="email">Email</label>
-                                                                        <input
-                                                                            type="eamil"
-                                                                            name="email"
-                                                                            id="email"
-                                                                            placeholder="email"
-                                                                        />
-                                                                    </div>
-
-                                                                    <div className="form-group col-md-6">
-                                                                        <label htmlFor="gender">Gender</label>
-                                                                        <select name="gender" id="gender">
-                                                                            <option value="">Select Gender</option>
-                                                                            <option value="male">Male</option>
-                                                                            <option value="female">Female</option>
-                                                                            <option value="other">Other</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-
-
-
-                                                                <div className="form-row row">
-                                                                    <div className="form-group col-md-6">
-                                                                        <label htmlFor="contact1">Contact 1</label>
-                                                                        <input
-                                                                            type="tel"
-                                                                            name="contact1"
-                                                                            id="contact1"
-                                                                            placeholder="+229 01 90 00 00 00"
-                                                                        />
-                                                                    </div>
-
-                                                                    <div className="form-group col-md-6">
-                                                                        <label htmlFor="contact2">Contact 2</label>
-                                                                        <input
-                                                                            type="tel"
-                                                                            name="contact2"
-                                                                            id="contact2"
-                                                                            placeholder="+229 01 90 00 00 00"
-                                                                        />
-                                                                    </div>
-                                                                </div>
-
-                                                                <div className="form-group">
-                                                                    <label htmlFor="address">Address</label>
-                                                                    <input
-                                                                        name="address"
-                                                                        id="address"
-                                                                        placeholder="Your address here"
-                                                                    />
-                                                                </div>
-
-                                                                <div className="form-group d-flex justify-content-center">
-                                                                    <CButton color="primary" type="submit">
-                                                                        Continue &nbsp; <BsArrowRight />
-                                                                    </CButton>
-                                                                </div>
-                                                            </form>
-                                                        </CModalBody>
-                                                    </CModal>
-
+                                                        onPatientAdded={handleStaffAdded}
+                                                    />
 
                                                     <div className="search-container">
                                                         <div className="search-bar">
                                                             <FaSearch
                                                                 size="sm"
-                                                                className="search-icon" style={{ width: '20px', height: '20px' }}/>
+                                                                className="search-icon" style={{ width: '20px', height: '20px' }} />
                                                             <input
                                                                 type="text"
                                                                 placeholder="Search for a patient (Enter ID, name or Tel)"
@@ -483,28 +215,12 @@ const StaffList = () => {
                                                                     <CTableDataCell align="middle" >
                                                                         <div className='actionbtn'>
                                                                             <div className='left'>
-                                                                                <FaEdit onClick={() => handleIconClick('Left icon clicked')} />
+                                                                                <FaEdit />
                                                                             </div>
                                                                             <div className='right'>
-                                                                                <BsTrash3 onClick={() => handleIconClick('right icon clicked')} style={{ color: '#EF3826' }} />
+                                                                                <BsTrash3  style={{ color: '#EF3826' }} />
                                                                             </div>
                                                                         </div>
-
-                                                                        {/* Modal */}
-                                                                        <CModal visible={visible1} onClose={() => setVisible1(false)}>
-                                                                            <CModalHeader>
-                                                                                <CModalTitle>Modal Title</CModalTitle>
-                                                                            </CModalHeader>
-                                                                            <CModalBody>
-                                                                                <p>{modalContent}</p>  {/* Affiche le contenu dynamique du modal */}
-                                                                            </CModalBody>
-                                                                            <CModalFooter>
-                                                                                <CButton color="secondary">
-                                                                                    Close
-                                                                                </CButton>
-                                                                                <CButton color="primary">Save changes</CButton>
-                                                                            </CModalFooter>
-                                                                        </CModal>
                                                                     </CTableDataCell>
                                                                 </CTableRow>
                                                                 <CTableRow className=''>
@@ -516,10 +232,10 @@ const StaffList = () => {
                                                                     <CTableDataCell align="middle" >
                                                                         <div className='actionbtn'>
                                                                             <div className='left'>
-                                                                                <FaEdit onClick={() => handleIconClick('Left icon clicked')} />
+                                                                                <FaEdit />
                                                                             </div>
                                                                             <div className='right'>
-                                                                                <BsTrash3 onClick={() => handleIconClick('right icon clicked')} style={{ color: '#EF3826' }} />
+                                                                                <BsTrash3  style={{ color: '#EF3826' }} />
                                                                             </div>
                                                                         </div>
                                                                     </CTableDataCell>                                                                </CTableRow>
@@ -532,10 +248,10 @@ const StaffList = () => {
                                                                     <CTableDataCell align="middle" >
                                                                         <div className='actionbtn'>
                                                                             <div className='left'>
-                                                                                <FaEdit onClick={() => handleIconClick('Left icon clicked')} />
+                                                                                <FaEdit />
                                                                             </div>
                                                                             <div className='right'>
-                                                                                <BsTrash3 onClick={() => handleIconClick('right icon clicked')} style={{ color: '#EF3826' }} />
+                                                                                <BsTrash3  style={{ color: '#EF3826' }} />
                                                                             </div>
                                                                         </div>
                                                                     </CTableDataCell>
@@ -548,145 +264,21 @@ const StaffList = () => {
                                             <CTabPanel className="p-3" itemKey="Doctors">
                                                 <div className='tablist' >
                                                     <div className='d-flex mt-4'>
-                                                        <CButton onClick={() => setVisible(!visible)} className="registernewbtn ms-auto d-flex align-items-center" active tabIndex={-1}>
+                                                        <CButton onClick={() => setVisible(true)} className="registernewbtn ms-auto d-flex align-items-center" active tabIndex={-1}>
                                                             <BsPersonPlus className='mx-2' /> Register New user
                                                         </CButton>
                                                     </div>
-
-                                                    {/* modal */}
-
-                                                    <CModal className='newregistermodal'
-                                                        alignment="center"
-                                                        scrollable
-                                                        size='lg'
+                                                    <AddStaffModal
                                                         visible={visible}
                                                         onClose={() => setVisible(false)}
-                                                        aria-labelledby="VerticallyCenteredScrollableExample2"
-                                                    >
-                                                        <CModalHeader>
-                                                            <CModalTitle id="VerticallyCenteredScrollableExample2" className='Titleformsmodal'>Register new user</CModalTitle>
-                                                        </CModalHeader>
-                                                        <CModalBody className='p-5'>
-                                                            <form>
-                                                                <div className="form-group">
-                                                                    <div className="profile-photo d-flex">
-                                                                        <div className="photo-container">
-                                                                            <img src={Profilimg} alt="Profile" className="profile-image" />
-                                                                        </div>
-                                                                        <div className='photoedit'>
-                                                                            <div>
-                                                                                <label htmlFor="file-input">
-                                                                                    <FaEdit />
-                                                                                </label>
-                                                                                <input type="file" id="file-input" accept="image/*" />
-                                                                            </div>
-                                                                            <p className='ms-2'>Upload profile photo (jpg, png, jpeg)</p>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div className="form-group">
-                                                                    <label htmlFor="name">Name</label>
-                                                                    <input
-                                                                        type="text"
-                                                                        name="name"
-                                                                        id="name"
-                                                                        placeholder="Casos Billal"
-                                                                    />
-                                                                </div>
-
-                                                                <div className="form-row row">
-                                                                    <div className="form-group col-md-6">
-                                                                        <label htmlFor="role">Role</label>
-                                                                        <select name="role" id="role">
-                                                                            <option value="">Select Role</option>
-                                                                            <option value="admin">Admin</option>
-                                                                            <option value="doctor">Doctor</option>
-                                                                            <option value="nurse">Nurse</option>
-                                                                        </select>
-                                                                    </div>
-
-                                                                    <div className="form-group col-md-6">
-                                                                        <label htmlFor="department">Department</label>
-                                                                        <select name="department" id="department">
-                                                                            <option value="">Select Department</option>
-                                                                            <option value="cardiology">Cardiology</option>
-                                                                            <option value="dermatology">Dermatology</option>
-                                                                            <option value="neurology">Neurology</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div className="form-row row">
-                                                                    <div className="form-group col-md-6">
-                                                                        <label htmlFor="email">Email</label>
-                                                                        <input
-                                                                            type="eamil"
-                                                                            name="email"
-                                                                            id="email"
-                                                                            placeholder="email"
-                                                                        />
-                                                                    </div>
-
-                                                                    <div className="form-group col-md-6">
-                                                                        <label htmlFor="gender">Gender</label>
-                                                                        <select name="gender" id="gender">
-                                                                            <option value="">Select Gender</option>
-                                                                            <option value="male">Male</option>
-                                                                            <option value="female">Female</option>
-                                                                            <option value="other">Other</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-
-
-
-                                                                <div className="form-row row">
-                                                                    <div className="form-group col-md-6">
-                                                                        <label htmlFor="contact1">Contact 1</label>
-                                                                        <input
-                                                                            type="tel"
-                                                                            name="contact1"
-                                                                            id="contact1"
-                                                                            placeholder="+229 01 90 00 00 00"
-                                                                        />
-                                                                    </div>
-
-                                                                    <div className="form-group col-md-6">
-                                                                        <label htmlFor="contact2">Contact 2</label>
-                                                                        <input
-                                                                            type="tel"
-                                                                            name="contact2"
-                                                                            id="contact2"
-                                                                            placeholder="+229 01 90 00 00 00"
-                                                                        />
-                                                                    </div>
-                                                                </div>
-
-                                                                <div className="form-group">
-                                                                    <label htmlFor="address">Address</label>
-                                                                    <input
-                                                                        name="address"
-                                                                        id="address"
-                                                                        placeholder="Your address here"
-                                                                    />
-                                                                </div>
-
-                                                                <div className="form-group d-flex justify-content-center">
-                                                                    <CButton color="primary" type="submit">
-                                                                        Continue &nbsp; <BsArrowRight />
-                                                                    </CButton>
-                                                                </div>
-                                                            </form>
-                                                        </CModalBody>
-                                                    </CModal>
-
+                                                        onPatientAdded={handleStaffAdded}
+                                                    />
 
                                                     <div className="search-container">
                                                         <div className="search-bar">
                                                             <FaSearch
                                                                 size="sm"
-                                                                className="search-icon" style={{ width: '20px', height: '20px' }}/>
+                                                                className="search-icon" style={{ width: '20px', height: '20px' }} />
                                                             <input
                                                                 type="text"
                                                                 placeholder="Search for a patient (Enter ID, name or Tel)"
@@ -717,28 +309,12 @@ const StaffList = () => {
                                                                     <CTableDataCell align="middle" >
                                                                         <div className='actionbtn'>
                                                                             <div className='left'>
-                                                                                <FaEdit onClick={() => handleIconClick('Left icon clicked')} />
+                                                                                <FaEdit />
                                                                             </div>
                                                                             <div className='right'>
-                                                                                <BsTrash3 onClick={() => handleIconClick('right icon clicked')} style={{ color: '#EF3826' }} />
+                                                                                <BsTrash3  style={{ color: '#EF3826' }} />
                                                                             </div>
                                                                         </div>
-
-                                                                        {/* Modal */}
-                                                                        <CModal visible={visible1} onClose={() => setVisible1(false)}>
-                                                                            <CModalHeader>
-                                                                                <CModalTitle>Modal Title</CModalTitle>
-                                                                            </CModalHeader>
-                                                                            <CModalBody>
-                                                                                <p>{modalContent}</p>  {/* Affiche le contenu dynamique du modal */}
-                                                                            </CModalBody>
-                                                                            <CModalFooter>
-                                                                                <CButton color="secondary">
-                                                                                    Close
-                                                                                </CButton>
-                                                                                <CButton color="primary">Save changes</CButton>
-                                                                            </CModalFooter>
-                                                                        </CModal>
                                                                     </CTableDataCell>
                                                                 </CTableRow>
                                                                 <CTableRow className=''>
@@ -750,10 +326,10 @@ const StaffList = () => {
                                                                     <CTableDataCell align="middle" >
                                                                         <div className='actionbtn'>
                                                                             <div className='left'>
-                                                                                <FaEdit onClick={() => handleIconClick('Left icon clicked')} />
+                                                                                <FaEdit />
                                                                             </div>
                                                                             <div className='right'>
-                                                                                <BsTrash3 onClick={() => handleIconClick('right icon clicked')} style={{ color: '#EF3826' }} />
+                                                                                <BsTrash3  style={{ color: '#EF3826' }} />
                                                                             </div>
                                                                         </div>
                                                                     </CTableDataCell>                                                                </CTableRow>
@@ -766,10 +342,10 @@ const StaffList = () => {
                                                                     <CTableDataCell align="middle" >
                                                                         <div className='actionbtn'>
                                                                             <div className='left'>
-                                                                                <FaEdit onClick={() => handleIconClick('Left icon clicked')} />
+                                                                                <FaEdit />
                                                                             </div>
                                                                             <div className='right'>
-                                                                                <BsTrash3 onClick={() => handleIconClick('right icon clicked')} style={{ color: '#EF3826' }} />
+                                                                                <BsTrash3  style={{ color: '#EF3826' }} />
                                                                             </div>
                                                                         </div>
                                                                     </CTableDataCell>

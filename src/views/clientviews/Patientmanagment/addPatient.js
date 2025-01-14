@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { CModal, CModalHeader, CModalBody, CModalFooter, CModalTitle, CButton } from '@coreui/react';
+import { useNavigate  } from 'react-router-dom'; 
 import { BsArrowRight } from 'react-icons/bs';
 import axios from 'axios';
 import '../../../assets/css/mainstyle.css';
@@ -19,6 +20,7 @@ const AddPatientModal = ({ visible, onClose, onPatientAdded }) => {
     const [message, setMessage] = useState('');
     const [messageType, setMessageType] = useState('');
     const [formData, setFormData] = useState({
+        patientNPI:'',
         name: '',
         age: '',
         gender: '',
@@ -26,7 +28,10 @@ const AddPatientModal = ({ visible, onClose, onPatientAdded }) => {
         email: '',
         hospitalId: '',
         address: '',
+        otherdetails:'',
     });
+
+    const navigate = useNavigate();  // Utilisation de useNavigate
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -41,7 +46,9 @@ const AddPatientModal = ({ visible, onClose, onPatientAdded }) => {
             setMessage('Patient ajouté avec succès!');
             setMessageType('success');
             onPatientAdded(response.data);
+            navigate(`/patient/${response.data._id}`);  // Remplacer history.push par navigate
             setFormData({
+                patientNPI:'',
                 name: '',
                 age: '',
                 gender: '',
@@ -49,6 +56,7 @@ const AddPatientModal = ({ visible, onClose, onPatientAdded }) => {
                 email: '',
                 hospitalId: '',
                 address: '',
+                otherdetails:''
             });
         } catch (error) {
             console.error('Erreur lors de l’ajout du patient:', error);
@@ -67,9 +75,10 @@ const AddPatientModal = ({ visible, onClose, onPatientAdded }) => {
                 return;
             }
             try {
-                const response = await axios.get(`http://localhost:5000/api/hospitals/admin/${userId}`, {
+                const token = localStorage.getItem('access_token');
+                const response = await axios.get(`http://localhost:5000/api/hospitals/admin/`+ token, {
                     headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
                     }
                 });
                 setHospitals(response.data); // Sauvegarder les hôpitaux dans l'état
@@ -78,7 +87,6 @@ const AddPatientModal = ({ visible, onClose, onPatientAdded }) => {
                 setMessage('Erreur lors de la récupération des hôpitaux.');
             }
         };
-
         if (userId) {
             fetchHospitals(); // Appeler la fonction pour récupérer les hôpitaux uniquement si l'utilisateur est authentifié
         }
@@ -102,6 +110,19 @@ const AddPatientModal = ({ visible, onClose, onPatientAdded }) => {
                     </div>
                 )}
                 <form onSubmit={handleSubmit}>
+                    <div className="form-group">
+                        <label htmlFor="patientNPI">NPI</label>
+                        <input
+                            type="Number"
+                            name="patientNPI"
+                            id="patientNPI"
+                            value={formData.patientNPI}
+                            onChange={handleChange}
+                            placeholder="0598677474333"
+                            required
+                        />
+                    </div>
+
                     <div className="form-group">
                         <label htmlFor="name">Name</label>
                         <input
@@ -183,14 +204,14 @@ const AddPatientModal = ({ visible, onClose, onPatientAdded }) => {
                         />
                     </div>
 
-                    {/* <div className="form-group">
-                        <label htmlFor="details">Details</label>
+                    <div className="form-group">
+                        <label htmlFor="otherdetails">Details</label>
                         <input
-                            name="details"
-                            id="details" onChange={handleChange} value={formData.details}
+                            name="otherdetails"
+                            id="otherdetails" onChange={handleChange} value={formData.otherdetails}
                             placeholder="Your Details here"
                         />
-                    </div> */}
+                    </div>
 
                     <div className="savenewuser form-group d-flex justify-content-center">
                         <CButton type="submit">
