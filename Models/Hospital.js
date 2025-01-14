@@ -59,6 +59,10 @@ const hospitalSchema = new mongoose.Schema({
     type: String, 
     // default: true 
   },
+  is_main_hospital:{
+    type: Boolean, 
+    default: false 
+  },
   subscription_id: {
     type: String, 
     default: null 

@@ -188,6 +188,7 @@ module.exports = (router) => {
         hospital_phone: req.body.hospital_phone,
         hospital_phone2: req.body.hospital_phone2,
         hospital_admin_id: req.body.hospital_admin_id, // Inclure l'ID de l'administrateur
+        is_main_hospital: true,
       });
 
       await newHospital.save();
