@@ -6,7 +6,7 @@ const api = axios.create({
     'Content-Type': 'application/json',
   },
 });
-
+ 
 // Ajouter un intercepteur pour gérer le token d'authentification
 api.interceptors.request.use(
   (config) => {

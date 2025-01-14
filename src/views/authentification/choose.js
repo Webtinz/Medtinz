@@ -21,6 +21,8 @@ const Choose1 = ({ planId }) => {
     const fetchPlan = async () => {
       try {
         const subscriptionResponse = await api.get(`/api/subscriptions/${planId}`);
+        console.log(planId);
+        
         setSubscriptionDetails(subscriptionResponse.data);
       } catch (error) {
         console.error('Error fetching subscription plan:', error);

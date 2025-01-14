@@ -67,9 +67,10 @@ const AddPatientModal = ({ visible, onClose, onPatientAdded }) => {
                 return;
             }
             try {
-                const response = await axios.get(`http://localhost:5000/api/hospitals/admin/${userId}`, {
+                const token = localStorage.getItem('access_token');
+                const response = await axios.get(`http://localhost:5000/api/hospitals/admin/`+ token, {
                     headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
                     }
                 });
                 setHospitals(response.data); // Sauvegarder les hôpitaux dans l'état
