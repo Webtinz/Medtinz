@@ -49,14 +49,14 @@ router.post('/adduser', authMiddleware, userController.addUser);
 router.get('/users/:userId', authMiddleware, userController.getUserDetails);
 router.put('/users/:userId', authMiddleware, userController.updateUser);
 router.delete('/users/:userId', authMiddleware, userController.deleteUser);
-router.get('/usersbydepartment', authMiddleware, userController.getUsersByHospitalAndDepartment);
+router.get('/usersbydepartment', authMiddleware, userController.getUsersByHospital);
 
 // Role Management
-router.post('/addroles', authMiddleware, roleController.createRole); // Créer un rôle
-router.get('/getallroles', authMiddleware, roleController.getAllRoles); // Lire tous les rôles
-router.get('/getoneroles/:id', authMiddleware, roleController.getRoleById); // Lire un rôle par ID
-router.put('/updateroles/:id', authMiddleware, roleController.updateRoleById); // Mettre à jour un rôle
-router.delete('/deleteroles/:id', authMiddleware, roleController.deleteRoleById); // Supprimer un rôle
+router.post('/addroles', /*authMiddleware,*/ roleController.createRole); // Créer un rôle
+router.get('/getallroles', /*authMiddleware,*/ roleController.getAllRoles); // Lire tous les rôles
+router.get('/getoneroles/:id', /*authMiddleware,*/ roleController.getRoleById); // Lire un rôle par ID
+router.put('/updateroles/:id', /*authMiddleware,*/ roleController.updateRoleById); // Mettre à jour un rôle
+router.delete('/deleteroles/:id', /*authMiddleware,*/ roleController.deleteRoleById); // Supprimer un rôle
 // Rechercher un rôle par name
 router.get('/roles/search', authMiddleware, roleController.searchRolesByName); // Protégée par JWT
 
@@ -66,7 +66,7 @@ router.post('/addhospitallogo', authMiddleware, hospitalController.addHospitalLo
 router.get('/hospitals', authMiddleware, hospitalController.getHospitals); // Protégée
 router.put('/deactivate/:hospitalId', authMiddleware, hospitalController.deactivateHospital); // Protégée
 // Récupérer les hôpitaux par hospital_admin_id
-router.get('/hospitals/admin/:hospital_admin_id', hospitalController.getHospitalsByAdmin);
+router.get('/hospitals/admin/:token', hospitalController.getHospitalsByAdmin);
 // router.get('/hospitals/admin/:hospital_admin_id', hospitalController.getHospitalsByAdmin);
 // router.get('/hospital/:hospitalAdminId', authMiddleware, hospitalController.getHospitalByAdminId);
 

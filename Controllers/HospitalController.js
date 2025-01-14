@@ -43,7 +43,20 @@ exports.getHospitals = async (req, res) => {
 
 // Récupérer la liste des hôpitaux pour un hospital_admin_id spécifique
 exports.getHospitalsByAdmin = async (req, res) => {
-    const { hospital_admin_id } = req.params;
+    const { token } = req.params;
+
+    // Décoder le JWT depuis l'en-tête Authorization
+    const tokenDecoded = req.headers.authorization?.split(' ')[1];
+    if (!tokenDecoded) {
+        return res.status(401).json({ error: 'Authorization token is required.' });
+    }
+
+    // Décoder le token pour obtenir l'utilisateur connecté
+    const decoded = jwt.verify(tokenDecoded, process.env.JWT_SECRET); // Remplacez `process.env.JWT_SECRET` par votre clé secrète
+    // console.log(decoded);
+    
+    hospital_admin_id = decoded.userId; // Assurez-vous que l'ID de l'utilisateur est présent dans le payload
+
 
     try {
         // Vérifier si hospital_admin_id est fourni

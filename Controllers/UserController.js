@@ -31,7 +31,7 @@ exports.addUser = async (req, res) => {
         }
 
         // Vérification de l'existence du département
-        if (departementId && !await Department.findOne({ _id: departementId, hospital_id })) {
+        if (departementId && !await Department.findOne({ _id: departementId })) {
             return res.status(400).json({ message: 'Département non trouvé ou ne correspond pas à cet hôpital.' });
         }
 
@@ -39,7 +39,7 @@ exports.addUser = async (req, res) => {
         const user = new User({
             lastname,
             firstname,
-            username,
+            username: username ?? '',
             email,
             password,
             role,
@@ -194,7 +194,7 @@ exports.deleteUser = async (req, res) => {
 };
 
 // Obtenir les utilisateurs d'un hôpital et d'un département
-exports.getUsersByHospitalAndDepartment = async (req, res) => {
+exports.getUsersByHospital = async (req, res) => {
     try {
         
         // Décoder le JWT depuis l'en-tête Authorization
@@ -208,7 +208,7 @@ exports.getUsersByHospitalAndDepartment = async (req, res) => {
         const token_user_id = decoded.userId; // Assurez-vous que l'ID de l'utilisateur est présent dans le payload
         
 
-        const { hospital_id, departementId } = req.query;
+        const { hospital_id } = req.query;
 
         // Vérification de l'hôpital et de l'autorisation
         const hospital = await Hospital.findById(hospital_id);
@@ -219,20 +219,18 @@ exports.getUsersByHospitalAndDepartment = async (req, res) => {
             return res.status(403).json({ message: 'Accès refusé. Vous n\'êtes pas administrateur de cet hôpital.' });
         }
 
-        // Vérification du département
-        if (departementId && !await Department.findOne({ _id: departementId, hospital_id })) {
-            return res.status(400).json({ message: 'Département non trouvé ou ne correspond pas à cet hôpital.' });
-        }
-
         // Récupération des utilisateurs
-        // const users = await User.find({ hospital_id, departementId }).populate('hospital_id departementId specialties');
-        const users = await User.find({ hospital_id, departementId })
+        const users = await User.find({ hospital_id })
                                 .populate({
                                     path: 'hospital_id',
                                     select: '_id hospital_name' // Inclut uniquement _id et hospital_name
                                 })
                                 .populate({
                                     path: 'departementId',
+                                    select: '_id name' // Inclut uniquement _id et name
+                                })
+                                .populate({
+                                    path: 'role',
                                     select: '_id name' // Inclut uniquement _id et name
                                 })
                                 .populate({
