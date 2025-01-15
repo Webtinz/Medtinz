@@ -46,7 +46,7 @@ const StaffList = () => {
     useEffect(() => {
         const fetchMyHospitalUser = async () => {
             try {
-                const response = await api.get(`api/usersbydepartment?hospital_id=6784d8be4bf5ef013005f84e`);
+                const response = await api.get(`api/usersbydepartment?hospital_id=67869b5202ea14a7900befa7`);
                 setMyHospitalUser(response.data); // Assure-toi que l'API renvoie les utilisateurs dans un champ `users`
                 setTotalPages(response.data); // Assure-toi que l'API renvoie `totalPages`
             } catch (error) {

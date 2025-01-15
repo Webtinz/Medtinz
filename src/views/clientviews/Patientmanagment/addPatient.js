@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { CModal, CModalHeader, CModalBody, CModalFooter, CModalTitle, CButton } from '@coreui/react';
-import { useNavigate  } from 'react-router-dom'; 
+import { CModal, CModalHeader, CModalBody, CModalTitle, CButton } from '@coreui/react';
+import { useNavigate } from 'react-router-dom';
 import { BsArrowRight } from 'react-icons/bs';
 import axios from 'axios';
 import '../../../assets/css/mainstyle.css';
@@ -20,7 +20,7 @@ const AddPatientModal = ({ visible, onClose, onPatientAdded }) => {
     const [message, setMessage] = useState('');
     const [messageType, setMessageType] = useState('');
     const [formData, setFormData] = useState({
-        patientNPI:'',
+        patientNPI: '',
         name: '',
         age: '',
         gender: '',
@@ -28,7 +28,7 @@ const AddPatientModal = ({ visible, onClose, onPatientAdded }) => {
         email: '',
         hospitalId: '',
         address: '',
-        otherdetails:'',
+        otherdetails: '',
     });
 
     const navigate = useNavigate();  // Utilisation de useNavigate
@@ -45,10 +45,17 @@ const AddPatientModal = ({ visible, onClose, onPatientAdded }) => {
             console.log('Patient ajouté avec succès:', response.data);
             setMessage('Patient ajouté avec succès!');
             setMessageType('success');
-            onPatientAdded(response.data);
-            navigate(`/patient/${response.data._id}`);  // Remplacer history.push par navigate
+            const patientId = response.data.patient._id;  // Accéder à l'ID à partir de `patient`
+
+            console.log('Patient ID:', patientId);  // Affichez l'ID du patient dans la console
+
+            if (patientId) {
+                // Rediriger vers la carte du patient avec l'ID
+                navigate(`/patientcard/${patientId}`);
+            }
+
             setFormData({
-                patientNPI:'',
+                patientNPI: '',
                 name: '',
                 age: '',
                 gender: '',
@@ -56,7 +63,7 @@ const AddPatientModal = ({ visible, onClose, onPatientAdded }) => {
                 email: '',
                 hospitalId: '',
                 address: '',
-                otherdetails:''
+                otherdetails: ''
             });
         } catch (error) {
             console.error('Erreur lors de l’ajout du patient:', error);
@@ -76,7 +83,7 @@ const AddPatientModal = ({ visible, onClose, onPatientAdded }) => {
             }
             try {
                 const token = localStorage.getItem('access_token');
-                const response = await axios.get(`http://localhost:5000/api/hospitals/admin/`+ token, {
+                const response = await axios.get(`http://localhost:5000/api/hospitals/admin/` + token, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('access_token')}`
                     }

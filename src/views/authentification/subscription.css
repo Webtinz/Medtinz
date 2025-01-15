@@ -73,24 +73,24 @@ body {
   background-color: #FFFFFF;
 }
 
-.table {
+.subscription-container .table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
   overflow-x: auto;
 }
 
-.table th {
+.subscription-container .table th {
   padding: 10px 18px;
   text-align: center;
   font-size: 1.2rem; /* Taille de texte ajustée */
 }
 
-.table td {
+.subscription-container .table td {
   padding: 10px 20px;
 }
 
-.table-bordered {
+.subscription-container .table-bordered {
   border: 1px solid #FFFFFF;
 }
 
@@ -99,15 +99,15 @@ body {
   font-weight: bold;
 }
 
-.table td {
+.subscription-container .table td {
   background-color: #f3fcf6d5;
 }
 
-.table tbody tr:nth-child(odd) {
+.subscription-container .table tbody tr:nth-child(odd) {
   background-color: #0c4118b9 !important;
 }
 
-.table tbody tr:nth-child(even) {
+.subscription-container .table tbody tr:nth-child(even) {
   background-color: #FFFFFF;
 }
 
@@ -218,7 +218,7 @@ body {
       display: none;
   }
 
-  .table th, .table td {
+  .subscription-container .table th, .table td {
       font-size: 0.875rem; /* Réduit la taille de la police */
   }
 
@@ -234,13 +234,13 @@ body {
 
 /* Responsive : Tableau devient scrollable sur petits écrans */
 @media (max-width: 768px) {
-  .table {
+  .subscription-container .table {
       display: block;
       overflow-x: auto;
       white-space: nowrap;
   }
 
-  .table th, .table td {
+  .subscription-container .table th, .subscription-container .table td {
       padding: 8px 12px;
       font-size: 14px;
   }
@@ -260,7 +260,7 @@ body {
 
 /* Responsive : Ajuster la taille du texte sur très petits écrans */
 @media (max-width: 480px) {
-  .table th, .table td {
+  .subscription-container .table th, .subscription-container .table td {
       font-size: 12px;
       padding: 6px 10px;
   }
@@ -300,7 +300,7 @@ body {
       padding: 0 15%;
   }
 
-  .table th, .table td {
+  .subscription-container .table th, .subscription-container .table td {
       font-size: 1.2rem;
   }
 
