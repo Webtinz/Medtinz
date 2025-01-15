@@ -203,7 +203,8 @@ const AddStaffModal = ({ visible, onClose, handleStaffAdded, initialData, setVis
                     <div className="form-group">
                         <div className="profile-photo d-flex">
                             <div className="photo-container">
-                                <img src={Profilimg} alt="Profile" className="profile-image" />
+                                {/* <img src={Profilimg} alt="Profile" className="profile-image" /> */}
+                                <img src='https://toppng.com/uploads/preview/icons-logos-emojis-user-icon-png-transparent-11563566676e32kbvynug.png' alt="Profile" className="profile-image" />
                             </div>
                             <div className='photoedit'>
                                 <label htmlFor="file-input">
@@ -232,26 +233,76 @@ const AddStaffModal = ({ visible, onClose, handleStaffAdded, initialData, setVis
                         </select>
                         {errors.hospital_id && <div className="text-danger">{errors.hospital_id}</div>}
                     </div>
-                    {/* Specialties */}
-                    <div className="form-group">
-                        <label>Specialties</label>
-                        <Select
-                            closeMenuOnSelect={false}
-                            components={animatedComponents}
-                            isMulti
-                            options={Specialities.map(option => ({
-                                label: option.name,
-                                value: option._id
-                            }))}
-                            onChange={handleSpecialtiesChange}
-                            value={Specialities.filter(option =>
-                                formData.specialties.includes(option._id)
-                            ).map(option => ({
-                                label: option.name,
-                                value: option._id
-                            }))}
-                        />
-                    </div>
+                        {/* Department */}
+                        <div  className="form-group">
+                        {/* <div className="form-group col-md-6"> */}
+                            <label htmlFor="departementId">Department</label>
+                            <select
+                                name="departementId"
+                                id="departementId"
+                                onChange={handleInputChange}
+                                value={formData.departementId}
+                            >
+                                <option value="">Select Department</option>
+                                {Departments.map(department => (
+                                    <option key={department._id} value={department._id}>
+                                        {department.name}
+                                    </option>
+                                ))}
+                            </select>
+                            {errors.departementId && <div className="text-danger">{errors.departementId}</div>}
+                        </div>
+                        {/* Specialties */}
+                        {/* <div  className={`form-group ${ modalValue === 'Allusers' ? 'col-md-6' : 'col-md-12' }`}> */}
+                        <div
+  className="form-group"
+  style={{
+    marginBottom: '10px',
+    marginTop: '20px',
+    backgroundColor: '#f9f9f9',
+    position: 'relative', // Ajouté pour éviter les conflits de position
+    paddingTop: '10px' // Ajouté pour donner de l'espace au label
+  }}
+>
+  <label
+    style={{
+      fontSize: '16px', // Taille de police pour rendre le label visible
+      color: '#333',    // Couleur explicite pour s'assurer qu'il est visible
+      position: 'absolute', // Position absolue pour éviter le chevauchement
+      top: '-10px',     // Ajuster si nécessaire pour l'alignement
+      left: '0',        // Aligné à gauche
+    }}
+  >
+    Specialties
+  </label>
+  <Select
+    closeMenuOnSelect={false}
+    components={animatedComponents}
+    isMulti
+    options={Specialities.map(option => ({
+      label: option.name,
+      value: option._id
+    }))}
+    onChange={handleSpecialtiesChange}
+    value={Specialities.filter(option =>
+      formData.specialties.includes(option._id)
+    ).map(option => ({
+      label: option.name,
+      value: option._id
+    }))}
+    styles={{
+      control: (provided) => ({
+        ...provided,
+        borderColor: '#0056B3',
+        border: '2px solid #0056B3',
+        borderRadius: '10px',
+        minHeight: '50px',
+      }),
+    }}
+  />
+</div>
+
+
                     {/* Name */}
                     <div className="form-group">
                         <label htmlFor="firstname">Firstname</label>
@@ -294,7 +345,7 @@ const AddStaffModal = ({ visible, onClose, handleStaffAdded, initialData, setVis
                     <div className="form-row row">
                         {/* Role */}
                         {(!modalValue || modalValue == 'Allusers') && (
-                            <div className="form-group col-md-6">
+                            <div className="form-group col-md-12">
                                 <label htmlFor="role">Role</label>
                                 <select
                                     name="role"
@@ -312,25 +363,6 @@ const AddStaffModal = ({ visible, onClose, handleStaffAdded, initialData, setVis
                                 {errors.role && <div className="text-danger">{errors.role}</div>}
                             </div>
                         )}
-                        {/* Department */}
-                        <div className={`form-group ${ modalValue === 'Allusers' ? 'col-md-6' : 'col-md-12' }`}>
-                        {/* <div className="form-group col-md-6"> */}
-                            <label htmlFor="departementId">Department</label>
-                            <select
-                                name="departementId"
-                                id="departementId"
-                                onChange={handleInputChange}
-                                value={formData.departementId}
-                            >
-                                <option value="">Select Department</option>
-                                {Departments.map(department => (
-                                    <option key={department._id} value={department._id}>
-                                        {department.name}
-                                    </option>
-                                ))}
-                            </select>
-                            {errors.departementId && <div className="text-danger">{errors.departementId}</div>}
-                        </div>
                     </div>
                     {/* Email */}
                     <div className="form-row row">

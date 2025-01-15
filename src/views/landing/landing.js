@@ -17,10 +17,16 @@ import table from '../../assets/images/table.png';
 import doctor from '../../assets/images/doctor.png'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import { useNavigate, useLocation } from 'react-router-dom';
 
+// 
 
 
 function App() {
+    const navigate = useNavigate();
+    const handleSignUpClick = () => {
+      navigate('/clientSignUp');
+    };
   return (
     <div className='crainte'>
       <div className='time'>
@@ -48,7 +54,7 @@ function App() {
                 
                 </ul>
                 <form className="d-flex" role="search">
-                <button className='mexi'>Sign Up</button>
+                <button className='mexi' onClick={handleSignUpClick}>Sign Up</button>
                 </form>
             </div>
             </div>

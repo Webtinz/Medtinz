@@ -30,6 +30,9 @@ const SignUp = () => {
     handleCloseModal(); // Ferme le modal
   };
 
+  const handleLoginClick = () => {
+    navigate('/clientlogin');
+  };
   // Soumission du formulaire
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -64,7 +67,7 @@ const SignUp = () => {
               <h3 className="genie mb-2">Create an account</h3>
               <p>
                 Already have an account?{' '}
-                <a href="#" className="cirus">
+                <a href="#" onClick={handleLoginClick} className="cirus">
                   Login
                 </a>
               </p>
