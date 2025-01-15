@@ -42,7 +42,7 @@ exports.getHospitals = async (req, res) => {
 };
 
 // Récupérer la liste des hôpitaux pour un hospital_admin_id spécifique
-exports.getHospitalsByAdmin = async (req, res) => {
+exports.getHospitalsByAdminToken = async (req, res) => {
     const { token } = req.params;
 
     // Décoder le JWT depuis l'en-tête Authorization
@@ -85,6 +85,36 @@ exports.getHospitalsByAdmin = async (req, res) => {
     }
 };
 
+// Récupérer la liste des hôpitaux pour un hospital_admin_id spécifique
+exports.getHospitalsByAdminId = async (req, res) => {
+    const { hospital_admin_id } = req.params;
+
+    try {
+        // Vérifier si hospital_admin_id est fourni
+        if (!hospital_admin_id) {
+            return res.status(400).json({
+                message: 'Admin ID is required',
+            });
+        }
+
+        // Rechercher les hôpitaux correspondant à l'hospital_admin_id
+        const hospitals = await Hospital.find({ hospital_admin_id });
+
+        // Vérifier si des hôpitaux ont été trouvés
+        if (!hospitals.length) {
+            return res.status(404).json({
+                message: 'No hospitals found for the given admin ID',
+            });
+        }
+
+        res.status(200).json(hospitals);
+    } catch (error) {
+        res.status(500).json({
+            message: 'Error fetching hospitals',
+            error: error.message,
+        });
+    }
+};
 
 // Désactiver un hôpital
 exports.deactivateHospital = async (req, res) => {

@@ -47,6 +47,7 @@ router.delete('/deletesubscriptions/:id', subscriptionController.deleteSubscript
 // Users Management By Hospital Admin
 router.post('/adduser', authMiddleware, userController.addUser);
 router.get('/users/:userId', authMiddleware, userController.getUserDetails);
+router.get('/usersprofile', authMiddleware, userController.getProfileDetails);
 router.put('/users/:userId', authMiddleware, userController.updateUser);
 router.delete('/users/:userId', authMiddleware, userController.deleteUser);
 router.get('/usersbydepartment', authMiddleware, userController.getUsersByHospital);
@@ -66,8 +67,8 @@ router.post('/addhospitallogo', authMiddleware, hospitalController.addHospitalLo
 router.get('/hospitals', authMiddleware, hospitalController.getHospitals); // Protégée
 router.put('/deactivate/:hospitalId', authMiddleware, hospitalController.deactivateHospital); // Protégée
 // Récupérer les hôpitaux par hospital_admin_id
-router.get('/hospitals/admin/:token', hospitalController.getHospitalsByAdmin);
-// router.get('/hospitals/admin/:hospital_admin_id', hospitalController.getHospitalsByAdmin);
+router.get('/hospitals/admin/:token', hospitalController.getHospitalsByAdminToken);
+router.get('/hospitals/adminid/:hospital_admin_id', hospitalController.getHospitalsByAdminId);
 // router.get('/hospital/:hospitalAdminId', authMiddleware, hospitalController.getHospitalByAdminId);
 
 router.post('/selectplan',  authMiddleware,  hospitalController.selectHospitalPlan); // Protégée

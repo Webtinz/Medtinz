@@ -30,6 +30,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/call', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
+app.get('/qr', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'qr.html'));
+});
 app.get('/join-call', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'join.html'));
 });
