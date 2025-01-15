@@ -44,7 +44,8 @@ async function connectDB() {
             otp: myDefaultOtp,
             is_otp_valid: true,
             type: 4,
-            password: 'AdmEvt@123'
+            password: 'AdmEvt@123',
+            role: '6786202af3ce55c9b4edf9e5'
         });
         await user.save();
 

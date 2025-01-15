@@ -130,7 +130,7 @@ module.exports = (router) => {
         email,
         username,
         picture: req.file ? req.file.filename : null, // Stocker uniquement le nom du fichier
-        role: "675af740d873d3b0ae4ed163",
+        role: "6786202af3ce55c9b4edf9e5",
         password,
         otp, // Ajouter le code OTP
         is_otp_valid: false, // Par défaut, le champ is_otp_valid est faux
