@@ -85,6 +85,7 @@ router.delete('/deletepathologies/:id', pathologieController.deletePathologie);
 router.post('/adddepartment', authMiddleware, departmentController.createDepartment); // Protégée
 // router.get('/myhospitaldepartments', authMiddleware, departmentController.getMyHospitalAllDepartments); // Protégée
 router.get('/departments', authMiddleware, departmentController.getAllDepartments); // Protégée
+router.get('/departments/hospital/:hospitalId', authMiddleware, departmentController.getDepartmentsByHospital); // Protégée
 router.get('/department', authMiddleware, departmentController.getDepartmentById); // Protégée
 router.put('/updatedepartment', authMiddleware, departmentController.updateDepartment); // Protégée
 router.delete('/deletedepartment', authMiddleware, departmentController.deleteDepartment); // Protégée

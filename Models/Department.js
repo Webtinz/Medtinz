@@ -17,6 +17,11 @@ const departmentSchema = new Schema(
     codeDep: {
       type: String,
       required: false,
+      unique: true
+    },
+    price_consult: {
+      type: String,
+      required: false,
     },
     hospital_id: {
       type: Schema.Types.ObjectId,
