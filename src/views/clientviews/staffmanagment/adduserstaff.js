@@ -11,75 +11,79 @@ import { ToastContainer, toast } from 'react-toastify';
 
 const animatedComponents = makeAnimated();
 
-const AddStaffModal = ({ visible, onClose, onStaffAdded }) => {
+
+const AddStaffModal = ({ visible, onClose, handleStaffAdded, initialData, setVisible, modalValue, handleButtonClick  }) => {
+    // if (!visible) return null; // Ne montre pas le modal si `visible` est false
     const [formData, setFormData] = useState({
-        hospital_id: "",
-        firstname: "",
-        lastname: "",
-        username: "",
-        email: "",
+        hospital_id: initialData?.hospital_id || "",
+        firstname: initialData?.firstname || "",
+        lastname: initialData?.lastname || "",
+        username: initialData?.username || "",
+        email: initialData?.email || "",
         password: "",
         confirmPassword: "",
-        role: "",
-        specialties: [],
+        role: initialData?.role || "",
+        specialties: initialData?.specialties || [],
         contact: {
-            phone: "",
-            address: ""
+            phone: initialData?.contact?.phone || "",
+            address: initialData?.contact?.address || ""
         },
-        departementId: ""
+        departementId: initialData?.departementId || ""
     });
     const [Specialities, setSpecialities] = useState([]);
     const [Hospitals, setHospitals] = useState([]);
     const [Departments, setDepartments] = useState([]);
     const [Roles, setRoles] = useState([]);
     const [errors, setErrors] = useState({});
+    
     useEffect(() => {
         const fetchSpecialities = async () => {
             try {
                 const response = await api.get('api/specialities');
                 setSpecialities(response.data);
             } catch (error) {
-                
-                                toast.error(error); // Toast erreur
+                toast.error("Error fetching specialities");
                 console.error("Error fetching specialities:", error);
             }
         };
+
         const fetchRoles = async () => {
             try {
                 const response = await api.get('api/getallroles');
                 setRoles(response.data);
             } catch (error) {
-                
-                toast.error(error); // Toast erreur
+                toast.error("Error fetching Roles");
                 console.error("Error fetching Roles:", error);
             }
         };
+
         const fetchDepartments = async () => {
             try {
                 const response = await api.get('api/departments');
                 setDepartments(response.data.data);
             } catch (error) {
-                
-                toast.error(error); // Toast erreur
+                toast.error("Error fetching Departments");
                 console.error("Error fetching Departments:", error);
             }
         };
+
         const fetchHospitals = async () => {
             try {
                 const token = localStorage.getItem('access_token');
                 const response = await api.get(`api/hospitals/admin/${token}`);
                 setHospitals(response.data);
             } catch (error) {
-                
-                toast.error(error); // Toast erreur
+                toast.error("Error fetching Hospitals");
                 console.error("Error fetching Hospitals:", error);
             }
         };
+
         fetchSpecialities();
         fetchHospitals();
         fetchDepartments();
         fetchRoles();
     }, []);
+    
     const validateForm = () => {
         const newErrors = {};
         if (!formData.firstname) newErrors.firstname = "Firstname is required";
@@ -92,13 +96,17 @@ const AddStaffModal = ({ visible, onClose, onStaffAdded }) => {
             newErrors.confirmPassword = "Passwords do not match";
         }
         if (!formData.specialties) newErrors.specialties = "Specialties is required";
-        if (!formData.role) newErrors.role = "Role is required";
+        // if (!formData.role) newErrors.role = "Role is required";
+        if (!modalValue && !formData.role) {
+            newErrors.role = "Role is required";
+        }        
         if (!formData.departementId) newErrors.departementId = "Department is required";
         if (!formData.hospital_id) newErrors.hospital_id = "Hospital is required";
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         if (name.includes("contact.")) {
@@ -117,15 +125,16 @@ const AddStaffModal = ({ visible, onClose, onStaffAdded }) => {
             }));
         }
     };
+
     const handleSpecialtiesChange = (selectedOptions) => {
         setFormData(prevData => ({
             ...prevData,
             specialties: selectedOptions ? selectedOptions.map(option => option.value) : []
         }));
     };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         if (validateForm()) {
             const formPayload = {
                 hospital_id: formData.hospital_id,
@@ -134,45 +143,47 @@ const AddStaffModal = ({ visible, onClose, onStaffAdded }) => {
                 username: formData.username,
                 email: formData.email,
                 password: formData.password,
-                role: formData.role,
+                role: formData.role ?? modalValue,
                 specialties: formData.specialties,
                 contact: formData.contact,
                 departementId: formData.departementId
             };
+            // console.log(formPayload);
+            
             try {
                 const response = await api.post('api/adduser', formPayload);
-                console.log('Success:', response.data);
-                // onClose();  // Close the modal
-                toast.success("Staff registered successfully!");
-                // Réinitialiser le formulaire après un envoi réussi
-                setFormData({
-                    hospital_id: "",
-                    firstname: "",
-                    lastname: "",
-                    username: "",
-                    email: "",
-                    password: "",
-                    confirmPassword: "",
-                    role: "",
-                    specialties: [],
-                    contact: {
-                        phone: "",
-                        address: ""
-                    },
-                    departementId: ""
-                });
 
-                // onClose();  // Close the modal
+                if (response.status === 200 && response.data.success) {
+                    // Succès
+                    toast.success("Staff registered successfully!");
+                    setFormData({
+                        hospital_id: "",
+                        firstname: "",
+                        lastname: "",
+                        username: "",
+                        email: "",
+                        password: "",
+                        confirmPassword: "",
+                        role: "",
+                        specialties: [],
+                        contact: {
+                            phone: "",
+                            address: ""
+                        },
+                        departementId: ""
+                    });
+                    handleStaffAdded();  // Callback après ajout du staff
+                    onClose(); // Fermer la modal
+                } else {
+                    // Échec géré dans la réponse
+                    toast.error(response.data.message || "Failed to register staff. Please try again.");
+                }
             } catch (error) {
-                console.error('Error:', error.data || error.message);
-                toast.error("Registration failed. Please try again." +  error.response?.data?.message);
+                toast.error("Registration failed. Please try again.");
+                console.error('Error:', error);
             }
-        }else{
-            console.log('Validation error');
-            
         }
     };
-
     return (
         <CModal
             className='newregistermodal'
@@ -183,7 +194,7 @@ const AddStaffModal = ({ visible, onClose, onStaffAdded }) => {
             onClose={onClose}
         >
             <CModalHeader>
-                <CModalTitle className='Titleformsmodal'>Register new staff</CModalTitle>
+                <CModalTitle className='Titleformsmodal'>Register new staff </CModalTitle>
             </CModalHeader>
             <CModalBody className='p-5'>
                 <form onSubmit={handleSubmit}>
@@ -280,27 +291,30 @@ const AddStaffModal = ({ visible, onClose, onStaffAdded }) => {
                         />
                         {errors.username && <div className="text-danger">{errors.username}</div>}
                     </div>
-                    {/* Role */}
                     <div className="form-row row">
-                        <div className="form-group col-md-6">
-                            <label htmlFor="role">Role</label>
-                            <select
-                                name="role"
-                                id="role"
-                                onChange={handleInputChange}
-                                value={formData.role}
-                            >
-                                <option value="">Select Role</option>
-                                {Roles.map(role => (
-                                    <option key={role._id} value={role._id}>
-                                        {role.name}
-                                    </option>
-                                ))}
-                            </select>
-                            {errors.role && <div className="text-danger">{errors.role}</div>}
-                        </div>
+                        {/* Role */}
+                        {(!modalValue || modalValue == 'Allusers') && (
+                            <div className="form-group col-md-6">
+                                <label htmlFor="role">Role</label>
+                                <select
+                                    name="role"
+                                    id="role"
+                                    onChange={handleInputChange}
+                                    value={formData.role}
+                                >
+                                    <option value="">Select Role</option>
+                                    {Roles.map((role) => (
+                                        <option key={role._id} value={role._id}>
+                                            {role.name}
+                                        </option>
+                                    ))}
+                                </select>
+                                {errors.role && <div className="text-danger">{errors.role}</div>}
+                            </div>
+                        )}
                         {/* Department */}
-                        <div className="form-group col-md-6">
+                        <div className={`form-group ${ modalValue === 'Allusers' ? 'col-md-6' : 'col-md-12' }`}>
+                        {/* <div className="form-group col-md-6"> */}
                             <label htmlFor="departementId">Department</label>
                             <select
                                 name="departementId"

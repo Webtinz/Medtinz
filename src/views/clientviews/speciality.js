@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     CButton,
     CRow,
@@ -11,9 +11,25 @@ import { FaBars, FaSearch } from "react-icons/fa";
 import { BsPersonPlus, BsChevronRight } from 'react-icons/bs';
 import '../../assets/css/mainstyle.css';
 import Adminprofil from '../../assets/images/adminprofil.png';
+import api from '../../service/caller';
+import { ToastContainer, toast } from 'react-toastify';
 
 const Speciality = () => {
 
+    const [UserData, setUserData] = useState([]);  
+
+    useEffect(() => {
+      const fetchLoggedUserData = async () => {
+        try {
+          const response = await api.get('api/usersprofile');
+  
+          setUserData(response.data);
+        } catch (error) {
+          toast.error("Failed to fetch data");
+        }
+      };
+      fetchLoggedUserData();
+    }, []);
 
     return (
         <div className="dashboard-header" >
@@ -33,8 +49,8 @@ const Speciality = () => {
                                     <CNavLink href="#" className="d-flex align-items-center ms-auto">
                                         <img src={Adminprofil} className='cardicon' alt="Consultation Icon" width={'50'} height={'50'} />
                                         <div>
-                                            <span className="ms-2">Semia BOKO</span>
-                                            <p className="ms-2">Admin</p>
+                                            <span className="ms-2">{UserData.firstname} {UserData.lastname}</span>
+                                            <p className="ms-2">{UserData.role?.name}</p>
                                         </div>
                                     </CNavLink>
                                 </CNavItem>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaBars, FaSearch } from "react-icons/fa";
 import { CCol, CRow, CHeaderNav, CNavItem, CNavLink } from '@coreui/react';
 import '../../assets/css/mainstyle.css';
@@ -10,16 +10,39 @@ import Dashimg3 from '../../assets/images/presquered.png'
 import Dashicon1 from '../../assets/images/orangeicon.png'
 import Dashicon2 from '../../assets/images/purple2icon.png'
 import Dashicon3 from '../../assets/images/red.png'
+import api from '../../service/caller';
+import { ToastContainer, toast } from 'react-toastify';
+
 
 const DashboardPage = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+
+  const [UserData, setUserData] = useState([]);  
+
+  useEffect(() => {
+    const fetchLoggedUserData = async () => {
+      try {
+        const response = await api.get('api/usersprofile');
+
+        setUserData(response.data);
+      } catch (error) {
+        toast.error("Failed to fetch data");
+      }
+    };
+    fetchLoggedUserData();
+  }, []);
+  
+  // console.log('Demand profile data', UserData);
+
+  
   // Fonction pour basculer l'état de la sidebar
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
   return (
     <CRow>
       <CCol xs={12}>
+        <ToastContainer /> {/* Conteneur pour afficher les toasts */}
         <div className="dashboard-header">
           <div position="sticky" style={{ backgroundColor: '#DFEAF5', border: "none" }}>
             <div className='row d-flex align-items-center'>
@@ -53,8 +76,8 @@ const DashboardPage = () => {
                     <CNavLink href="#" className="d-flex align-items-center">
                       <img src={Adminprofil} className='cardicon' alt="Consultation Icon" width={'50'} height={'50'} />
                       <div>
-                        <span className="ms-2">Semia BOKO</span>
-                        <p className="ms-2">Admin</p>
+                        <span className="ms-2">{UserData.firstname} {UserData.lastname}</span>
+                        <p className="ms-2">{UserData.role?.name}</p>
                       </div>
                     </CNavLink>
                   </CNavItem>

@@ -34,6 +34,7 @@ import api from '../../../service/caller';
 
 const StaffList = () => {
     const [visible, setVisible] = useState(false);
+    const [modalValue, setModalValue] = useState(null); // Valeur à passer au modal
     const [isEditModalVisible, setEditModalVisible] = useState(false);
     const [staffs, setStaffs] = useState([]); // Liste des utilisateurs filtrée
     const [activeRole, setActiveRole] = useState("Allusers"); // Rôle actif (par défaut "Allusers")
@@ -42,11 +43,40 @@ const StaffList = () => {
     const [currentPage, setCurrentPage] = useState(1); // Page actuelle
     const [totalPages, setTotalPages] = useState(1); // Nombre total de pages
     const [selectedUser, setSelectedUser] = useState(null); // Utilisateur sélectionné pour modification
+    
+    const [UserData, setUserData] = useState([]);  
+
+    const [HospitalsList, setHospitalsList] = useState([]);
 
     useEffect(() => {
-        const fetchMyHospitalUser = async () => {
+
+        const fetchHospitalsList = async () => {
             try {
-                const response = await api.get(`api/usersbydepartment?hospital_id=6784d8be4bf5ef013005f84e`);
+                const token = localStorage.getItem('access_token');
+                const response = await api.get(`api/hospitals/admin/${token}`);
+                // console.log(response.data);
+        
+                // Récupérer les _id des hôpitaux et les combiner en une seule chaîne
+                const hospitalIds = response.data.map(hospital => hospital._id).join(',');
+        
+                // console.log(hospitalIds);  // Afficher la chaîne des ids
+        
+                // Passer la chaîne d'ids dans la fonction suivante, si nécessaire
+                fetchMyHospitalUser(hospitalIds);  // Appeler la fonction avec les hospitalIds
+        
+                setHospitalsList(response.data);
+            } catch (error) {                
+                toast.error(error); // Toast erreur
+                console.error("Error fetching Hospitals List:", error);
+            }
+        };
+        
+        // La liste des user des hopitaux dont l'admin est actuellement connecte
+        const fetchMyHospitalUser = async (hospitalIds) => {
+            try {
+                const response = await api.get(`api/usersbydepartment?hospital_id=${hospitalIds}`);
+                console.log(response.data);
+                
                 setMyHospitalUser(response.data); // Assure-toi que l'API renvoie les utilisateurs dans un champ `users`
                 setTotalPages(response.data); // Assure-toi que l'API renvoie `totalPages`
             } catch (error) {
@@ -54,6 +84,7 @@ const StaffList = () => {
                 console.error("Error fetching Hospital Users", error);
             }
         };
+        
 
         const fetchRoles = async () => {
             try {
@@ -64,10 +95,35 @@ const StaffList = () => {
                 console.error("Error fetching Roles:", error);
             }
         };
+        
+        const fetchLoggedUserData = async () => {
+        try {
+            const response = await api.get('api/usersprofile');
 
+            // response.data.role.name.includes('Admin') ? console.log(response.data.role.name) : console.log('RAS');
+        //    console.log(response.data);
+    
+            setUserData(response.data);
+        } catch (error) {
+            toast.error("Failed to fetch data");
+        }
+        };
+        fetchHospitalsList();
+        fetchLoggedUserData();
         fetchMyHospitalUser(); // Charger les utilisateurs
         fetchRoles(); // Charger les rôles
     }, []); // Exécuter cet effet une seule fois au montage
+
+
+    const handleButtonClick = (value) => {
+        // console.log(value);
+        if (value !== 'Allusers') {
+            setModalValue(value); // Met à jour la valeur à passer            
+        }else{
+            setModalValue("Allusers"); // Met à jour la valeur à passer   
+        }
+        setVisible(true); // Ouvre le modal
+    };
 
     const handleStaffAdded = (newStaff) => {
         setStaffs((prev) => [...prev, newStaff]);
@@ -93,10 +149,12 @@ const StaffList = () => {
 
 
     const filterUsersByRole = (role) => {
+        console.log(role);
+        
         if (role === "Allusers") {
             return myHospitalUser; // Si "Allusers", afficher tous les utilisateurs
         }
-        return myHospitalUser.filter((user) => user.role._id === role); // Filtrer par rôle
+        return myHospitalUser.filter((user) => user.role?._id === role); // Filtrer par rôle
     };
 
     return (
@@ -121,8 +179,8 @@ const StaffList = () => {
                                     <CNavLink href="#" className="d-flex ms-auto">
                                         <img src={Adminprofil} className='cardicon' alt="Consultation Icon" width={'50'} height={'50'} />
                                         <div>
-                                            <span className="ms-2" style={{ color: 'black' }}>Semia BOKO</span>
-                                            <p className="ms-2" style={{ color: 'black' }}>Admin</p>
+                                            <span className="ms-2">{UserData.firstname} {UserData.lastname}</span>
+                                            <p className="ms-2">{UserData.role?.name}</p>
                                         </div>
                                     </CNavLink>
                                 </CNavItem>
@@ -150,13 +208,92 @@ const StaffList = () => {
                                         </CTabList>
 
                                         <CTabContent>
+                                            <CTabPanel className="p-3" itemKey="Allusers">
+                                                <div className='tablist' >
+                                                    <div className='d-flex mt-4'>
+                                                        <CButton onClick={() =>  handleButtonClick('Allusers')} className="registernewbtn ms-auto d-flex align-items-center" active tabIndex={-1}>
+                                                            <BsPersonPlus className='mx-2' /> Register New user
+                                                        </CButton>
+                                                    </div>
+                                                    <AddStaffModal
+                                                        visible={visible}
+                                                        onClose={() => setVisible(false)}
+                                                        onPatientAdded={handleStaffAdded}
+
+                                                        handleStaffAdded={handleStaffAdded}
+                                                        setVisible={setVisible} 
+                                                        modalValue={modalValue} 
+                                                        handleButtonClick={handleButtonClick} 
+                                                    />
+
+                                                    <div className="search-container">
+                                                        <div className="search-bar">
+                                                            <FaSearch
+                                                                size="sm"
+                                                                className="search-icon" style={{ width: '20px', height: '20px' }} />
+                                                            <input
+                                                                type="text"
+                                                                placeholder="Search for a patient (Enter ID, name or Tel)"
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <CTable hover className='mt-5' align="middle" responsive>
+                                                            <CTableHead>
+                                                                <CTableRow>
+                                                                    <CTableHeaderCell scope="col">Profile</CTableHeaderCell>
+                                                                    <CTableHeaderCell scope="col">Name</CTableHeaderCell>
+                                                                    <CTableHeaderCell scope="col">Role</CTableHeaderCell>
+                                                                    <CTableHeaderCell scope="col">Department</CTableHeaderCell>
+                                                                    <CTableHeaderCell scope="col">Status</CTableHeaderCell>
+                                                                    <CTableHeaderCell scope="col">Action</CTableHeaderCell>
+                                                                </CTableRow>
+                                                            </CTableHead>
+                                                            <CTableBody>
+                                                                        {myHospitalUser.map((user, index) => (
+                                                                            <CTableRow key={index}>
+                                                                                <CTableDataCell align="middle">
+                                                                                    <img
+                                                                                        src={Doctorvector}
+                                                                                        className="cardicon"
+                                                                                        alt="Consultation Icon"
+                                                                                        width="50"
+                                                                                        height="50"
+                                                                                    />
+                                                                                </CTableDataCell>
+                                                                                <CTableDataCell>{user.firstname} {user.lastname}</CTableDataCell>
+                                                                                <CTableDataCell>{user.hospital_id.hospital_name}</CTableDataCell>
+                                                                                <CTableDataCell>{user.role.name ?? 'Undefined'}</CTableDataCell>
+                                                                                <CTableDataCell>
+                                                                                    {user.departementId[0]?.name ?? 'Undefined'}
+                                                                                </CTableDataCell>
+                                                                                <CTableDataCell align="middle">
+                                                                                    <span className="coloredsucess">Active</span>
+                                                                                </CTableDataCell>
+                                                                                <CTableDataCell align="middle">
+                                                                                    <div className="actionbtn">
+                                                                                        <div className="left">
+                                                                                            <FaEdit onClick={() => handleEditClick(user)}  />
+                                                                                        </div>
+                                                                                        <div className="right">
+                                                                                            <BsTrash3 style={{ color: '#EF3826' }} />
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </CTableDataCell>
+                                                                            </CTableRow>
+                                                                        ))}
+                                                            </CTableBody>
+                                                        </CTable>
+                                                    </div>
+                                                </div>
+                                            </CTabPanel>
                                             {roles.map((role) => (
                                                 <React.Fragment key={role._id}>
                                                     <CTabPanel className="p-3" itemKey={role._id}>
                                                         <div className="tablist">
                                                             <div className="d-flex mt-4">
                                                                 <CButton
-                                                                    onClick={() => setVisible(true)}
+                                                                    onClick={() => handleButtonClick(role._id)}
                                                                     className="registernewbtn ms-auto d-flex align-items-center"
                                                                     active
                                                                     tabIndex={-1}
@@ -167,7 +304,10 @@ const StaffList = () => {
                                                             <AddStaffModal
                                                                 visible={visible}
                                                                 onClose={() => setVisible(false)}
-                                                                onPatientAdded={handleStaffAdded}
+                                                                handleStaffAdded={handleStaffAdded}
+                                                                setVisible={setVisible} 
+                                                                modalValue={modalValue} 
+                                                                handleButtonClick={handleButtonClick} 
                                                             />
                                                             <div className="search-container">
                                                                 <div className="search-bar">
@@ -186,8 +326,8 @@ const StaffList = () => {
                                                                     <CTableHead>
                                                                         <CTableRow>
                                                                             <CTableHeaderCell>Profile</CTableHeaderCell>
-                                                                            <CTableHeaderCell>Firstname</CTableHeaderCell>
-                                                                            <CTableHeaderCell>Lastname</CTableHeaderCell>
+                                                                            <CTableHeaderCell>Names</CTableHeaderCell>
+                                                                            <CTableHeaderCell>Hospitals</CTableHeaderCell>
                                                                             <CTableHeaderCell>Role</CTableHeaderCell>
                                                                             <CTableHeaderCell>Department</CTableHeaderCell>
                                                                             <CTableHeaderCell>Status</CTableHeaderCell>
@@ -206,8 +346,8 @@ const StaffList = () => {
                                                                                         height="50"
                                                                                     />
                                                                                 </CTableDataCell>
-                                                                                <CTableDataCell>{user.firstname}</CTableDataCell>
-                                                                                <CTableDataCell>{user.lastname}</CTableDataCell>
+                                                                                <CTableDataCell>{user.firstname} {user.lastname}</CTableDataCell>
+                                                                                <CTableDataCell>{user.hospital_id.hospital_name}</CTableDataCell>
                                                                                 <CTableDataCell>{user.role.name ?? 'Undefined'}</CTableDataCell>
                                                                                 <CTableDataCell>
                                                                                     {user.departementId[0]?.name ?? 'Undefined'}
