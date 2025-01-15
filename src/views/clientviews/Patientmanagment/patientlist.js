@@ -29,7 +29,13 @@ import '../../../assets/css/ClientSidebar.css';
 
 import Adminprofil from '../../../assets/images/adminprofil.png';
 
+import api from '../../../service/caller';
+import { ToastContainer, toast } from 'react-toastify';
+
 const PatientList = () => {
+
+  const [UserData, setUserData] = useState([]);  
+
     const [visible, setVisible] = useState(false);
     const [appointments, setAppointments] = useState([]);
     const [patients, setPatients] = useState([]);
@@ -61,6 +67,19 @@ const PatientList = () => {
             setLoading(false);
         }
     };
+
+  useEffect(() => {
+    const fetchLoggedUserData = async () => {
+      try {
+        const response = await api.get('api/usersprofile');
+
+        setUserData(response.data);
+      } catch (error) {
+        toast.error("Failed to fetch data");
+      }
+    };
+    fetchLoggedUserData();
+  }, []);
 
     useEffect(() => {
         const fetchAppointments = async () => {
@@ -139,8 +158,8 @@ const PatientList = () => {
                                     <CNavLink href="#" className="d-flex ms-auto">
                                         <img src={Adminprofil} className='cardicon' alt="Consultation Icon" width={'50'} height={'50'} />
                                         <div>
-                                            <span className="ms-2" style={{ color: 'black' }}>Semia BOKO</span>
-                                            <p className="ms-2" style={{ color: 'black' }}>Admin</p>
+                        <span className="ms-2" style={{ color: 'black' }} >{UserData.firstname} {UserData.lastname}</span>
+                        <p className="ms-2" style={{ color: 'black' }} >{UserData.role?.name}</p>
                                         </div>
                                     </CNavLink>
                                 </CNavItem>

@@ -18,6 +18,9 @@ import { BsPersonPlus, BsChevronRight, BsChevronLeft, BsArrowUpLeft } from 'reac
 
 import Adminprofil from '../assets/images/adminprofil.png';
 
+import api from '../service/caller';
+import { ToastContainer, toast } from 'react-toastify';
+
 const getUserIdFromToken = () => {
   const token = localStorage.getItem('access_token'); // Récupérer le token depuis le localStorage
   if (token) {
@@ -27,6 +30,21 @@ const getUserIdFromToken = () => {
   return null; // Retourne null si aucun token n'est présent
 };
 const Hospital = () => {
+
+  const [UserData, setUserData] = useState([]);  
+  
+  useEffect(() => {
+    const fetchLoggedUserData = async () => {
+      try {
+        const response = await api.get('api/usersprofile');
+  
+        setUserData(response.data);
+      } catch (error) {
+        toast.error("Failed to fetch data");
+      }
+    };
+    fetchLoggedUserData();
+  }, []);
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
@@ -280,8 +298,8 @@ const Hospital = () => {
                   <CNavLink href="#" className="d-flex ms-auto">
                     <img src={Adminprofil} className='cardicon' alt="Consultation Icon" width={'50'} height={'50'} />
                     <div>
-                      <span className="ms-2" style={{ color: 'black' }}>Semia BOKO</span>
-                      <p className="ms-2" style={{ color: 'black' }}>Admin</p>
+                        <span className="ms-2" style={{ color: 'black' }}>{UserData.firstname} {UserData.lastname}</span>
+                        <p className="ms-2" style={{ color: 'black' }}>{UserData.role?.name}</p>
                     </div>
                   </CNavLink>
                 </CNavItem>
