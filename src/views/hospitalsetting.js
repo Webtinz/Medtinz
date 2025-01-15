@@ -29,6 +29,7 @@ const getUserIdFromToken = () => {
 const Hospital = () => {
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
   const [mainHospital, setMainHospital] = useState(null);  // Stocker l'hôpital principal
   const [otherHospitals, setOtherHospitals] = useState([]);  // Stocker les autres hôpitaux
   const [hospitals, setHospitals] = useState([]);
@@ -40,30 +41,20 @@ const Hospital = () => {
   const [showSpecialityModal, setShowSpecialityModal] = useState(false);
   const [hasOtherSites, setHasOtherSites] = useState(false); // État pour "Do you have other sites?"
   const [createSubAdmin, setCreateSubAdmin] = useState(false); // État pour "Create subadmin?"
-  // const [departments, setDepartments] = useState([]);
-  // const [specialities, setSpecialities] = useState([]);
-  // const [services, setServices] = useState([]);
-  const [departments, setDepartments] = useState([
-    'Cardiology',
-    'Ophthalmology',
-    'Dermatology',
-    'Pediatry',
-    'Psychiatry',
-  ]);
-
-  const [specialities, setSpecialities] = useState(['Ophthalmology', 'Cardiology']);
+  const [departments, setDepartments] = useState([]);
+  const [specialities, setSpecialities] = useState([]);
+  const [services, setServices] = useState([]);
 
   const [newDepartment, setNewDepartment] = useState({
-    code: '',
     name: '',
-    speciality: '',
-    price: '',
+    price_consult: '',
     description: '',
   });
 
   const [newSpeciality, setNewSpeciality] = useState({
     name: '',
     description: '',
+    departementId:'',
   });
 
   const toggleMainDropdown = () => setMainDropdownOpen(!mainDropdownOpen);
@@ -87,31 +78,6 @@ const Hospital = () => {
     setNewSpeciality({ ...newSpeciality, [name]: value });
   };
 
-  const addDepartment = () => {
-    if (
-      newDepartment.code &&
-      newDepartment.name &&
-      newDepartment.speciality &&
-      newDepartment.price &&
-      newDepartment.description
-    ) {
-      setDepartments([...departments, newDepartment.name]);
-      setNewDepartment({ code: '', name: '', speciality: '', price: '', description: '' });
-      handleCloseModal();
-    }
-  };
-
-  const addSpeciality = () => {
-    if (newSpeciality.name && newSpeciality.description) {
-      setSpecialities([...specialities, newSpeciality.name]);
-      setNewSpeciality({ name: '', description: '' });
-      handleCloseSpecialityModal();
-    }
-  };
-  const [services, setServices] = useState([
-    { name: 'Analyses Sanguin', price: '20,000' },
-    { name: 'Echography', price: '20,000' },
-  ]);
   const addService = () => {
     setServices([...services, { name: '', price: '' }]);
   };
@@ -208,6 +174,91 @@ const Hospital = () => {
     }
   }, [userId]); // Dépendance sur userId pour recharger si nécessaire
 
+  // Fonction pour gérer l'ajout d'un département
+  const addDepartment = async () => {
+    if (newDepartment.name && newDepartment.price_consult && newDepartment.description) {
+      try {
+        const token = localStorage.getItem('access_token');
+        const hospitalId = mainHospital ? mainHospital._id : null;  // Utiliser l'ID de l'hôpital principal
+
+        if (!hospitalId) {
+          console.error('Hospital ID is missing.');
+          return;  // Si l'ID est manquant, on arrête l'exécution
+        }
+
+        const departmentData = {
+          ...newDepartment,
+          hospital_id: hospitalId, // Ajouter l'ID de l'hôpital à la requête
+        };
+
+        const response = await axios.post('http://localhost:5000/api/adddepartment', departmentData, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+
+        // Mettre à jour l'état avec le département créé
+        setDepartments([...departments, response.data.data]);
+
+        // Réinitialiser le formulaire
+        setNewDepartment({ name: '', description: '', price_consult: '' });
+        handleCloseModal();  // Fermer le modal après l'ajout
+
+        // Mettre à jour le message de succès
+        setSuccessMessage('Département ajouté avec succès!');
+      } catch (error) {
+        console.error('Error adding department:', error);
+      }
+    }
+  };
+
+
+  useEffect(() => {
+    const fetchDepartments = async () => {
+      if (!mainHospital) return; // Si l'hôpital principal n'est pas défini, ne rien faire
+      try {
+        const hospitalId = mainHospital._id; // Utiliser l'ID de l'hôpital principal
+        const response = await axios.get(`http://localhost:5000/api/departments/hospital/${hospitalId}`, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+          }
+        });
+
+        // Mettre à jour les départements dans l'état
+        setDepartments(response.data.data);
+      } catch (error) {
+        console.error('Erreur lors de la récupération des départements:', error);
+        setMessage('Erreur lors de la récupération des départements.');
+      }
+    };
+
+    fetchDepartments(); // Appeler la fonction pour récupérer les départements
+  }, [mainHospital]); // Dépendance sur `mainHospital`, donc dès qu'il est disponible, on récupère les départements
+
+
+
+  // Fonction pour gérer l'ajout d'une spécialité
+  const addSpeciality = async () => {
+    if (newSpeciality.name && newSpeciality.description, newSpeciality.departementId) {
+      try {
+        const token = localStorage.getItem('access_token');
+        const response = await axios.post('http://localhost:5000/api/specialities', newSpeciality, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        // Mettre à jour l'état des spécialités après ajout
+        setSpecialities([...specialities, response.data]);
+        setNewSpeciality({ name: '', description: '' });
+        handleCloseSpecialityModal();
+      } catch (error) {
+        console.error('Erreur lors de l\'ajout de la spécialité:', error);
+      }
+    }
+  };
+
+
 
 
   return (
@@ -267,7 +318,7 @@ const Hospital = () => {
                   )}
 
                   {/* Departments Dropdown */}
-                  <div className="dropdown-item">
+                  <div className="dropdown-item mt-5">
                     <button
                       className="btn btn-primary dropdown-toggle w-100 text-start"
                       type="button"
@@ -277,20 +328,23 @@ const Hospital = () => {
                     </button>
                     {departmentsOpen && (
                       <div className="p-3">
-                        <div className="list d-flex flex-wrap">
-                          {departments.map((dept, index) => (
-                            <span key={index} className="badge1 m-1">
-                              <a
-                                href="#"
-                                className="switcase"
-                                onClick={() => handleShowDepartmentDetails(dept)}
-                              >
-                                {dept} <FaArrowUp />
-                              </a>
-                            </span>
-                          ))}
-                        </div>
-
+                        {departments && Array.isArray(departments) && departments.length > 0 ? (
+                          <div className="list d-flex flex-wrap">
+                            {departments.map((dept, index) => (
+                              <span key={index} className="badge1 m-1">
+                                <a
+                                  href="#"
+                                  className="switcase"
+                                  onClick={() => handleShowDepartmentDetails(dept)} // Ouvre les détails du département
+                                >
+                                  {dept.name} <FaArrowUp />
+                                </a>
+                              </span>
+                            ))}
+                          </div>
+                        ) : (
+                          <p>No departments available.</p> // Si aucun département n'est trouvé
+                        )}
                         <div className="produit">
                           <button onClick={handleShowModal} className="btn btn-sm btn primero mt-4">
                             <FaListAlt /> Add Department
@@ -298,6 +352,7 @@ const Hospital = () => {
                         </div>
                       </div>
                     )}
+
                   </div>
 
                   {/* Specialities Dropdown */}
@@ -311,25 +366,28 @@ const Hospital = () => {
                     </button>
                     {specialitiesOpen && (
                       <div className="p-3">
-                        <div className="list d-flex flex-wrap">
-                          {specialities.map((spec, index) => (
-                            <span key={index} className="badge2  m-1">
-                              <a href='#' className='switcase'>{spec} <FaArrowUp /></a>
-                            </span>
-                          ))}
-                        </div>
-                        <div className='bottle'>
-                          <button
-                            onClick={handleShowSpecialityModal}
-                            className="btn btn-sm btn mt-3 soccer"
-                          >
+                        {specialities && Array.isArray(specialities) && specialities.length > 0 ? (
+                          <div className="list d-flex flex-wrap">
+                            {specialities.map((spec, index) => (
+                              <span key={index} className="badge2 m-1">
+                                <a href="#" className="switcase">
+                                  {spec.name} <FaArrowUp />
+                                </a>
+                              </span>
+                            ))}
+                          </div>
+                        ) : (
+                          <p>No specialities available.</p>
+                        )}
+                        <div className="bottle">
+                          <button onClick={handleShowSpecialityModal} className="btn btn-sm btn mt-3 soccer">
                             <FaListAlt /> Add Speciality
                           </button>
                         </div>
-
                       </div>
                     )}
                   </div>
+
 
                   {/* Services Dropdown */}
                   <div className="dropdown-item mt-4">
@@ -403,19 +461,13 @@ const Hospital = () => {
                 <Modal.Title className='yuri mx-auto'>Add New Department</Modal.Title>
               </Modal.Header>
               <Modal.Body>
-                <div className="form-group mb-4 mt-3">
-                  <label className='secondo'>Code Department</label>
-                  <input
-                    type="text"
-                    className="form-control arome"
-                    name="code"
-                    placeholder='DEP003456J6'
-                    value={newDepartment.code}
-                    onChange={handleInputChange}
-                  />
-                </div>
+                {successMessage && (
+                  <div className="alert alert-success" role="alert">
+                    {successMessage}
+                  </div>
+                )}
                 <div className="form-group mb-4">
-                  <label className='fraise'> Name</label>
+                  <label className=''> Name</label>
                   <input
                     type="text"
                     className="form-control tercio"
@@ -424,36 +476,19 @@ const Hospital = () => {
                     onChange={handleInputChange}
                   />
                 </div>
-                <div className="form-group mb-4">
-                  <label className='menthe'>Speciality</label>
-                  <select
-                    className="form-control quartio"
-                    name="speciality"
-                    value={newDepartment.speciality}
-                    onChange={handleInputChange}
-                  >
-                    <option value="">Select a speciality</option>
-                    <option value="Cardiology">Cardiology Emergency</option>
-                    <option value="Ophthalmology">Ophthalmology Emergency</option>
-                    <option value="Dermatology">Dermatology Emergency</option>
-                    <option value="Pediatry">Pediatry Emergency</option>
-                    <option value="Psychiatry">Psychiatry Emergency</option>
-                  </select>
-                </div>
+
                 <div className="form-group mb-3">
-                  <label className='banane'>Definissez le prix de la consultation :</label>
+                  <label className=''>Definissez le prix de la consultation :</label>
                   <div className="input-group mb-3">
                     <input
                       type="number"
                       className="form-control cinquo"
                       placeholder="20 000"
-                      aria-label="newDepartment.price"
-                      aria-describedby="newDepartment.price"
-                      name="price"
-                      value={newDepartment.price}
+                      name="price_consult"
+                      value={newDepartment.price_consult}
                       onChange={handleInputChange}
                     />
-                    <span className="input-group-text" id="newDepartment.price">XOF</span>
+                    <span className="input-group-text" id="newDepartment.price_consult">XOF</span>
                   </div>
 
                 </div>
@@ -531,10 +566,11 @@ const Hospital = () => {
             >
               <Modal.Header className='pamela' >
                 <Modal.Title className="text-center w-100 vacation">
-                  {selectedDepartment || 'Department Details'}
+                {selectedDepartment ? selectedDepartment.name : 'Department Details'}
                 </Modal.Title>
               </Modal.Header>
               <Modal.Body>
+
                 <div className="department-details">
                   {/* Section pour le nom et le code */}
                   <div className="row mb-4">
@@ -546,7 +582,7 @@ const Hospital = () => {
                       <input
                         type="text"
                         className="form-control"
-                        defaultValue={selectedDepartment || ''}
+                        defaultValue={selectedDepartment ? selectedDepartment.name : ''}
                         readOnly
                       />
                     </div>
@@ -555,7 +591,7 @@ const Hospital = () => {
                       <input
                         type="text"
                         className="form-control"
-                        defaultValue="DEP003456J6"
+                        defaultValue={selectedDepartment ? selectedDepartment.codeDep : ''}
                         readOnly
                       />
                     </div>
@@ -567,7 +603,7 @@ const Hospital = () => {
                     <textarea
                       className="form-control"
                       rows="4"
-                      defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel dolor non mi cursus sodales."
+                      defaultValue={selectedDepartment ? selectedDepartment.description : ''}
                       readOnly
                     ></textarea>
                   </div>
@@ -580,7 +616,7 @@ const Hospital = () => {
                         <input
                           type="text"
                           className="form-control"
-                          defaultValue="20 000"
+                          defaultValue={selectedDepartment ? selectedDepartment.price_consult : ''}
                           readOnly
                         />
                         <span className="input-group-text">XOF</span>

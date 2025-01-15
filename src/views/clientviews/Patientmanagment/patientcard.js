@@ -35,21 +35,31 @@ const PatientCard = () => {
     }, [patientId]);  // Recharger les données si l'ID change
 
     const handleDownload = () => {
-        const doc = new jsPDF();
-
-        // Sélectionner la div "receipt-container" pour la convertir en image et l'ajouter dans le PDF
+        const doc = new jsPDF('p', 'mm', 'a4'); // Format A4 en millimètres
+    
         const element = document.querySelector('.receipt-container');
-
+    
         if (element) {
+            // Appliquer un fond blanc explicite dans le PDF pour éviter le fond noir
             doc.html(element, {
                 callback: function (doc) {
                     doc.save(`${patientData.name}_PatientCard.pdf`);
                 },
                 x: 10,
-                y: 10
+                y: 10,
+                html2canvas: {
+                    scale: 2, // Améliorer la résolution de l'image
+                    useCORS: true,  // Pour éviter les problèmes avec les images externes (QR code, logo)
+                    backgroundColor: '#ffffff', // Forcer le fond à être blanc pour éviter le fond noir
+                },
+                // Ajuster les marges et la taille du contenu pour qu'il tienne sur la page
+                autoPaging: true,  // Autoriser le contenu à se répartir sur plusieurs pages si nécessaire
+                margin: [10, 10, 10, 10], // Marges autour du contenu
             });
         }
     };
+    
+    
 
     // Fonction pour la redirection avec le toast de succès
     const handleValidate = () => {
@@ -129,7 +139,7 @@ const PatientCard = () => {
                             Telecharger<BsArrowBarDown className='ms-2' />
                         </CButton>
                         <CButton className="w-100" style={{ backgroundColor: '#28A745' }} onClick={handleValidate} >
-                            Validate <BsArrowRight className='ms-2' />
+                            Save <BsArrowRight className='ms-2' />
                         </CButton>
                     </div>
                 </CModalBody>
