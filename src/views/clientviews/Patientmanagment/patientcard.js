@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { CModal, CModalHeader, CModalBody, CModalTitle, CButton } from '@coreui/react';
-import { BsArrowRight } from 'react-icons/bs';
+import { BsArrowRight, BsArrowBarDown } from 'react-icons/bs';
 import { useParams, useNavigate } from 'react-router-dom';
 import { jsPDF } from 'jspdf';
-
+import { toast } from 'react-toastify';  // Importer le toast
 import Hospitallogo from '../../../assets/images/Frame 1000005869.png';
 import Codeqrimg from '../../../assets/images/codeqr.png';
 
@@ -34,6 +34,46 @@ const PatientCard = () => {
         }
     }, [patientId]);  // Recharger les données si l'ID change
 
+    const handleDownload = () => {
+        const doc = new jsPDF('p', 'mm', 'a4'); // Format A4 en millimètres
+    
+        const element = document.querySelector('.receipt-container');
+    
+        if (element) {
+            // Appliquer un fond blanc explicite dans le PDF pour éviter le fond noir
+            doc.html(element, {
+                callback: function (doc) {
+                    doc.save(`${patientData.name}_PatientCard.pdf`);
+                },
+                x: 10,
+                y: 10,
+                html2canvas: {
+                    scale: 2, // Améliorer la résolution de l'image
+                    useCORS: true,  // Pour éviter les problèmes avec les images externes (QR code, logo)
+                    backgroundColor: '#ffffff', // Forcer le fond à être blanc pour éviter le fond noir
+                },
+                // Ajuster les marges et la taille du contenu pour qu'il tienne sur la page
+                autoPaging: true,  // Autoriser le contenu à se répartir sur plusieurs pages si nécessaire
+                margin: [10, 10, 10, 10], // Marges autour du contenu
+            });
+        }
+    };
+    
+    
+
+    // Fonction pour la redirection avec le toast de succès
+    const handleValidate = () => {
+        // Afficher le toast de succès
+        toast.success("Patient ajouté avec succès!", {
+            position: "top-right",  // Utilisation de la chaîne de caractères pour la position
+            autoClose: 3000,
+        });
+
+        // Rediriger vers la page des patients
+        navigate('/hospitaladmin/patientlist');
+    };
+
+
     if (loading) {
         return <div>Loading...</div>;  // Afficher un message de chargement
     }
@@ -56,59 +96,50 @@ const PatientCard = () => {
                 onClose={() => { }}
             >
                 <CModalHeader className="text-center">
-                    <CModalTitle className="Titleformsmodal"> Register new Patient</CModalTitle>
+                    <CModalTitle className="Titleformsmodal"><p className='text-center'>Register new Patient</p> </CModalTitle>
                 </CModalHeader>
                 <CModalBody className="p-5 d-flex flex-column align-items-center">
                     {/* Rendu du reçu avec les données de paymentData */}
                     <div className="receipt-container border p-4 bg-white shadow">
-                        <div className="d-flex">
-                            <img src={Hospitallogo} className='ms-auto' alt="Clinic Logo" style={{ width: '100px' }} />
-                            <h5 className="mt-2 me-auto">PATIENT CARD</h5>
+                        <div className="d-flex align-items-center mb-5">
+                            <img src={Hospitallogo} className='me-auto' alt="Clinic Logo" style={{ width: '150px', height: 'auto' }} />
+                            <h5 className="ms-auto fw-2">PATIENT CARD</h5>
                         </div>
                         <div className='patientinfo d-flex'>
-                            <div className='table ms-auto'>
-                                <table border="1">
-                                    <thead>
-                                        <tr>
-                                            <th>Name : {patientData.name}</th>
-                                        </tr>
-                                    </thead>
+                            <div className='table me-auto'>
+                                <table className=''>
                                     <tbody>
-                                        <tr>Code Patient : {patientData.patientId}</tr>
+                                        <tr>
+                                            <p className='ps-3 pt-1'>Name : <span>{patientData.name}</span></p>
+                                        </tr>
+                                        <tr> <p className='ps-3 pt-1'>Code Patient : <span>{patientData.patientId}</span></p></tr>
                                     </tbody>
                                 </table>
                             </div>
-                            <div className='qrimg me-auto'>
+                            <div className='qrimg ms-auto'>
                                 <img src={Codeqrimg} alt="qr image" style={{ width: '100px' }} />
                             </div>
                         </div>
                         <div className='textdiv d-flex'>
-                            <div className='textdivleft'>
+                            <div className='textdivleft me-auto'>
                                 <p>{patientData.address}</p>
                                 <p>{patientData.phone}</p>
                                 <br></br>
-                                <span style={{ color: 'green' }}>{patientData.email}</span>
+                                <p style={{ color: 'green' }}>{patientData.email}</p>
                             </div>
-                            <div className='textdivright'>
+                            <div className='textdivright ms-auto'>
                                 <p>{patientData.patientNPI}</p>
                                 <p>{patientData.gender}</p>
-                                <br></br>
-                                <span style={{ color: 'black' }}>{patientData.age}</span>
+                                <p style={{ color: '#000000' }}><b>{patientData.age}</b></p>
                             </div>
                         </div>
                     </div>
-                    <div className='d-flex'>
-                        <CButton className="mt-4 w-50" style={{ backgroundColor: '#FF9800' }} onClick={() => {
-                            // Fonction pour télécharger la carte
-                            const link = document.createElement('a');
-                            link.href = 'C:/Users/hp/Downloads';  // Spécifier le chemin pour télécharger le fichier
-                            link.download = `${patientData.name}_PatientCard.pdf`;
-                            link.click();
-                        }}>
-                            Telecharger
+                    <div className='mt-4 btnactionpatientcard' >
+                        <CButton className="w-100" style={{ backgroundColor: '#FF9800' }} onClick={handleDownload} >
+                            Telecharger<BsArrowBarDown className='ms-2' />
                         </CButton>
-                        <CButton className="mt-4 w-50" style={{ backgroundColor: '#28A745' }}>
-                            Validate
+                        <CButton className="w-100" style={{ backgroundColor: '#28A745' }} onClick={handleValidate} >
+                            Save <BsArrowRight className='ms-2' />
                         </CButton>
                     </div>
                 </CModalBody>

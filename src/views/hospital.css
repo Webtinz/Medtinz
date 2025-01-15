@@ -135,12 +135,8 @@
     background-color: #ffffff !important;
   }
 
-  .fraise{
-    position: absolute;
-    top: 23%;
-    left: 35px;
+  .christian label{
     background-color:#ffffff;
-    padding: 0px 12px;
     font-size:  12px;
   }
 

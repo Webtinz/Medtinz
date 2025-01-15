@@ -32,8 +32,8 @@ const ClientSidebar = () => {
             <li><Link to="/hospitaladmin/dashboard"><MdDashboard className="nav-icon" />Dashboard</Link></li>
             <li><Link to="/hospitaladmin/hospitalsetting"><MdDashboard className="nav-icon" />Hospital Settings</Link></li>
             <li><Link to="/hospitaladmin/patientlist"><MdPerson className="nav-icon" />Patient Management</Link></li>
-            <li><Link to="/hospitaladmin/department"><MdPeople className="nav-icon" />Department Management</Link></li>
-            <li><Link to="/hospitaladmin/speciality"><MdAddBox className="nav-icon" />Speciality Management</Link></li>
+            {/* <li><Link to="/hospitaladmin/department"><MdPeople className="nav-icon" />Department Management</Link></li>
+            <li><Link to="/hospitaladmin/speciality"><MdAddBox className="nav-icon" />Speciality Management</Link></li> */}
             <li><Link to="/hospitaladmin/stafflist"><MdPeople className="nav-icon" />Staff Management</Link></li>
             <li><Link to="/hospitaladmin/addappointment"><MdAddBox className="nav-icon" />Appointment Scheduling</Link></li>
             <li><Link to=""><MdMoney className="nav-icon" />Billing</Link></li>

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './hospital.css';
 import '../assets/css/mainstyle.css';
@@ -16,7 +17,22 @@ import {
 import { BsPersonPlus, BsChevronRight, BsChevronLeft, BsArrowUpLeft } from 'react-icons/bs';
 
 import Adminprofil from '../assets/images/adminprofil.png';
+
+const getUserIdFromToken = () => {
+  const token = localStorage.getItem('access_token'); // Récupérer le token depuis le localStorage
+  if (token) {
+    const decodedToken = JSON.parse(atob(token.split('.')[1])); // Décoder le payload du JWT
+    return decodedToken.userId; // Retourner l'ID de l'utilisateur (assurez-vous que c'est bien ce qui est stocké dans le token)
+  }
+  return null; // Retourne null si aucun token n'est présent
+};
 const Hospital = () => {
+  const [message, setMessage] = useState('');
+  const [messageType, setMessageType] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [mainHospital, setMainHospital] = useState(null);  // Stocker l'hôpital principal
+  const [otherHospitals, setOtherHospitals] = useState([]);  // Stocker les autres hôpitaux
+  const [hospitals, setHospitals] = useState([]);
   const [mainDropdownOpen, setMainDropdownOpen] = useState(false);
   const [departmentsOpen, setDepartmentsOpen] = useState(false);
   const [specialitiesOpen, setSpecialitiesOpen] = useState(false);
@@ -25,27 +41,20 @@ const Hospital = () => {
   const [showSpecialityModal, setShowSpecialityModal] = useState(false);
   const [hasOtherSites, setHasOtherSites] = useState(false); // État pour "Do you have other sites?"
   const [createSubAdmin, setCreateSubAdmin] = useState(false); // État pour "Create subadmin?"
-  const [departments, setDepartments] = useState([
-    'Cardiology',
-    'Ophthalmology',
-    'Dermatology',
-    'Pediatry',
-    'Psychiatry',
-  ]);
-
-  const [specialities, setSpecialities] = useState(['Ophthalmology', 'Cardiology']);
+  const [departments, setDepartments] = useState([]);
+  const [specialities, setSpecialities] = useState([]);
+  const [services, setServices] = useState([]);
 
   const [newDepartment, setNewDepartment] = useState({
-    code: '',
     name: '',
-    speciality: '',
-    price: '',
+    price_consult: '',
     description: '',
   });
 
   const [newSpeciality, setNewSpeciality] = useState({
     name: '',
     description: '',
+    departementId:'',
   });
 
   const toggleMainDropdown = () => setMainDropdownOpen(!mainDropdownOpen);
@@ -69,31 +78,6 @@ const Hospital = () => {
     setNewSpeciality({ ...newSpeciality, [name]: value });
   };
 
-  const addDepartment = () => {
-    if (
-      newDepartment.code &&
-      newDepartment.name &&
-      newDepartment.speciality &&
-      newDepartment.price &&
-      newDepartment.description
-    ) {
-      setDepartments([...departments, newDepartment.name]);
-      setNewDepartment({ code: '', name: '', speciality: '', price: '', description: '' });
-      handleCloseModal();
-    }
-  };
-
-  const addSpeciality = () => {
-    if (newSpeciality.name && newSpeciality.description) {
-      setSpecialities([...specialities, newSpeciality.name]);
-      setNewSpeciality({ name: '', description: '' });
-      handleCloseSpecialityModal();
-    }
-  };
-  const [services, setServices] = useState([
-    { name: 'Analyses Sanguin', price: '20,000' },
-    { name: 'Echography', price: '20,000' },
-  ]);
   const addService = () => {
     setServices([...services, { name: '', price: '' }]);
   };
@@ -147,7 +131,136 @@ const Hospital = () => {
     setTimeout(() => setShowToast(false), 3000); // Fermer automatiquement après 3 secondes
   };
 
-  
+  const userId = getUserIdFromToken(); // Récupérer l'ID de l'utilisateur à partir du token
+
+  // Fonction pour récupérer la liste des hôpitaux pour l'administrateur
+  useEffect(() => {
+    console.log('useEffect triggered');
+    const fetchHospitals = async () => {
+      if (!userId) {
+        setMessage('Utilisateur non authentifié.');
+        return;
+      }
+      try {
+        const token = localStorage.getItem('access_token');
+        const response = await axios.get(`http://localhost:5000/api/hospitals/admin/` + token, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+          }
+        });
+
+        // Filtrer l'hôpital principal (is_main_hospital: true) et les autres hôpitaux
+        const mainHospitalData = response.data.find(hospital => hospital.is_main_hospital == true);
+        const otherHospitalsData = response.data.filter(hospital => hospital.is_main_hospital !== true);
+
+        if (mainHospitalData) {
+          setMainHospital(mainHospitalData); // Stocker l'hôpital principal
+          setDepartments(mainHospitalData.departments); // Associer les départements
+          setSpecialities(mainHospitalData.specialities); // Associer les spécialités
+        }
+
+        console.log('mainhospital', mainHospitalData); // Ajoutez un log ici pour vérifier une seule fois
+
+        setHospitals(response.data); // Sauvegarder tous les hôpitaux
+        setOtherHospitals(otherHospitalsData); // Stocker les autres hôpitaux
+      } catch (error) {
+        console.error('Erreur lors de la récupération des hôpitaux:', error);
+        setMessage('Erreur lors de la récupération des hôpitaux.');
+      }
+    };
+
+    if (userId) {
+      fetchHospitals(); // Appeler la fonction pour récupérer les hôpitaux uniquement si l'utilisateur est authentifié
+    }
+  }, [userId]); // Dépendance sur userId pour recharger si nécessaire
+
+  // Fonction pour gérer l'ajout d'un département
+  const addDepartment = async () => {
+    if (newDepartment.name && newDepartment.price_consult && newDepartment.description) {
+      try {
+        const token = localStorage.getItem('access_token');
+        const hospitalId = mainHospital ? mainHospital._id : null;  // Utiliser l'ID de l'hôpital principal
+
+        if (!hospitalId) {
+          console.error('Hospital ID is missing.');
+          return;  // Si l'ID est manquant, on arrête l'exécution
+        }
+
+        const departmentData = {
+          ...newDepartment,
+          hospital_id: hospitalId, // Ajouter l'ID de l'hôpital à la requête
+        };
+
+        const response = await axios.post('http://localhost:5000/api/adddepartment', departmentData, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+
+        // Mettre à jour l'état avec le département créé
+        setDepartments([...departments, response.data.data]);
+
+        // Réinitialiser le formulaire
+        setNewDepartment({ name: '', description: '', price_consult: '' });
+        handleCloseModal();  // Fermer le modal après l'ajout
+
+        // Mettre à jour le message de succès
+        setSuccessMessage('Département ajouté avec succès!');
+      } catch (error) {
+        console.error('Error adding department:', error);
+      }
+    }
+  };
+
+
+  useEffect(() => {
+    const fetchDepartments = async () => {
+      if (!mainHospital) return; // Si l'hôpital principal n'est pas défini, ne rien faire
+      try {
+        const hospitalId = mainHospital._id; // Utiliser l'ID de l'hôpital principal
+        const response = await axios.get(`http://localhost:5000/api/departments/hospital/${hospitalId}`, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+          }
+        });
+
+        // Mettre à jour les départements dans l'état
+        setDepartments(response.data.data);
+      } catch (error) {
+        console.error('Erreur lors de la récupération des départements:', error);
+        setMessage('Erreur lors de la récupération des départements.');
+      }
+    };
+
+    fetchDepartments(); // Appeler la fonction pour récupérer les départements
+  }, [mainHospital]); // Dépendance sur `mainHospital`, donc dès qu'il est disponible, on récupère les départements
+
+
+
+  // Fonction pour gérer l'ajout d'une spécialité
+  const addSpeciality = async () => {
+    if (newSpeciality.name && newSpeciality.description, newSpeciality.departementId) {
+      try {
+        const token = localStorage.getItem('access_token');
+        const response = await axios.post('http://localhost:5000/api/specialities', newSpeciality, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        // Mettre à jour l'état des spécialités après ajout
+        setSpecialities([...specialities, response.data]);
+        setNewSpeciality({ name: '', description: '' });
+        handleCloseSpecialityModal();
+      } catch (error) {
+        console.error('Erreur lors de l\'ajout de la spécialité:', error);
+      }
+    }
+  };
+
+
+
+
   return (
 
     <div className="dashboard-header" >
@@ -192,17 +305,56 @@ const Hospital = () => {
               </button>
               {mainDropdownOpen && (
                 <div className="dropdown-menu w-100 p-3" style={{ display: 'block' }}>
-                  <div className="hospital-name mb-4">
-                    <label className='cos'>Hospital Name</label>
+                  {mainHospital && (
+                    <div className="hospital-name mb-4">
+                      <label className='cos'>Hospital Name</label>
+                      <input
+                        type="text"
+                        value={mainHospital.hospital_name || ''}
+                        readOnly
+                        className="form-control pt-3"
+                      />
+                    </div>
+                  )}
 
-                    <input
-                      type="text"
-                      className="form-control chronique"
-                      defaultValue="CLINIQUE FEYINT OLUWA"
-                    />
-
+                  {/* Departments Dropdown */}
+                  <div className="dropdown-item mt-5">
+                    <button
+                      className="btn btn-primary dropdown-toggle w-100 text-start"
+                      type="button"
+                      onClick={toggleDepartments}
+                    >
+                      Departments
+                    </button>
+                    {departmentsOpen && (
+                      <div className="p-3">
+                        {departments && Array.isArray(departments) && departments.length > 0 ? (
+                          <div className="list d-flex flex-wrap">
+                            {departments.map((dept, index) => (
+                              <span key={index} className="badge1 m-1">
+                                <a
+                                  href="#"
+                                  className="switcase"
+                                  onClick={() => handleShowDepartmentDetails(dept)} // Ouvre les détails du département
+                                >
+                                  {dept.name} <FaArrowUp />
+                                </a>
+                              </span>
+                            ))}
+                          </div>
+                        ) : (
+                          <p>No departments available.</p> // Si aucun département n'est trouvé
+                        )}
+                        <div className="produit">
+                          <button onClick={handleShowModal} className="btn btn-sm btn primero mt-4">
+                            <FaListAlt /> Add Department
+                          </button>
+                        </div>
+                      </div>
+                    )}
 
                   </div>
+
                   {/* Specialities Dropdown */}
                   <div className="dropdown-item mt-4">
                     <button
@@ -214,59 +366,28 @@ const Hospital = () => {
                     </button>
                     {specialitiesOpen && (
                       <div className="p-3">
-                        <div className="list d-flex flex-wrap">
-                          {specialities.map((spec, index) => (
-                            <span key={index} className="badge2  m-1">
-                              <a href='#' className='switcase'>{spec} <FaArrowUp /></a>
-                            </span>
-                          ))}
-                        </div>
-                        <div className='bottle'>
-                          <button
-                            onClick={handleShowSpecialityModal}
-                            className="btn btn-sm btn mt-3 soccer"
-                          >
+                        {specialities && Array.isArray(specialities) && specialities.length > 0 ? (
+                          <div className="list d-flex flex-wrap">
+                            {specialities.map((spec, index) => (
+                              <span key={index} className="badge2 m-1">
+                                <a href="#" className="switcase">
+                                  {spec.name} <FaArrowUp />
+                                </a>
+                              </span>
+                            ))}
+                          </div>
+                        ) : (
+                          <p>No specialities available.</p>
+                        )}
+                        <div className="bottle">
+                          <button onClick={handleShowSpecialityModal} className="btn btn-sm btn mt-3 soccer">
                             <FaListAlt /> Add Speciality
                           </button>
                         </div>
-
                       </div>
                     )}
                   </div>
 
-                  {/* Departments Dropdown */}
-                  <div className="dropdown-item">
-                    <button
-                      className="btn btn-primary dropdown-toggle w-100 text-start"
-                      type="button"
-                      onClick={toggleDepartments}
-                    >
-                      Departments
-                    </button>
-                    {departmentsOpen && (
-                      <div className="p-3">
-                        <div className="list d-flex flex-wrap">
-                          {departments.map((dept, index) => (
-                            <span key={index} className="badge1 m-1">
-                              <a
-                                href="#"
-                                className="switcase"
-                                onClick={() => handleShowDepartmentDetails(dept)}
-                              >
-                                {dept} <FaArrowUp />
-                              </a>
-                            </span>
-                          ))}
-                        </div>
-
-                        <div className="produit">
-                          <button onClick={handleShowModal} className="btn btn-sm btn primero mt-4">
-                            <FaListAlt /> Add Department
-                          </button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
 
                   {/* Services Dropdown */}
                   <div className="dropdown-item mt-4">
@@ -331,7 +452,6 @@ const Hospital = () => {
                       </div>
                     )}
                   </div>
-
                 </div>
               )}
             </div>
@@ -341,19 +461,13 @@ const Hospital = () => {
                 <Modal.Title className='yuri mx-auto'>Add New Department</Modal.Title>
               </Modal.Header>
               <Modal.Body>
-                <div className="form-group mb-4 mt-3">
-                  <label className='secondo'>Code Department</label>
-                  <input
-                    type="text"
-                    className="form-control arome"
-                    name="code"
-                    placeholder='DEP003456J6'
-                    value={newDepartment.code}
-                    onChange={handleInputChange}
-                  />
-                </div>
+                {successMessage && (
+                  <div className="alert alert-success" role="alert">
+                    {successMessage}
+                  </div>
+                )}
                 <div className="form-group mb-4">
-                  <label className='fraise'> Name</label>
+                  <label className=''> Name</label>
                   <input
                     type="text"
                     className="form-control tercio"
@@ -362,36 +476,19 @@ const Hospital = () => {
                     onChange={handleInputChange}
                   />
                 </div>
-                <div className="form-group mb-4">
-                  <label className='menthe'>Speciality</label>
-                  <select
-                    className="form-control quartio"
-                    name="speciality"
-                    value={newDepartment.speciality}
-                    onChange={handleInputChange}
-                  >
-                    <option value="">Select a speciality</option>
-                    <option value="Cardiology">Cardiology Emergency</option>
-                    <option value="Ophthalmology">Ophthalmology Emergency</option>
-                    <option value="Dermatology">Dermatology Emergency</option>
-                    <option value="Pediatry">Pediatry Emergency</option>
-                    <option value="Psychiatry">Psychiatry Emergency</option>
-                  </select>
-                </div>
+
                 <div className="form-group mb-3">
-                  <label className='banane'>Definissez le prix de la consultation :</label>
+                  <label className=''>Definissez le prix de la consultation :</label>
                   <div className="input-group mb-3">
                     <input
                       type="number"
                       className="form-control cinquo"
                       placeholder="20 000"
-                      aria-label="newDepartment.price"
-                      aria-describedby="newDepartment.price"
-                      name="price"
-                      value={newDepartment.price}
+                      name="price_consult"
+                      value={newDepartment.price_consult}
                       onChange={handleInputChange}
                     />
-                    <span className="input-group-text" id="newDepartment.price">XOF</span>
+                    <span className="input-group-text" id="newDepartment.price_consult">XOF</span>
                   </div>
 
                 </div>
@@ -469,10 +566,11 @@ const Hospital = () => {
             >
               <Modal.Header className='pamela' >
                 <Modal.Title className="text-center w-100 vacation">
-                  {selectedDepartment || 'Department Details'}
+                {selectedDepartment ? selectedDepartment.name : 'Department Details'}
                 </Modal.Title>
               </Modal.Header>
               <Modal.Body>
+
                 <div className="department-details">
                   {/* Section pour le nom et le code */}
                   <div className="row mb-4">
@@ -484,7 +582,7 @@ const Hospital = () => {
                       <input
                         type="text"
                         className="form-control"
-                        defaultValue={selectedDepartment || ''}
+                        defaultValue={selectedDepartment ? selectedDepartment.name : ''}
                         readOnly
                       />
                     </div>
@@ -493,7 +591,7 @@ const Hospital = () => {
                       <input
                         type="text"
                         className="form-control"
-                        defaultValue="DEP003456J6"
+                        defaultValue={selectedDepartment ? selectedDepartment.codeDep : ''}
                         readOnly
                       />
                     </div>
@@ -505,7 +603,7 @@ const Hospital = () => {
                     <textarea
                       className="form-control"
                       rows="4"
-                      defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel dolor non mi cursus sodales."
+                      defaultValue={selectedDepartment ? selectedDepartment.description : ''}
                       readOnly
                     ></textarea>
                   </div>
@@ -518,7 +616,7 @@ const Hospital = () => {
                         <input
                           type="text"
                           className="form-control"
-                          defaultValue="20 000"
+                          defaultValue={selectedDepartment ? selectedDepartment.price_consult : ''}
                           readOnly
                         />
                         <span className="input-group-text">XOF</span>
@@ -579,9 +677,9 @@ const Hospital = () => {
           <div className="girla ">
             {/* Radio Buttons */}
             <div className="mb-4 fiona">
-            <div className='d-flex align-items-center justify-content-center'>
-            <span className='me-3' style={{ width: '70px', height: '5px', background: '#0056B3' }}></span> &nbsp; <label className="fw-bold d-block">Do you have other sites?</label>
-            </div>
+              <div className='d-flex align-items-center justify-content-center'>
+                <span className='me-3' style={{ width: '70px', height: '5px', background: '#0056B3' }}></span> &nbsp; <label className="fw-bold d-block">Do you have other sites?</label>
+              </div>
               <div className="d-flex px-5">
                 <div className="sultan me-3">
                   <input
@@ -610,10 +708,11 @@ const Hospital = () => {
             {hasOtherSites && (
               <div className="dropdown mb-4">
                 <button
-                  className="btn btn-primary dropdown-toggle w-100 text-start"
+                  className="d-flex align-items-center btn dropdown-toggle  text-start"
                   type="button"
                   onClick={() => toggleDropdown("general")}
                 >
+                  <span className='me-3' style={{ width: '70px', height: '5px', background: '#0056B3' }}></span>
                   Site No 1
                 </button>
                 {dropdownState.general && (
