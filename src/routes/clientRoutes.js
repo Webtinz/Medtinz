@@ -12,6 +12,10 @@ import ReceiptPayment from '../views/clientviews/billingmanagement/receipt'; // 
 import Department from '../views/clientviews/deparmentmanagment/department'; // Page Patient Management
 import HospitalSetting from '../views/hospitalsetting'; // Page Patient Management
 import PatientCard from '../views/clientviews/Patientmanagment/patientcard'; // Page Patient Management
+import Dashboard from '../views/appointment/overviews';
+import Appointments from '../views/appointment/appointment';
+import AppointmentHistory from '../views/appointment/appointement_history';
+import MedicalAppointments from '../views/appointment/patientDetail';
 
 
 
@@ -35,6 +39,10 @@ const ClientRoutesWithDash = [
   { path: '/hospitaladmin/receiptpay', name: 'ReceiptPayment', element: ReceiptPayment },
   { path: '/hospitaladmin/hospitalsetting', name: 'HospitalSetting', element: HospitalSetting },
   { path: '/patientcard/:patientId', name: 'PatientCard', element: PatientCard },
+  { path: '/hospitaladmin/overviews', name: 'Overview', element: Dashboard },
+  { path: '/hospitaladmin/appointment', name: 'Appointment', element: Appointments },
+  { path: '/hospitaladmin/appointment_history', name: 'AppointmentHistory', element: AppointmentHistory },
+  { path: '/hospitaladmin/patient_details', name: 'PatientDetail', element: MedicalAppointments },
 
 
 
