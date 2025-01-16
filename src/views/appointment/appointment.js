@@ -11,6 +11,10 @@ const Appointments = () => {
     navigate("/hospitaladmin/appointment_history"); // Redirigez à la page d'historique
   };
 
+  const handleViewHistory2 = () => {
+    navigate("/hospitaladmin/patient_details"); // Redirigez à la page d'historique
+  };
+
   const popoverRefs = useRef([]);
 
   const appointments = [
@@ -122,16 +126,16 @@ const Appointments = () => {
                   <td>{appointment.phone}</td>
                   <td>
                     <img
-                      className="btn me-2 cursor-pointer"
-                      data-bs-toggle="popover"
-                      data-bs-title="Vital Signs"
-                      data-bs-content={`Body Temperature: <strong style="color: 'red';">${appointment.vitalSigns.temperature}</strong><br /><hr>Blood Pressure: <strong>${appointment.vitalSigns.bloodPressure}</strong><br />Note: <strong>${appointment.vitalSigns.note}</strong>`}
-                      data-bs-placement="bottom"
-                      data-bs-custom-class="custom-popover"
-                      src={icone}
-                      ref={(el) => (popoverRefs.current[index] = el)} // Référence à chaque image
-                    />
-                    <img className="me-2 btn cursor-pointer" src={icone2} alt="Heart Icon" />
+                    className="btn me-2 cursor-pointer"
+                    data-bs-toggle="popover"
+                    data-bs-title="Vital Signs"
+                    data-bs-content={`Body Temperature: <strong style="color: 'red';">${appointment.vitalSigns.temperature}</strong><br /><hr>Blood Pressure: <strong>${appointment.vitalSigns.bloodPressure}</strong><br />Note: <strong>${appointment.vitalSigns.note}</strong>`}
+                    data-bs-placement="bottom"
+                    data-bs-custom-class="custom-popover"
+                    src={icone2}
+                    ref={(el) => (popoverRefs.current[index] = el)}/>
+                    <img className="me-2 btn cursor-pointer" onClick={handleViewHistory2} src={icone} alt="Heart Icon" />
+                      
                   </td>
                   <td>
                     {appointment.status && (

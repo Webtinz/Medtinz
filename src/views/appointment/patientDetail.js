@@ -1,6 +1,10 @@
 import React from 'react';
+import { useLocation, useNavigate } from "react-router-dom";
+
 
 const MedicalAppointments = () => {
+  const navigate = useNavigate();
+
   const patientData = {
     nom: "Badoss",
     prenom: "Austin Miller",
@@ -42,6 +46,7 @@ const MedicalAppointments = () => {
       cursor: 'pointer',
       borderRadius: "15px",
       height: "50px",
+      width: "100px",
       marginBottom: '1.5rem'
     },
     sectionTitle: {
@@ -70,7 +75,7 @@ const MedicalAppointments = () => {
       fontWeight: 'bold'
     },
     tableContainer: {
-      backgroundColor: 'rgba(240, 253, 244, 0.5)',
+      backgroundColor: '#28A7452B',
       borderRadius: '0.5rem',
       padding: '1rem'
     },
@@ -91,16 +96,21 @@ const MedicalAppointments = () => {
     }
   };
 
+  const handleGoBack = () => {
+    navigate(-1); // Cela permet de revenir à la page précédente dans l'historique
+  };
+
+
   return (
     <div style={styles.container}>
         <h1 style={styles.title}>Your appointments</h1>
       <div style={styles.card}>
         
-        <button style={styles.backButton}>
+        <button className="btn btn-outline-primary d-flex align-items-center mb-4" onClick={handleGoBack} >
           ← Retour
         </button>
 
-        <div>
+        <div className='mt-4'>
           <div style={styles.sectionTitle}>
             <h2 style={styles.sectionTitleText}>Patient Details</h2>
           </div>
@@ -138,23 +148,23 @@ const MedicalAppointments = () => {
             <table style={styles.table}>
               <thead>
                 <tr>
-                  <th style={styles.th}>#</th>
-                  <th style={styles.th}>Last Visit</th>
-                  <th style={styles.th}>Type</th>
-                  <th style={styles.th}>Doctor</th>
-                  <th style={styles.th}>Services</th>
-                  <th style={styles.th}>Voir détails</th>
+                  <th className='text-center' style={styles.th}><p style={{backgroundColor:"#fff", margin:"7px", padding: "7px"}}># <i class="bi bi-arrow-down"></i></p></th>
+                  <th className='text-center' style={styles.th}> <p style={{backgroundColor:"#fff", margin:"7px", padding: "7px"}}>Last Visit <i class="bi bi-arrow-down"></i></p></th>
+                  <th className='text-center' style={styles.th}><p style={{backgroundColor:"#fff", margin:"7px", padding: "7px"}}>Type <i class="bi bi-arrow-down"></i></p></th>
+                  <th className='text-center' style={styles.th}><p style={{backgroundColor:"#fff", margin:"7px", padding: "7px"}}>Doctor <i class="bi bi-arrow-down"></i></p></th>
+                  <th className='text-center' style={styles.th}><p style={{backgroundColor:"#fff", margin:"7px", padding: "7px"}}>Services <i class="bi bi-arrow-down"></i></p></th>
+                  <th className='text-center' style={styles.th}><p style={{backgroundColor:"#fff", margin:"7px", padding: "7px"}}>Voir détails <i class="bi bi-arrow-down"></i></p></th>
                 </tr>
               </thead>
               <tbody>
                 {appointments.map((appointment) => (
                   <tr key={appointment.id}>
-                    <td style={styles.td}>{appointment.id}</td>
-                    <td style={styles.td}>{appointment.date}</td>
-                    <td style={styles.td}>{appointment.type}</td>
-                    <td style={styles.td}>{appointment.doctor}</td>
-                    <td style={styles.td}>{appointment.service}</td>
-                    <td style={styles.td}>👁️</td>
+                    <td className='text-center' style={styles.td}>{appointment.id}</td>
+                    <td className='text-center' style={styles.td}>{appointment.date}</td>
+                    <td className='text-center' style={styles.td}>{appointment.type}</td>
+                    <td className='text-center' style={styles.td}>{appointment.doctor}</td>
+                    <td className='text-center' style={styles.td}>{appointment.service}</td>
+                    <td className='text-center text-success' style={styles.td}><i class="bi bi-eye"></i></td>
                   </tr>
                 ))}
               </tbody>

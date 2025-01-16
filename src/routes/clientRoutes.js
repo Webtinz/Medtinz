@@ -16,6 +16,7 @@ import Dashboard from '../views/appointment/overviews';
 import Appointments from '../views/appointment/appointment';
 import AppointmentHistory from '../views/appointment/appointement_history';
 import MedicalAppointments from '../views/appointment/patientDetail';
+import CalendarWeekView from '../views/appointment/calendar';
 
 
 
@@ -43,6 +44,7 @@ const ClientRoutesWithDash = [
   { path: '/hospitaladmin/appointment', name: 'Appointment', element: Appointments },
   { path: '/hospitaladmin/appointment_history', name: 'AppointmentHistory', element: AppointmentHistory },
   { path: '/hospitaladmin/patient_details', name: 'PatientDetail', element: MedicalAppointments },
+  { path: '/hospitaladmin/appoint_calendar', name: 'AppointCalendar', element: CalendarWeekView },
 
 
 

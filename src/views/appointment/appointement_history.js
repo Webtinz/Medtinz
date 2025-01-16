@@ -7,6 +7,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 const AppointmentHistory = () => {
   const navigate = useNavigate();
+  const handleViewHistory = () => {
+    navigate("/hospitaladmin/patient_details"); // Redirigez à la page d'historique
+  };
 
   const popoverRefs = useRef([]);
 
@@ -144,7 +147,7 @@ const AppointmentHistory = () => {
                   <td>{appointment.patient}</td>
                   <td>{appointment.phone}</td>
                   <td>
-                    <img className="me-2 btn cursor-pointer" src={icone} alt="Heart Icon" />
+                    <img className="me-2 btn cursor-pointer" onClick={handleViewHistory} src={icone} alt="Heart Icon" />
                   </td>
                   <td>
                     {appointment.status ? (
