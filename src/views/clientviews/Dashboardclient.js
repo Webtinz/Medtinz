@@ -101,8 +101,8 @@ const DashboardPage = () => {
                     <div className='d-flex'>
                       <div className=" textcontent ps-4">
                         <p className="percentage increase"><i className="bi bi-graph-up-arrow" style={{ color: 'green' }}></i>+8.5%</p>
-                        <h5 className="text-left chiffre">30/34</h5>
-                        <h5 className="text-left module">Appointments</h5>
+                        <h5 className="text-left chiffre">27</h5>
+                        <h5 className="text-left module">Patients</h5>
                       </div>
                       <div className='imgcontent'>
                         <img src={Dashimg1} alt="Consultation Icon" className="topimgcard" />
@@ -132,13 +132,67 @@ const DashboardPage = () => {
                 </div>
               </div>
               <div className="col">
-                <div className="card custom-card red">
+                <div className="card custom-card purple">
                   <div className="card-body">
                     <div className='d-flex'>
                       <div className=" textcontent ps-4">
                         <p className="percentage increase"><i className="bi bi-graph-up-arrow" style={{ color: 'green' }}></i>+8.5%</p>
                         <h5 className="text-left chiffre">30/34</h5>
-                        <h5 className="text-left module">Appointments</h5>
+                        <h5 className="text-left module">Échographie</h5>
+                      </div>
+                      <div className='imgcontent'>
+                        <img src={Dashimg2} alt="Consultation Icon" className="topimgcard" />
+                        <br />
+                        <img src={Dashicon2} className='cardicon' alt="Consultation Icon" width={'50'} height={'50'} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="col">
+                <div className="card custom-card purple">
+                  <div className="card-body">
+                    <div className='d-flex'>
+                      <div className=" textcontent ps-4">
+                        <p className="percentage increase"><i className="bi bi-graph-up-arrow" style={{ color: 'green' }}></i>+8.5%</p>
+                        <h5 className="text-left chiffre">12</h5>
+                        <h5 className="text-left module">Analyses</h5>
+                      </div>
+                      <div className='imgcontent'>
+                        <img src={Dashimg2} alt="Consultation Icon" className="topimgcard" />
+                        <br />
+                        <img src={Dashicon2} className='cardicon' alt="Consultation Icon" width={'50'} height={'50'} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="col">
+                <div className="card custom-card purple">
+                  <div className="card-body">
+                    <div className='d-flex'>
+                      <div className=" textcontent ps-4">
+                        <p className="percentage increase"><i className="bi bi-graph-up-arrow" style={{ color: 'green' }}></i>+8.5%</p>
+                        <h5 className="text-left chiffre">34</h5>
+                        <h5 className="text-left module">Consultations</h5>
+                      </div>
+                      <div className='imgcontent'>
+                        <img src={Dashimg2} alt="Consultation Icon" className="topimgcard" />
+                        <br />
+                        <img src={Dashicon2} className='cardicon' alt="Consultation Icon" width={'50'} height={'50'} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="col">
+                <div className="card custom-card red">
+                  <div className="card-body">
+                    <div className='d-flex'>
+                      <div className=" textcontent ps-4">
+                        <p className="percentage increase"><i className="bi bi-graph-up-arrow" style={{ color: 'green' }}></i>+8.5%</p>
+                        <h5 className="text-left chiffre">18</h5>
+                        <h5 className="text-left module">Rendez-Vous</h5>
                       </div>
                       <div className='imgcontent'>
                         <img src={Dashimg3} alt="Consultation Icon" className="topimgcard" />

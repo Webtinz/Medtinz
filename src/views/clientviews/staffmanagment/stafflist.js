@@ -32,6 +32,10 @@ import { ToastContainer, toast } from 'react-toastify';
 import EditStaffModal from './edituserstaff'; // Assurez-vous que le modal pour éditer est importé
 import api from '../../../service/caller';
 
+import '@coreui/coreui/dist/css/coreui.min.css';
+import '@coreui/coreui/dist/js/coreui.bundle.min.js';
+
+
 const StaffList = () => {
     const [visible, setVisible] = useState(false);
     const [modalValue, setModalValue] = useState(null); // Valeur à passer au modal
@@ -75,7 +79,7 @@ const StaffList = () => {
         const fetchMyHospitalUser = async (hospitalIds) => {
             try {
                 const response = await api.get(`api/usersbydepartment?hospital_id=${hospitalIds}`);
-                console.log(response.data);
+                // console.log(response.data);
                 
                 setMyHospitalUser(response.data); // Assure-toi que l'API renvoie les utilisateurs dans un champ `users`
                 setTotalPages(response.data); // Assure-toi que l'API renvoie `totalPages`
@@ -136,6 +140,8 @@ const StaffList = () => {
     };
 
     const handleEditClick = (user) => {
+        // console.log(user);
+        
         setSelectedUser(user); // Mettre l'utilisateur sélectionné
         setEditModalVisible(true); // Ouvrir le modal
     };
@@ -149,7 +155,7 @@ const StaffList = () => {
 
 
     const filterUsersByRole = (role) => {
-        console.log(role);
+        // console.log(role);
         
         if (role === "Allusers") {
             return myHospitalUser; // Si "Allusers", afficher tous les utilisateurs
@@ -261,9 +267,9 @@ const StaffList = () => {
                                                                                         height="50"
                                                                                     />
                                                                                 </CTableDataCell>
-                                                                                <CTableDataCell>{user.firstname} {user.lastname}</CTableDataCell>
-                                                                                <CTableDataCell>{user.hospital_id.hospital_name}</CTableDataCell>
-                                                                                <CTableDataCell>{user.role.name ?? 'Undefined'}</CTableDataCell>
+                                                                                <CTableDataCell>{user?.firstname} {user?.lastname}</CTableDataCell>
+                                                                                {/* <CTableDataCell>{user.hospital_id.hospital_name}</CTableDataCell> */}
+                                                                                <CTableDataCell>{user?.role?.name ?? 'Undefined'}</CTableDataCell>
                                                                                 <CTableDataCell>
                                                                                     {user.departementId[0]?.name ?? 'Undefined'}
                                                                                 </CTableDataCell>
@@ -273,10 +279,27 @@ const StaffList = () => {
                                                                                 <CTableDataCell align="middle">
                                                                                     <div className="actionbtn">
                                                                                         <div className="left">
-                                                                                            <FaEdit onClick={() => handleEditClick(user)}  />
+                                                                                            <div class="dropdown-center p-0 bg-none" style={{ border: 'none' }}>
+                                                                                                <FaEdit className="bg-none border-0 p-0"
+                                                                                                    data-coreui-toggle="dropdown"
+                                                                                                    aria-expanded="true"
+                                                                                                    style={{ border: 'none' }} />
+                                                                                                <ul class="dropdown-menu">
+                                                                                                    <li><a class="dropdown-item" href="#" onClick={() => handleEditClick(user)} >Edit</a></li>
+                                                                                                    <li><a class="dropdown-item" href="#">View Details</a></li>
+                                                                                                </ul>
+                                                                                            </div>
                                                                                         </div>
                                                                                         <div className="right">
-                                                                                            <BsTrash3 style={{ color: '#EF3826' }} />
+                                                                                            <div class="dropdown-center p-0 bg-none" style={{ border: 'none' }}>
+                                                                                            <BsTrash3 style={{ color: '#EF3826', border: 'none' }} className="bg-none border-0 p-0"
+                                                                                                    data-coreui-toggle="dropdown"
+                                                                                                    aria-expanded="true"/>
+                                                                                                <ul class="dropdown-menu">
+                                                                                                    <li><a class="dropdown-item" href="#" onClick={() => handleEditClick(user)} >Edit</a></li>
+                                                                                                    <li><a class="dropdown-item" href="#">View Details</a></li>
+                                                                                                </ul>
+                                                                                            </div>
                                                                                         </div>
                                                                                     </div>
                                                                                 </CTableDataCell>
@@ -358,7 +381,16 @@ const StaffList = () => {
                                                                                 <CTableDataCell align="middle">
                                                                                     <div className="actionbtn">
                                                                                         <div className="left">
-                                                                                            <FaEdit onClick={() => handleEditClick(user)}  />
+                                                                                            <div class="dropdown-center p-0 bg-none" style={{ border: 'none' }}>
+                                                                                                <FaEdit className="bg-none border-0 p-0"
+                                                                                                    data-coreui-toggle="dropdown"
+                                                                                                    aria-expanded="true"
+                                                                                                    style={{ border: 'none' }} />
+                                                                                                <ul class="dropdown-menu">
+                                                                                                    <li><a class="dropdown-item" href="#"   onClick={() => handleEditClick(user)} >Edit</a></li>
+                                                                                                    <li><a class="dropdown-item" href="#">View Details</a></li>
+                                                                                                </ul>
+                                                                                            </div>
                                                                                         </div>
                                                                                         <div className="right">
                                                                                             <BsTrash3 style={{ color: '#EF3826' }} />

@@ -19,6 +19,43 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
+// Ajouter un intercepteur de réponse pour gérer les erreurs 400
+// api.interceptors.response.use(
+//   (response) => response, // Renvoie la réponse si tout va bien
+//   (error) => {
+//     if (error.response && error.response.status === 400) {
+//       // Effacer le token expiré ou invalide
+//       localStorage.removeItem('access_token');
+
+//       // Rediriger vers la page de connexion
+//       window.location.href = '/Clientlogin'; // Assurez-vous que '/login' est la bonne route
+
+//       // Optionnel : Afficher un message d'alerte
+//       alert('Utilisateur non trouve !');
+//     }
+//     return Promise.reject(error);
+//   }
+// );
+
+
+// Ajouter un intercepteur de réponse pour gérer les erreurs 400
+// api.interceptors.response.use(
+//   (response) => response, // Renvoie la réponse si tout va bien
+//   (error) => {
+//     if (error.response && error.response.status === 403) {
+//       // Effacer le token expiré ou invalide
+//       localStorage.removeItem('access_token');
+
+//       // Rediriger vers la page de connexion
+//       window.location.href = '/Clientlogin'; // Assurez-vous que '/login' est la bonne route
+
+//       // Optionnel : Afficher un message d'alerte
+//       alert('Vous n\'etes pas autorise a faire cette action!');
+//     }
+//     return Promise.reject(error);
+//   }
+// );
+
 // Ajouter un intercepteur de réponse pour gérer les erreurs 401
 api.interceptors.response.use(
   (response) => response, // Renvoie la réponse si tout va bien

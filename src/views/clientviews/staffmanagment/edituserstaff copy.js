@@ -12,41 +12,22 @@ const animatedComponents = makeAnimated();
 
 const EditStaffModal = ({ visible, onClose, initialData, onStaffUpdated, user }) => {
     const [formData, setFormData] = useState({
-        hospital_id:  user?.hospital_id?._id ,
-        firstname:  user?.firstname ,
-        lastname:  user?.lastname ,
-        username:  user?.username ,
-        email:  user?.email ,
-        password: "" ,
-        confirmPassword: "" ,
-        role:  user?.role?._id ,
-        specialties:  user?.specialties ,
+        hospital_id: user?.hospital_id?._id  || "",
+        firstname: user?.firstname  || "",
+        lastname: user?.lastname  || "",
+        username: user?.username  || "",
+        email: user?.email  || "",
+        password: ""  || "",
+        confirmPassword: ""  || "",
+        role: user?.role._id  || "",
+        specialties: user?.specialties  || "",
         contact: {
-            phone:  user?.contact.phone ,
-            address:  user?.contact.address
+            phone: user?.contact.phone  || "",
+            address: user?.contact.address|| "",
         },
-        departementId:  user?.departementId[0]?._id
-    });   
-    useEffect(() => {
-        if (user) {
-            setFormData({
-                hospital_id: user?.hospital_id?._id,
-                firstname: user?.firstname,
-                lastname: user?.lastname,
-                username: user?.username,
-                email: user?.email,
-                password: "",
-                confirmPassword: "",
-                role: user?.role?._id,
-                specialties: user?.specialties || [],
-                contact: {
-                    phone: user?.contact?.phone || '',
-                    address: user?.contact?.address || ''
-                },
-                departementId: user?.departementId[0]?._id || ''
-            });
-        }
-    }, [user]);
+        departementId: user?.departementId[0]._id
+    });
+    // console.log(user?.specialties);
     
 
     const [Specialities, setSpecialities] = useState([]);
@@ -89,9 +70,11 @@ const EditStaffModal = ({ visible, onClose, initialData, onStaffUpdated, user })
     }, []);
     
     const specialtyOptions = user?.specialties?.map(option => ({
-        label: option?.name,  // Utilise le nom de la spécialité
-        value: option?._id    // Utilise l'ID comme valeur
+        label: option.name,  // Utilise le nom de la spécialité
+        value: option._id    // Utilise l'ID comme valeur
       })) || [];
+
+    // console.log(user);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -135,21 +118,15 @@ const EditStaffModal = ({ visible, onClose, initialData, onStaffUpdated, user })
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(formData);
-        
 
         if (validateForm()) {
             try {
-                const response = await api.put(`api/users/${user?._id}`, formData);
+                const response = await api.put(`api/users/${user._id}`, formData);
                 toast.success("Staff updated successfully!");
                 onStaffUpdated(response.data);
                 onClose();
             } catch (error) {
-                console.log(error);
-                
-                    const errorMessage = error.response?.data.error || error.message || "An unknown error occurred";
-                    // toast.error(`Error: ${errorMessage}. Please try again.`);
-                toast.error(`Failed to update staff:  ${errorMessage}. Please try again.`, error.message);
+                toast.error("Failed to update staff. Please try again.");
             }
         }
     };
@@ -193,11 +170,11 @@ const EditStaffModal = ({ visible, onClose, initialData, onStaffUpdated, user })
                             name="hospital_id"
                             id="hospital_id"
                             onChange={handleInputChange}
-                            value={formData.hospital_id || user?.hospital_id?._id}
+                            value={user?.hospital_id._id ?? formData.hospital_id}
                         >
                             <option value="">Select Hospital</option>
                             {Hospitals.map((hospital) => (
-                                <option key={hospital.id} value={hospital?._id}>
+                                <option key={hospital.id} value={hospital._id}>
                                     {hospital.hospital_name}
                                 </option>
                             ))}
@@ -214,16 +191,16 @@ const EditStaffModal = ({ visible, onClose, initialData, onStaffUpdated, user })
                             components={animatedComponents}
                             isMulti
                             options={Specialities.map(option => ({
-                                label: option?.name,
-                                value: option?._id
+                                label: option.name,
+                                value: option._id
                             }))}
                             onChange={handleSpecialtiesChange}
-                            // value={specialtyOptions ?? Specialities.filter(option =>
-                            //     formData.specialties.includes(option._id)
-                            // ).map(option => ({
-                            //     label: option.name,
-                            //     value: option._id
-                            // }))}
+                            value={specialtyOptions ?? Specialities.filter(option =>
+                                formData.specialties.includes(option._id)
+                            ).map(option => ({
+                                label: option.name,
+                                value: option._id
+                            }))}
                         />
                     </div>
 
@@ -235,7 +212,7 @@ const EditStaffModal = ({ visible, onClose, initialData, onStaffUpdated, user })
                             name="firstname"
                             id="firstname"
                             placeholder="John Doe"
-                            value={formData.firstname || user?.firstname}
+                            value={user?.firstname || formData.firstname}
                             onChange={handleInputChange}
                         />
                         {errors.firstname && <div className="text-danger">{errors.firstname}</div>}
@@ -249,7 +226,7 @@ const EditStaffModal = ({ visible, onClose, initialData, onStaffUpdated, user })
                             name="lastname"
                             id="lastname"
                             placeholder="johndoe"
-                            value={formData.lastname || user?.lastname}
+                            value={user?.lastname || formData.lastname}
                             onChange={handleInputChange}
                         />
                         {errors.lastname && <div className="text-danger">{errors.lastname}</div>}
@@ -263,7 +240,7 @@ const EditStaffModal = ({ visible, onClose, initialData, onStaffUpdated, user })
                             name="username"
                             id="username"
                             placeholder="johndoe"
-                            value={formData.username || user?.username}
+                            value={user?.username || formData.username}
                             onChange={handleInputChange}
                         />
                         {errors.username && <div className="text-danger">{errors.username}</div>}
@@ -277,11 +254,11 @@ const EditStaffModal = ({ visible, onClose, initialData, onStaffUpdated, user })
                                 name="role"
                                 id="role"
                                 onChange={handleInputChange}
-                                value={formData.role || user?.role?._id}
+                                value={user?.role._id ?? formData.role}
                             >
                                 <option value="">Select Role</option>
                                 {Roles.map(role => (
-                                    <option key={role?._id} value={role?._id}>
+                                    <option key={role._id} value={role._id}>
                                         {role.name}
                                     </option>
                                 ))}
@@ -296,11 +273,11 @@ const EditStaffModal = ({ visible, onClose, initialData, onStaffUpdated, user })
                                 name="departementId"
                                 id="departementId"
                                 onChange={handleInputChange}
-                                value={formData.departementId || user?.departementId[0]?._id}
+                                value={user?.departementId[0]?._id ?? formData.departementId}
                             >
                                 <option value="">Select Department</option>
                                 {Departments.map(department => (
-                                    <option key={department?._id} value={department?._id}>
+                                    <option key={department._id} value={department._id}>
                                         {department.name}
                                     </option>
                                 ))}
@@ -318,7 +295,7 @@ const EditStaffModal = ({ visible, onClose, initialData, onStaffUpdated, user })
                                 name="email"
                                 id="email"
                                 placeholder="johndoe@example.com"
-                                value={formData.email || user?.email}
+                                value={user?.email || formData.email}
                                 onChange={handleInputChange}
                             />
                             {errors.email && <div className="text-danger">{errors.email}</div>}
@@ -362,7 +339,7 @@ const EditStaffModal = ({ visible, onClose, initialData, onStaffUpdated, user })
                                 name="contact.phone"
                                 id="contact.phone"
                                 placeholder="0123456789"
-                                value={formData.contact.phone || user?.contact?.phone}
+                                value={user?.contact?.phone || formData.contact.phone}
                                 onChange={handleInputChange}
                             />
                             {errors['contact.phone'] && <div className="text-danger">{errors['contact.phone']}</div>}
@@ -374,7 +351,7 @@ const EditStaffModal = ({ visible, onClose, initialData, onStaffUpdated, user })
                                 name="contact.address"
                                 id="contact.address"
                                 placeholder="123 Main St"
-                                value={formData.contact.address || user?.contact?.address}
+                                value={user?.contact?.address || formData.contact.address}
                                 onChange={handleInputChange}
                             />
                             {errors['contact.address'] && <div className="text-danger">{errors['contact.address']}</div>}

@@ -153,8 +153,10 @@ const AddStaffModal = ({ visible, onClose, handleStaffAdded, initialData, setVis
             try {
                 const response = await api.post('api/adduser', formPayload);
 
-                if (response.status === 200 && response.data.success) {
+                if ((response.status === 200 || response.status === 201) && response.data.success) {
                     // Succès
+                    console.log(response);
+                    
                     toast.success("Staff registered successfully!");
                     setFormData({
                         hospital_id: "",
@@ -179,8 +181,9 @@ const AddStaffModal = ({ visible, onClose, handleStaffAdded, initialData, setVis
                     toast.error(response.data.message || "Failed to register staff. Please try again.");
                 }
             } catch (error) {
-                toast.error("Registration failed. Please try again.");
-                console.error('Error:', error);
+                toast.error(`Registration failed: ${error?.response?.data?.message || 'An unexpected error occurred. Please try again.'}`);
+                console.error('Error:', error?.response|| 'No error message available.');
+
             }
         }
     };
