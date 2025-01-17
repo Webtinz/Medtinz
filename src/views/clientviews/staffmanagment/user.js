@@ -12,6 +12,8 @@ import { ToastContainer, toast } from 'react-toastify';
 
 const User = () => {
 
+    const navigate = useNavigate();
+
     const location = useLocation();
     const [UserDetails, setUserDetails] = useState([]);
     const [UserSchedules, setUserSchedules] = useState([]);
@@ -54,12 +56,18 @@ const User = () => {
         // console.log(UserDetails);
         // console.log(UserSchedules);
         
+    const handleUsersList = (id) => {
+        // Ajouter les données aux paramètres de l'URL
+        navigate({
+          pathname: '/hospitaladmin/stafflist'
+        });
+    }
 
   return (
     <div className="container user-profile p-2 divp20">
         <div className='row'>
             <div className='col-lg-2 mx-auto'>
-                <button className="btn btn mb-4 toute">
+                <button className="btn btn mb-4 toute" onClick={handleUsersList}>
                 <FaArrowLeft /> Retour
                 </button>
                 <div className="profile-header ">
@@ -75,7 +83,7 @@ const User = () => {
                 </div>
             </div>
             <div className='col-lg-10'>
-                <div className="profile-info  mb-5">
+                <div className="profile-info  mb-2">
                 <div className="row">
                     <div className="col-md-3">
                     <label>Nom:</label>
@@ -91,11 +99,15 @@ const User = () => {
                     </div>
                     <div className="col-md-3">
                     <label>Gender:</label>
-                    <p>{UserDetails?.civility}</p>
+                    <p className={UserDetails?.civility ?? 'text-warning'}>{UserDetails?.civility ?? 'Undefiened'}</p>
+                    </div>
+                    <div className="col-md-3 my-3">
+                    <label>Fonction Type:</label>
+                    <p className={UserDetails?.type ?? 'text-warning'}>{UserDetails?.type ?? 'Undefiened'}</p>
                     </div>
                 </div>
                 </div>
-                <div className="department-section mt-4">
+                <div className="department-section mt-2">
                 <h6>Department:</h6>
                 <div className="tags-container">
                     {Array.isArray(UserDetails?.departementId) && UserDetails.departementId.length > 0 ? (
@@ -114,7 +126,7 @@ const User = () => {
 
                 </div>
 
-                <div className="specialties-section mt-4">
+                <div className="specialties-section mt-2">
                     <h6>Specialities:</h6>
                     <div className="tags-container">
                         {Array.isArray(UserDetails?.specialties) && UserDetails.specialties.length > 0 ? (
@@ -135,7 +147,7 @@ const User = () => {
             <div className="timetable">
               <div className="row">
                 {['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'].map((day, index) => (
-                  <div key={day} className="col-md-1 m-4 ">
+                  <div key={day} className="col-md-2 m-3 time-slotDiv">
                     <div className="day-label text-center">{day}</div>
                     {UserSchedules[index] && (
                       <>
@@ -143,7 +155,12 @@ const User = () => {
                         <div className="text-center"> - </div>
                         <div className="time-slot">{UserSchedules[index].end_time}</div>
                         <div className="text-center"> - </div>
-                        <div className="time-slot">{UserSchedules[index].duration_unit} min</div>
+                        <div className="time-slot">
+                        {UserSchedules[index].duration_unit < 60 
+  ? UserSchedules[index].duration_unit + ' min' 
+  : Math.floor(UserSchedules[index].duration_unit / 60) + 'H ' + (UserSchedules[index].duration_unit % 60) + 'min'}
+
+                        </div>
                       </>
                     )}
                   </div>

@@ -61,6 +61,17 @@
   font-size: 13px;
 }
 
+.time-slotDiv{
+  width: 10%;
+}
+
+@media screen and (max-width: 760px){
+  
+.time-slotDiv{
+  width: 100% !important;
+}
+}
+
 .consultation-input {
   max-width: 200px;
   text-align: center;

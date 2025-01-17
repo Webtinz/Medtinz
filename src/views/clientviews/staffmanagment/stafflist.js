@@ -260,7 +260,7 @@ const StaffList = () => {
                                                                 <CTableRow>
                                                                     <CTableHeaderCell scope="col">Profile</CTableHeaderCell>
                                                                     <CTableHeaderCell scope="col">Name</CTableHeaderCell>
-                                                                    <CTableHeaderCell scope="col">Role</CTableHeaderCell>
+                                                                    <CTableHeaderCell scope="col">Fonction</CTableHeaderCell>
                                                                     <CTableHeaderCell scope="col">Department</CTableHeaderCell>
                                                                     <CTableHeaderCell scope="col">Status</CTableHeaderCell>
                                                                     <CTableHeaderCell scope="col">Action</CTableHeaderCell>
@@ -362,7 +362,7 @@ const StaffList = () => {
                                                                             <CTableHeaderCell>Profile</CTableHeaderCell>
                                                                             <CTableHeaderCell>Names</CTableHeaderCell>
                                                                             <CTableHeaderCell>Hospitals</CTableHeaderCell>
-                                                                            <CTableHeaderCell>Role</CTableHeaderCell>
+                                                                            <CTableHeaderCell>Fonction</CTableHeaderCell>
                                                                             <CTableHeaderCell>Department</CTableHeaderCell>
                                                                             <CTableHeaderCell>Status</CTableHeaderCell>
                                                                             <CTableHeaderCell>Action</CTableHeaderCell>

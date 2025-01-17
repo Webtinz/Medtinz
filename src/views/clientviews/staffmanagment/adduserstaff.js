@@ -29,7 +29,9 @@ const AddStaffModal = ({ visible, onClose, handleStaffAdded, initialData, setVis
             phone: initialData?.contact?.phone || "",
             address: initialData?.contact?.address || ""
         },
-        departementId: initialData?.departementId || ""
+        departementId: initialData?.departementId || "",
+        type: initialData?.type || "", 
+        civility: initialData?.civility || "", 
     });
     const [Specialities, setSpecialities] = useState([]);
     const [Hospitals, setHospitals] = useState([]);
@@ -157,7 +159,9 @@ const AddStaffModal = ({ visible, onClose, handleStaffAdded, initialData, setVis
                 role: formData.role ?? modalValue,
                 specialties: formData.specialties,
                 contact: formData.contact,
-                departementId: formData.departementId
+                departementId: formData.departementId,
+                civility: formData.civility,
+                type: formData.type
             };
             // console.log(formPayload);
             
@@ -183,7 +187,9 @@ const AddStaffModal = ({ visible, onClose, handleStaffAdded, initialData, setVis
                             phone: "",
                             address: ""
                         },
-                        departementId: ""
+                        departementId: "", 
+                        type: "", 
+                        civility: "", 
                     });
                     handleStaffAdded();  // Callback après ajout du staff
                     // response?.data?.user?._id
@@ -275,80 +281,81 @@ const AddStaffModal = ({ visible, onClose, handleStaffAdded, initialData, setVis
                         {/* Specialties */}
                         {/* <div  className={`form-group ${ modalValue === 'Allusers' ? 'col-md-6' : 'col-md-12' }`}> */}
                         <div
-  className="form-group"
-  style={{
-    marginBottom: '10px',
-    marginTop: '20px',
-    backgroundColor: '#f9f9f9',
-    position: 'relative', // Ajouté pour éviter les conflits de position
-    paddingTop: '10px' // Ajouté pour donner de l'espace au label
-  }}
->
-  <label
-    style={{
-      fontSize: '16px', // Taille de police pour rendre le label visible
-      color: '#333',    // Couleur explicite pour s'assurer qu'il est visible
-      position: 'absolute', // Position absolue pour éviter le chevauchement
-      top: '-10px',     // Ajuster si nécessaire pour l'alignement
-      left: '0',        // Aligné à gauche
-    }}
-  >
-    Specialties
-  </label>
-  <Select
-    closeMenuOnSelect={false}
-    components={animatedComponents}
-    isMulti
-    options={Specialities.map(option => ({
-      label: option.name,
-      value: option._id
-    }))}
-    onChange={handleSpecialtiesChange}
-    value={Specialities.filter(option =>
-      formData.specialties.includes(option._id)
-    ).map(option => ({
-      label: option.name,
-      value: option._id
-    }))}
-    styles={{
-      control: (provided) => ({
-        ...provided,
-        borderColor: '#0056B3',
-        border: '2px solid #0056B3',
-        borderRadius: '10px',
-        minHeight: '50px',
-      }),
-    }}
-  />
-</div>
+                            className="form-group"
+                            style={{
+                                marginBottom: '10px',
+                                marginTop: '20px',
+                                backgroundColor: '#f9f9f9',
+                                position: 'relative', // Ajouté pour éviter les conflits de position
+                                paddingTop: '10px' // Ajouté pour donner de l'espace au label
+                            }}
+                            >
+                            <label
+                                style={{
+                                fontSize: '16px', // Taille de police pour rendre le label visible
+                                color: '#333',    // Couleur explicite pour s'assurer qu'il est visible
+                                position: 'absolute', // Position absolue pour éviter le chevauchement
+                                top: '-10px',     // Ajuster si nécessaire pour l'alignement
+                                left: '0',        // Aligné à gauche
+                                }}
+                            >
+                                Specialties
+                            </label>
+                            <Select
+                                closeMenuOnSelect={false}
+                                components={animatedComponents}
+                                isMulti
+                                options={Specialities.map(option => ({
+                                label: option.name,
+                                value: option._id
+                                }))}
+                                onChange={handleSpecialtiesChange}
+                                value={Specialities.filter(option =>
+                                formData.specialties.includes(option._id)
+                                ).map(option => ({
+                                label: option.name,
+                                value: option._id
+                                }))}
+                                styles={{
+                                control: (provided) => ({
+                                    ...provided,
+                                    borderColor: '#0056B3',
+                                    border: '2px solid #0056B3',
+                                    borderRadius: '10px',
+                                    minHeight: '50px',
+                                }),
+                                }}
+                            />
+                        </div>
 
-
-                    {/* Name */}
-                    <div className="form-group">
-                        <label htmlFor="firstname">Firstname</label>
-                        <input
-                            type="text"
-                            name="firstname"
-                            id="firstname"
-                            placeholder="John Doe"
-                            value={formData.firstname}
-                            onChange={handleInputChange}
-                        />
-                        {errors.firstname && <div className="text-danger">{errors.firstname}</div>}
-                    </div>
-                    {/* Username */}
-                    <div className="form-group">
-                        <label htmlFor="lastname">Lastname</label>
-                        <input
-                            type="text"
-                            name="lastname"
-                            id="lastname"
-                            placeholder="johndoe"
-                            value={formData.lastname}
-                            onChange={handleInputChange}
-                        />
-                        {errors.lastname && <div className="text-danger">{errors.lastname}</div>}
-                    </div>                    
+                        <div className='row'>
+                            {/* Name */}
+                            <div className="form-group col-md-6">
+                                <label htmlFor="firstname">Firstname</label>
+                                <input
+                                    type="text"
+                                    name="firstname"
+                                    id="firstname"
+                                    placeholder="John Doe"
+                                    value={formData.firstname}
+                                    onChange={handleInputChange}
+                                />
+                                {errors.firstname && <div className="text-danger">{errors.firstname}</div>}
+                            </div>
+                            {/* Username */}
+                            <div className="form-group col-md-6">
+                                <label htmlFor="lastname">Lastname</label>
+                                <input
+                                    type="text"
+                                    name="lastname"
+                                    id="lastname"
+                                    placeholder="johndoe"
+                                    value={formData.lastname}
+                                    onChange={handleInputChange}
+                                />
+                                {errors.lastname && <div className="text-danger">{errors.lastname}</div>}
+                            </div>  
+                        </div>
                     {/* Username */}
                     <div className="form-group">
                         <label htmlFor="username">Username</label>
@@ -362,11 +369,52 @@ const AddStaffModal = ({ visible, onClose, handleStaffAdded, initialData, setVis
                         />
                         {errors.username && <div className="text-danger">{errors.username}</div>}
                     </div>
+                    
+
+                    <div className='row'>
+                        {/* Department */}
+                        <div  className="form-group col-md-6">
+                            <label htmlFor="type">Type</label>
+                            <select
+                                name="type"
+                                id="type"
+                                onChange={handleInputChange}
+                                value={formData.type}
+                            >
+                                <option value="">Select Type</option>
+                                {['Permanent','Consultant'].map(type => (
+                                    <option key={type} value={type}>
+                                        {type}
+                                    </option>
+                                ))}
+                            </select>
+                            {errors.type && <div className="text-danger">{errors.type}</div>}
+                        </div>
+
+                        {/* Civility */}
+                        <div  className="form-group col-md-6">
+                            <label htmlFor="civility">Civility</label>
+                            <select
+                                name="civility"
+                                id="civility"
+                                onChange={handleInputChange}
+                                value={formData.civility}
+                            >
+                                <option value="">Select Civility</option>
+                                {['M.','Mme.'].map(civility => (
+                                    <option key={civility} value={civility}>
+                                        {civility}
+                                    </option>
+                                ))}
+                            </select>
+                            {errors.civility && <div className="text-danger">{errors.civility}</div>}
+                        </div>
+                        </div>
                     <div className="form-row row">
                         {/* Role */}
                         {(!modalValue || modalValue == 'Allusers') && (
                             <div className="form-group col-md-12">
-                                <label htmlFor="role">Role</label>
+                                <label htmlFor="role">Fonction</label>
                                 <select
                                     name="role"
                                     id="role"
