@@ -17,6 +17,9 @@ import Appointments from '../views/appointment/appointment';
 import AppointmentHistory from '../views/appointment/appointement_history';
 import MedicalAppointments from '../views/appointment/patientDetail';
 import CalendarWeekView from '../views/appointment/calendar';
+import StaffDetails from '../views/clientviews/staffmanagment/user'; // Page Patient Management
+import StaffSchedule from '../views/clientviews/staffmanagment/horaire'; // Page Patient Management
+
 
 
 
@@ -45,6 +48,8 @@ const ClientRoutesWithDash = [
   { path: '/hospitaladmin/appointment_history', name: 'AppointmentHistory', element: AppointmentHistory },
   { path: '/hospitaladmin/patient_details', name: 'PatientDetail', element: MedicalAppointments },
   { path: '/hospitaladmin/appoint_calendar', name: 'AppointCalendar', element: CalendarWeekView },
+  { path: '/hospitaladmin/staff_details', name: 'StaffDetails', element: StaffDetails },
+  { path: '/hospitaladmin/staff_schedule', name: 'StaffSchedule', element: StaffSchedule },
 
 
 

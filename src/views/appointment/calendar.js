@@ -58,7 +58,7 @@ const CalendarView = () => {
       <h2 className="fw-bold" style={{ color: '#0056B3', fontSize: '42px', marginBottom: '70px' }}>
         Your calendar
       </h2>
-    <div className="bg-white p-4 text-dark">
+    <div className="bg-white p-4 modalcalendar text-dark">
 
       <Fullcalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}

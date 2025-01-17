@@ -1,0 +1,136 @@
+
+.user-profile {
+  background-color: #fff;
+  border-radius: 30px;
+  /* width: 80%; */
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  margin-bottom: 30px;
+  padding-bottom: 30px;
+}
+
+.profile-image img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}
+
+.profile-info{
+  margin-top: 6rem;
+}
+.profile-info label {
+  font-weight: bold;
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 0;
+}
+
+.profile-info p {
+  margin-bottom: 0;
+  font-size: 1rem;
+}
+
+.tags-container .badge {
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  font-weight: normal;
+  font-size: 15px;
+  color: #333;
+}
+
+.divp20{
+  padding-bottom: 40px !important;
+}
+
+.timetable .day-label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #666;
+}
+
+.ami{
+  color: #0056B3;
+}
+.time-slot {
+  background-color: #DFEAF5;
+  color: #0056B3;
+  font-weight: 500;
+  padding:5px 2px;
+  margin-bottom: 5px;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 13px;
+}
+
+.consultation-input {
+  max-width: 200px;
+  text-align: center;
+}
+
+h5, h6 {
+  color: #333;
+  margin-bottom: 1rem;
+}
+.consultation-duration{
+  display: flex;
+}
+.come{
+  color:#FF980054;
+  font-size: 18px;
+  font-weight: 800;
+  border: 1px solid #FF9800;
+  border-radius: 6px;
+  padding:10px 30px;
+}
+
+
+.contact-section label,
+.account-section label {
+  font-weight: bold;
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 0;
+}
+
+
+.contact-section p,
+.account-section p {
+  margin-bottom: 0;
+  font-size: 1rem;
+}
+
+* Barre latérale */
+.lateral {
+  width: 4px !important; /* Largeur de la barre */
+  height: 100vh !important; /* Hauteur de la fenêtre */
+  display: flex !important;
+  flex-direction: column !important ;
+  align-items: center  !important;
+}
+
+.solid-line {
+  width: 4px  !important;
+  height: 50%  !important; /* Ajustez la hauteur de la ligne pleine */
+  background-color: #0056b3  !important; /* Couleur de la ligne */
+}
+
+.dotted-line {
+  width: 4px  !important;
+  height: 50%  !important; /* Ajustez la hauteur de la ligne pointillée */
+  border-left: 2px dotted #0056b3  !important; /* Ligne en pointillé */
+}
+
+.toute{
+  background-color: #0056B3 !important;
+  color: #fff !important;
+  border-radius: 46px !important;
+  padding: 10px 18px !important;
+}
+
+.profile-image{
+  border-radius: 50%;
+}
+
+.tete{
+  border-radius: 50%;
+  object-fit: cover;
+}

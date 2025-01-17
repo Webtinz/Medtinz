@@ -38,7 +38,7 @@
 }
 
 
-.modal {
+.modalcalendar .modal {
   position: fixed;
   top: 0;
   left: 0;
@@ -51,7 +51,7 @@
   z-index: 1000;
 }
 
-.modal-content {
+.modalcalendar .modal-content {
   background-color: #fff;
   padding: 20px;
   border-radius: 5px;
@@ -60,7 +60,7 @@
   text-align: center;
 }
 
-.modal-actions button {
+.modalcalendar .modal-actions button {
   margin: 10px;
   padding: 10px 20px;
   border: none;
@@ -68,17 +68,17 @@
   cursor: pointer;
 }
 
-.modal-actions button:first-child {
+.modalcalendar .modal-actions button:first-child {
   background-color: #28a745;
   color: #fff;
 }
 
-.modal-actions button:nth-child(2) {
+.modalcalendar .modal-actions button:nth-child(2) {
   background-color: #dc3545;
   color: #fff;
 }
 
-.modal-actions button:last-child {
+.modalcalendar .modal-actions button:last-child {
   background-color: #6c757d;
   color: #fff;
 }

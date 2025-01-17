@@ -31,12 +31,15 @@ import AddStaffModal from './adduserstaff'; // Le composant modal
 import { ToastContainer, toast } from 'react-toastify';
 import EditStaffModal from './edituserstaff'; // Assurez-vous que le modal pour éditer est importé
 import api from '../../../service/caller';
+import { useNavigate, useLocation } from 'react-router-dom'; // Importez useNavigate
 
 import '@coreui/coreui/dist/css/coreui.min.css';
 import '@coreui/coreui/dist/js/coreui.bundle.min.js';
 
 
 const StaffList = () => {
+
+    const navigate = useNavigate();
     const [visible, setVisible] = useState(false);
     const [modalValue, setModalValue] = useState(null); // Valeur à passer au modal
     const [isEditModalVisible, setEditModalVisible] = useState(false);
@@ -145,6 +148,14 @@ const StaffList = () => {
         setSelectedUser(user); // Mettre l'utilisateur sélectionné
         setEditModalVisible(true); // Ouvrir le modal
     };
+
+    const handleDetailsClick = (id) => {
+        // Ajouter les données aux paramètres de l'URL
+        navigate({
+          pathname: '/hospitaladmin/staff_details',
+          search: `?_id=${id}`
+        });
+    }
 
     const handleStaffUpdated = (updatedStaff) => {
         // Mettre à jour la liste des utilisateurs après la modification
@@ -286,7 +297,7 @@ const StaffList = () => {
                                                                                                     style={{ border: 'none' }} />
                                                                                                 <ul class="dropdown-menu">
                                                                                                     <li><a class="dropdown-item" href="#" onClick={() => handleEditClick(user)} >Edit</a></li>
-                                                                                                    <li><a class="dropdown-item" href="#">View Details</a></li>
+                                                                                                    <li><a class="dropdown-item" href="#"  onClick={() => handleDetailsClick(user?._id)} >View Details</a></li>
                                                                                                 </ul>
                                                                                             </div>
                                                                                         </div>

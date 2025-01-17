@@ -1,0 +1,161 @@
+/* .har_modal {
+    width:500px;
+    margin: auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+  } */
+  
+  .har_modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .back-button {
+    background: none;
+    border: none;
+    font-size: 16px;
+    color: #007bff;
+    cursor: pointer;
+  }
+  
+  .har_modal-body h3 {
+    margin-bottom: 10px;
+  }
+  
+  .schedule-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  .schedule-table th,
+  .schedule-table td {
+    text-align: left;
+    padding: 10px;
+    /* border-bottom: 1px solid #ddd; */
+  }
+  
+  .time-input {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .duration-buttons {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .duration-button {
+    padding: 10px 50px;
+    border: none;
+    border-radius: 4px;
+    background-color: #ffeeba;
+    cursor: pointer;
+    font-weight: bold;
+    color: #FF9800;
+  }
+  
+  .duration-button.active {
+    background-color: #ffc107;
+  }
+  
+  .custom-duration {
+    margin-bottom: 20px;
+  }
+  
+  .custom-duration-input {
+    width: 30%;
+    padding: 10px 20px;
+    border: 1px solid #FF9800;
+    border-radius: 4px;
+  }
+  
+  .har_modal-footer {
+    text-align: right;
+  }
+  
+  .modify-button {
+    padding: 10px 60px;
+    border: none;
+    border-radius: 4px;
+    background-color: #28a745 !important;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .modify-button:hover {
+    background-color: #218838;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+  }
+
+  .marche{
+    color: #292D32;
+    font-weight: 700;
+    font-size: 18px;
+  }
+
+  .ahi{
+    font-weight: 400;
+    font-size: 36px;
+    color: #191B1C;
+  }
+
+  .brou .time-input{
+    background-color: #DFEAF5 !important;
+    width: 133px !important;
+    height: 49px !important;
+    border-radius: 10px !important;
+  }
+  
+  .trone .time-input{
+    background-color: #DFEAF5 !important;
+    width: 133px !important;
+    height: 49px !important;
+    border-radius: 10px !important;
+  }
+
+  .sete{
+    font-weight: 700;
+    font-size: 18px;
+  }
+  .kul{
+    text-decoration: underline;
+  }
+
+  .hius{
+    font-weight: 500;
+    font-size: 18px;
+  }
+
+  .essuie{
+    background-color: #0056B3;
+    border-radius: 46px;
+    color: #fff;
+    padding:10px 20px;
+  }
+
+  .tyu{
+    color: #191B1C;
+    font-weight: 700;
+    font-size: 17px;
+  }
+  

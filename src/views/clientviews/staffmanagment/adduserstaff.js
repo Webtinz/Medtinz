@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // Importez useNavigate
 import { CModal, CModalHeader, CModalBody, CModalTitle, CButton } from '@coreui/react';
 import { BsArrowRight } from 'react-icons/bs';
 import { FaEdit } from "react-icons/fa";
@@ -35,6 +36,8 @@ const AddStaffModal = ({ visible, onClose, handleStaffAdded, initialData, setVis
     const [Departments, setDepartments] = useState([]);
     const [Roles, setRoles] = useState([]);
     const [errors, setErrors] = useState({});
+
+    const navigate = useNavigate();
     
     useEffect(() => {
         const fetchSpecialities = async () => {
@@ -133,6 +136,14 @@ const AddStaffModal = ({ visible, onClose, handleStaffAdded, initialData, setVis
         }));
     };
 
+    const handleContinue = (hospitalId, userId) => {
+        const dataToSend = {
+            hospital_id: hospitalId,
+            _id: userId
+        };
+        navigate(`/hospitaladmin/staff_schedule?${new URLSearchParams(dataToSend).toString()}`);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (validateForm()) {
@@ -153,9 +164,9 @@ const AddStaffModal = ({ visible, onClose, handleStaffAdded, initialData, setVis
             try {
                 const response = await api.post('api/adduser', formPayload);
 
-                if ((response.status === 200 || response.status === 201) && response.data.success) {
+                // console.log(response);
+                if ((response.status == 200 || response.status == 201) /*  && response.data.success */) {
                     // Succès
-                    console.log(response);
                     
                     toast.success("Staff registered successfully!");
                     setFormData({
@@ -175,7 +186,13 @@ const AddStaffModal = ({ visible, onClose, handleStaffAdded, initialData, setVis
                         departementId: ""
                     });
                     handleStaffAdded();  // Callback après ajout du staff
-                    onClose(); // Fermer la modal
+                    // response?.data?.user?._id
+                    // handleContinue(response?.data?.user?.hospital_id, response?.data?.user?._id);
+                    setTimeout(() => {
+                      handleContinue(response?.data?.user?.hospital_id, response?.data?.user?._id);
+                    }, 2000); // 2000 ms = 2 secondes
+
+                    // onClose(); // Fermer la modal
                 } else {
                     // Échec géré dans la réponse
                     toast.error(response.data.message || "Failed to register staff. Please try again.");
