@@ -135,9 +135,9 @@ const Horaire = () => {
 
   return (
     <div>
-      <h1>Page Horaire</h1>
+      {/* <h1>Page Horaire</h1>
       <p>Hospital ID: {hospitalId}</p>
-      <p>User ID: {userId}</p>
+      <p>User ID: {userId}</p> */}
 
       {/* Modal avec React Bootstrap */}
       <Modal

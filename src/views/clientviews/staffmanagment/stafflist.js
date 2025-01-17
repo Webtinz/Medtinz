@@ -117,7 +117,7 @@ const StaffList = () => {
         };
         fetchHospitalsList();
         fetchLoggedUserData();
-        fetchMyHospitalUser(); // Charger les utilisateurs
+        // fetchMyHospitalUser(); // Charger les utilisateurs
         fetchRoles(); // Charger les rôles
     }, []); // Exécuter cet effet une seule fois au montage
 
@@ -156,6 +156,27 @@ const StaffList = () => {
           search: `?_id=${id}`
         });
     }
+    
+    const handleDeleteUserClick = async(id) => {
+        // Ajouter les données aux paramètres de l'URL
+            try {
+                const response = await api.delete('api/users/' + id);
+
+                // console.log(response);
+                if (response.status == 200 || response.status == 201 /*  && response.data.success */) {
+                    // Succès
+                    
+                    toast.success("Staff Deleted successfully!");
+                } else {
+                    // Échec géré dans la réponse
+                    toast.error(response.data.message || "Failed to delete staff. Please try again.");
+                }
+            } catch (error) {
+                toast.error(`Registration failed: ${error?.response?.data?.message || 'An unexpected error occurred. Please try again.'}`);
+                console.error('Error:', error?.response|| 'No error message available.');
+
+            }
+    }
 
     const handleStaffUpdated = (updatedStaff) => {
         // Mettre à jour la liste des utilisateurs après la modification
@@ -176,6 +197,7 @@ const StaffList = () => {
 
     return (
         <div className="dashboard-header">
+        <ToastContainer /> {/* Conteneur pour afficher les toasts */}
 
         <EditStaffModal
             visible={isEditModalVisible}
@@ -297,7 +319,7 @@ const StaffList = () => {
                                                                                                     style={{ border: 'none' }} />
                                                                                                 <ul class="dropdown-menu">
                                                                                                     <li><a class="dropdown-item" href="#" onClick={() => handleEditClick(user)} >Edit</a></li>
-                                                                                                    <li><a class="dropdown-item" href="#"  onClick={() => handleDetailsClick(user?._id)} >View Details</a></li>
+                                                                                                    <li><a class="dropdown-item" href="#" onClick={() => handleDetailsClick(user?._id)} >View Details</a></li>
                                                                                                 </ul>
                                                                                             </div>
                                                                                         </div>
@@ -306,10 +328,45 @@ const StaffList = () => {
                                                                                             <BsTrash3 style={{ color: '#EF3826', border: 'none' }} className="bg-none border-0 p-0"
                                                                                                     data-coreui-toggle="dropdown"
                                                                                                     aria-expanded="true"/>
-                                                                                                <ul class="dropdown-menu">
-                                                                                                    <li><a class="dropdown-item" href="#" onClick={() => handleEditClick(user)} >Edit</a></li>
-                                                                                                    <li><a class="dropdown-item" href="#">View Details</a></li>
+                                                                                                <ul className="dropdown-menu" style={{ color: '#EF3826', borderRadius: '25px'}} >
+                                                                                                <li>
+                                                                                                    <a className="dropdown-item text-center"
+                                                                                                    style={{
+                                                                                                        borderBottom: '1px solid #979797',
+                                                                                                        maxWidth: '100%',
+                                                                                                        wordBreak: 'break-word', // Force le retour à la ligne pour les mots longs
+                                                                                                        whiteSpace: 'normal', // Permet au texte de s'étendre sur plusieurs lignes
+                                                                                                    }}
+                                                                                                    href="#"
+                                                                                                    >
+                                                                                                    Are you sure you want to delete this user ?
+                                                                                                    </a>
+                                                                                                </li>
+                                                                                                <li>
+                                                                                                    <a className="dropdown-item my-3" href="#">
+                                                                                                    <button
+                                                                                                        className="btn mx-2"
+                                                                                                        style={{
+                                                                                                        backgroundColor: '#000',
+                                                                                                        color: 'white',
+                                                                                                        }}
+                                                                                                    >
+                                                                                                        No
+                                                                                                    </button>
+                                                                                                    <button
+                                                                                                        className="btn mx-2"
+                                                                                                        style={{
+                                                                                                        backgroundColor: '#ff0000',
+                                                                                                        color: 'white',
+                                                                                                        }}
+                                                                                                        onClick={() => handleDeleteUserClick(user?._id)}
+                                                                                                    >
+                                                                                                        Delete
+                                                                                                    </button>
+                                                                                                    </a>
+                                                                                                </li>
                                                                                                 </ul>
+
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
@@ -399,12 +456,20 @@ const StaffList = () => {
                                                                                                     style={{ border: 'none' }} />
                                                                                                 <ul class="dropdown-menu">
                                                                                                     <li><a class="dropdown-item" href="#"   onClick={() => handleEditClick(user)} >Edit</a></li>
-                                                                                                    <li><a class="dropdown-item" href="#">View Details</a></li>
+                                                                                                    <li><a class="dropdown-item" href="#" onClick={() => handleDetailsClick(user?._id)} >View Details</a></li>
                                                                                                 </ul>
                                                                                             </div>
                                                                                         </div>
                                                                                         <div className="right">
-                                                                                            <BsTrash3 style={{ color: '#EF3826' }} />
+                                                                                            <div class="dropdown-center p-0 bg-none" style={{ border: 'none' }}>
+                                                                                            <BsTrash3 style={{ color: '#EF3826', border: 'none' }} className="bg-none border-0 p-0"
+                                                                                                    data-coreui-toggle="dropdown"
+                                                                                                    aria-expanded="true"/>
+                                                                                                <ul class="dropdown-menu">
+                                                                                                    <li><a class="dropdown-item" href="#">No</a></li>
+                                                                                                    <li><a class="dropdown-item" href="#"  onClick={() => handleDeleteUserClick(user?._id)}>Delete</a></li>
+                                                                                                </ul>
+                                                                                            </div>
                                                                                         </div>
                                                                                     </div>
                                                                                 </CTableDataCell>

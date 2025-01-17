@@ -157,9 +157,8 @@ const User = () => {
                         <div className="text-center"> - </div>
                         <div className="time-slot">
                         {UserSchedules[index].duration_unit < 60 
-  ? UserSchedules[index].duration_unit + ' min' 
-  : Math.floor(UserSchedules[index].duration_unit / 60) + 'H ' + (UserSchedules[index].duration_unit % 60) + 'min'}
-
+                            ? UserSchedules[index].duration_unit + ' min' 
+                            : Math.floor(UserSchedules[index].duration_unit / 60) + 'H ' + (UserSchedules[index].duration_unit % 60) + 'min'}
                         </div>
                       </>
                     )}
