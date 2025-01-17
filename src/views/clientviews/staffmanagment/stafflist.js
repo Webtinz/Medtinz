@@ -1,26 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-    CButton,
-    CRow,
-    CCol,
-    CCard,
-    CCardBody,
-    CTab,
-    CTabContent,
-    CTabList,
-    CTabPanel,
-    CTabs,
-    CHeader,
-    CContainer,
-    CHeaderNav,
-    CNavItem,
-    CNavLink,
-    CTable,
-    CTableBody,
-    CTableDataCell,
-    CTableHead,
-    CTableHeaderCell,
-    CTableRow
+import { CButton, CRow, CCol, CCard, CCardBody, CTab, CTabContent, CTabList, CTabPanel, CTabs, CHeader, CContainer, CHeaderNav, CNavItem, CNavLink, CTable, CTableBody, CTableDataCell, CTableHead, CTableHeaderCell, CTableRow
 } from '@coreui/react';
 import { FaEdit, FaSearch } from "react-icons/fa";
 import { BsPersonPlus, BsChevronRight, BsChevronLeft, BsTrash3 } from 'react-icons/bs';
@@ -178,10 +157,10 @@ const StaffList = () => {
             }
     }
 
-    const handleStaffUpdated = (updatedStaff) => {
+    const handleStaffUpdated = (staffs) => {
         // Mettre à jour la liste des utilisateurs après la modification
-        setStaffs((prevStaffs) =>
-            prevStaffs.map((staff) => (staff._id === updatedStaff._id ? updatedStaff : staff))
+        setStaffs((staffs) =>
+            staffs.map((staff) => (staff._id === staff._id ? staff : staff))
         );
     };
 
@@ -465,10 +444,44 @@ const StaffList = () => {
                                                                                             <BsTrash3 style={{ color: '#EF3826', border: 'none' }} className="bg-none border-0 p-0"
                                                                                                     data-coreui-toggle="dropdown"
                                                                                                     aria-expanded="true"/>
-                                                                                                <ul class="dropdown-menu">
-                                                                                                    <li><a class="dropdown-item" href="#">No</a></li>
-                                                                                                    <li><a class="dropdown-item" href="#"  onClick={() => handleDeleteUserClick(user?._id)}>Delete</a></li>
-                                                                                                </ul>
+                                                                                                    <ul className="dropdown-menu" style={{ color: '#EF3826', borderRadius: '25px'}} >
+                                                                                                    <li>
+                                                                                                        <a className="dropdown-item text-center"
+                                                                                                        style={{
+                                                                                                            borderBottom: '1px solid #979797',
+                                                                                                            maxWidth: '100%',
+                                                                                                            wordBreak: 'break-word', // Force le retour à la ligne pour les mots longs
+                                                                                                            whiteSpace: 'normal', // Permet au texte de s'étendre sur plusieurs lignes
+                                                                                                        }}
+                                                                                                        href="#"
+                                                                                                        >
+                                                                                                        Are you sure you want to delete this user ?
+                                                                                                        </a>
+                                                                                                    </li>
+                                                                                                    <li>
+                                                                                                        <a className="dropdown-item my-3" href="#">
+                                                                                                        <button
+                                                                                                            className="btn mx-2"
+                                                                                                            style={{
+                                                                                                            backgroundColor: '#000',
+                                                                                                            color: 'white',
+                                                                                                            }}
+                                                                                                        >
+                                                                                                            No
+                                                                                                        </button>
+                                                                                                        <button
+                                                                                                            className="btn mx-2"
+                                                                                                            style={{
+                                                                                                            backgroundColor: '#ff0000',
+                                                                                                            color: 'white',
+                                                                                                            }}
+                                                                                                            onClick={() => handleDeleteUserClick(user?._id)}
+                                                                                                        >
+                                                                                                            Delete
+                                                                                                        </button>
+                                                                                                        </a>
+                                                                                                    </li>
+                                                                                                    </ul>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>

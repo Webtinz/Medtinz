@@ -92,6 +92,8 @@ const AddStaffModal = ({ visible, onClose, handleStaffAdded, initialData, setVis
     const validateForm = () => {
         const newErrors = {};
         if (!formData.firstname) newErrors.firstname = "Firstname is required";
+        if (!formData.type) newErrors.type = "Type is required";
+        if (!formData.civility) newErrors.civility = "Civility is required";
         if (!formData.lastname) newErrors.lastname = "Lastname is required";
         if (!formData.username) newErrors.username = "Username is required";
         if (!formData.email) newErrors.email = "Email is required";
@@ -372,7 +374,7 @@ const AddStaffModal = ({ visible, onClose, handleStaffAdded, initialData, setVis
                     
 
                     <div className='row'>
-                        {/* Department */}
+                        {/* Type */}
                         <div  className="form-group col-md-6">
                             <label htmlFor="type">Type</label>
                             <select
@@ -409,7 +411,7 @@ const AddStaffModal = ({ visible, onClose, handleStaffAdded, initialData, setVis
                             </select>
                             {errors.civility && <div className="text-danger">{errors.civility}</div>}
                         </div>
-                        </div>
+                    </div>
                     <div className="form-row row">
                         {/* Role */}
                         {(!modalValue || modalValue == 'Allusers') && (

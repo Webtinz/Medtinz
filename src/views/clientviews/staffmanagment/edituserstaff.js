@@ -21,12 +21,15 @@ const EditStaffModal = ({ visible, onClose, initialData, onStaffUpdated, user })
         confirmPassword: "" ,
         role:  user?.role?._id ,
         specialties:  user?.specialties ,
+        type:  user?.type ,
+        civility:  user?.civility ,
         contact: {
             phone:  user?.contact.phone ,
             address:  user?.contact.address
         },
         departementId:  user?.departementId[0]?._id
-    });   
+    });       
+
     useEffect(() => {
         if (user) {
             setFormData({
@@ -39,6 +42,8 @@ const EditStaffModal = ({ visible, onClose, initialData, onStaffUpdated, user })
                 confirmPassword: "",
                 role: user?.role?._id,
                 specialties: user?.specialties || [],
+                type:  user?.type ,
+                civility:  user?.civility ,
                 contact: {
                     phone: user?.contact?.phone || '',
                     address: user?.contact?.address || ''
@@ -47,7 +52,6 @@ const EditStaffModal = ({ visible, onClose, initialData, onStaffUpdated, user })
             });
         }
     }, [user]);
-    
 
     const [Specialities, setSpecialities] = useState([]);
     const [Hospitals, setHospitals] = useState([]);
@@ -121,6 +125,8 @@ const EditStaffModal = ({ visible, onClose, initialData, onStaffUpdated, user })
 
     const validateForm = () => {
         const newErrors = {};
+        if (!formData.type) newErrors.type = "Type is required";
+        if (!formData.civility) newErrors.civility = "Civility is required";
         if (!formData.firstname) newErrors.firstname = "Firstname is required";
         if (!formData.lastname) newErrors.lastname = "Lastname is required";
         if (!formData.username) newErrors.username = "Username is required";
@@ -136,8 +142,8 @@ const EditStaffModal = ({ visible, onClose, initialData, onStaffUpdated, user })
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log(formData);
+        console.log(user?._id);
         
-
         if (validateForm()) {
             try {
                 const response = await api.put(`api/users/${user?._id}`, formData);
@@ -267,6 +273,45 @@ const EditStaffModal = ({ visible, onClose, initialData, onStaffUpdated, user })
                             onChange={handleInputChange}
                         />
                         {errors.username && <div className="text-danger">{errors.username}</div>}
+                    </div>
+                    <div className='row'>
+                        {/* Type */}
+                        <div  className="form-group col-md-6">
+                            <label htmlFor="type">Type</label>
+                            <select
+                                name="type"
+                                id="type"
+                                onChange={handleInputChange}
+                                value={formData.type || user?.type}
+                            >
+                                <option value="">Select Type</option>
+                                {['Permanent','Consultant'].map(type => (
+                                    <option key={type} value={type}>
+                                        {type}
+                                    </option>
+                                ))}
+                            </select>
+                            {errors.type && <div className="text-danger">{errors.type}</div>}
+                        </div>
+
+                        {/* Civility */}
+                        <div  className="form-group col-md-6">
+                            <label htmlFor="civility">Civility</label>
+                            <select
+                                name="civility"
+                                id="civility"
+                                onChange={handleInputChange}
+                                value={formData.civility || user?.civility}
+                            >
+                                <option value="">Select Civility</option>
+                                {['M.','Mme.'].map(civility => (
+                                    <option key={civility} value={civility}>
+                                        {civility}
+                                    </option>
+                                ))}
+                            </select>
+                            {errors.civility && <div className="text-danger">{errors.civility}</div>}
+                        </div>
                     </div>
 
                     {/* Role */}
