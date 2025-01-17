@@ -87,7 +87,7 @@ exports.getSubscriptionById = async (req, res) => {
 exports.updateSubscription = async (req, res) => {
     try {
         const { name, description, duration, features, price, description_fr, features_fr } = req.body;
-
+ 
         const subscription = await Subscription.findByIdAndUpdate(
             req.params.id,  // ID de l'abonnement à mettre à jour
             { 

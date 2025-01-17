@@ -49,6 +49,11 @@ const userSchema = new mongoose.Schema({
         required: false,
         trim: true,
     },
+    type: {
+        type: String,
+        required: false,
+        trim: true,
+    },
     picture: {
         type: String,
         validate: {

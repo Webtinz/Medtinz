@@ -7,7 +7,7 @@ const bcrypt = require('bcrypt');
 // Ajouter un utilisateur
 exports.addUser = async (req, res) => {
     try {
-        const { hospital_id, lastname, firstname, username, email, password, role, specialties, contact, picture, departementId } = req.body;
+        const { hospital_id, lastname, firstname, username, email, password, role, specialties, contact, picture, departementId, civility, type } = req.body;
 
         
         // Décoder le JWT depuis l'en-tête Authorization
@@ -47,12 +47,14 @@ exports.addUser = async (req, res) => {
             contact,
             picture,
             hospital_id,
-            departementId
+            departementId,
+            civility: civility ?? '',
+            type: type ?? ''
         });
 
         // Sauvegarde de l'utilisateur
         await user.save();
-        res.status(201).json({ message: 'Utilisateur ajouté avec succès.', user });
+        res.status(200).json({ message: 'Utilisateur ajouté avec succès.', user });
     } catch (error) {
         console.error(error);
         res.status(500).json({ status: "error", message: error.message  });
@@ -65,7 +67,7 @@ exports.getUserDetails = async (req, res) => {
         const { userId } = req.params;
         
         // Récupération de l'utilisateur
-        const user = await User.findById(userId).populate('hospital_id departementId specialties');
+        const user = await User.findById(userId).populate('hospital_id departementId specialties role');
         
         if (!user) {
             return res.status(404).json({ message: 'Utilisateur non trouvé.' });
@@ -97,7 +99,6 @@ exports.getUserDetails = async (req, res) => {
         res.status(500).json({ status: "error", message: error.message  });
     }
 };
-
 
 // Récupérer les détails du profil de l'utilisateur connecté
 exports.getProfileDetails = async (req, res) => {
@@ -147,7 +148,7 @@ exports.updateUser = async (req, res) => {
         
 
         const { userId } = req.params;
-        const { hospital_id, lastname, firstname, username, email, password, role, specialties, contact, picture, departementId } = req.body;
+        const { hospital_id, lastname, firstname, username, email, password, role, specialties, contact, picture, departementId, civility, type } = req.body;
 
         // Récupérer l'utilisateur à mettre à jour
         const user = await User.findById(userId);
@@ -162,24 +163,37 @@ exports.updateUser = async (req, res) => {
         }
 
         // Vérification de l'existence du département
-        if (departementId && !await Department.findOne({ _id: departementId, hospital_id })) {
-            return res.status(400).json({ message: 'Département non trouvé ou ne correspond pas à cet hôpital.' });
+        if (departementId && !await Department.findOne({ _id: departementId })) {
+            return res.status(400).json({ message: 'Département non trouvé!' });
+        }
+        
+
+        // Préparer les champs à mettre à jour
+        const updates = {
+            lastname: lastname || user.lastname,
+            firstname: firstname || user.firstname,
+            username: username || user.username,
+            email: email || user.email,
+            role: role || user.role,
+            specialties: specialties || user.specialties,
+            contact: contact || user.contact,
+            picture: picture || user.picture,
+            departementId: departementId || user.departementId,
+            civility: civility || user.civility,
+            type: type || user.type,
+        };
+
+        // Mettre à jour le mot de passe uniquement s'il est fourni
+        if (password) {
+            updates.password = password;
         }
 
-        // Mise à jour des informations
-        user.lastname = lastname || user.lastname;
-        user.firstname = firstname || user.firstname;
-        user.username = username || user.username;
-        user.email = email || user.email;
-        user.password = password; // ? await bcrypt.hash(password, 10) : user.password;
-        user.role = role || user.role;
-        user.specialties = specialties || user.specialties;
-        user.contact = contact || user.contact;
-        user.picture = picture || user.picture;
-        user.departementId = departementId || user.departementId;
-
-        // Sauvegarde des modifications
-        await user.save();
+        // Mise à jour de l'utilisateur
+        const updatedUser = await User.findOneAndUpdate(
+            { _id: userId },
+            { $set: updates },
+            { new: true, runValidators: true }
+        );
         res.status(200).json({ message: 'Utilisateur mis à jour avec succès.', user });
     } catch (error) {
         console.error(error);

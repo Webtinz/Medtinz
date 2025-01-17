@@ -10,6 +10,8 @@ const departmentController = require('../Controllers/clientInterface/DepartmentC
 const specialtyController = require('../Controllers/clientInterface/SpecialityController'); // Import du contrôleur Specialty
 const featureController = require('../Controllers/FeatureController'); // Importer le contrôleur des rôles
 
+const scheduleController = require('../Controllers/ScheduleController');
+
 const resendOtpController = require('../Controllers/auth/resend_otp');
 const forgotPasswordController = require('../Controllers/auth/forgot_password');
 const resetPasswordController = require('../Controllers/auth/reset_password');
@@ -110,7 +112,23 @@ router.delete('/deletefeatures/:id', /*authMiddleware,*/ featureController.delet
 // Rechercher un rôle par name
 router.get('/features/search', /*authMiddleware,*/ featureController.searchFeaturesByName); // Protégée par JWT
 
+// Ajouter un horaire
+router.post('/schedule', scheduleController.addSchedule);
+
+// Afficher les schedules
+router.get('/schedule/:userId', scheduleController.getSchedulesByUserId);
 
 
+// Mettre à jour un horaire
+router.put('/schedule/:scheduleId', scheduleController.updateSchedule);
+
+// Supprimer un horaire
+router.delete('/schedule/:scheduleId', scheduleController.deleteSchedule);
+
+// Ajouter ou mettre à jour un jour
+router.put('/schedule/:scheduleId/day', scheduleController.updateOrAddDay);
+
+// Supprimer un jour de l'horaire
+router.delete('/schedule/:scheduleId/day/:day', scheduleController.deleteDayFromSchedule);
 
 module.exports = router;
