@@ -5,6 +5,7 @@ import Clientroutesnodash from './routes/clientnodash'; // Routes without sideba
 import ClientRoutesWithDash from './routes/clientRoutes'; // Routes with sidebar
 import Login from './views/clientviews/login'; // Page Login
 import DashboardPage from './views/clientviews/Dashboardclient'; // Page Dashboard
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 const App = () => {
   return (

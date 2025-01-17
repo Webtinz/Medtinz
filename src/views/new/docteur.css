@@ -1,0 +1,99 @@
+.form-check-input:checked{
+    background-color: #0056B3 !important;
+    border: 2px solid #0056B3 !important;
+}
+.form-check-input{
+    width: 15px !important;
+    height: 15px !important;
+    border-radius: 50% !important;
+    background-color: white !important;
+    border: 2px solid #0056B3 !important;
+}
+.pos{
+    position: absolute;
+    top: -10%;
+    left: 5%;
+    background-color: #ffffff;
+    padding: 0px 10px;
+    height: 25px;
+}
+.edit{
+    cursor: pointer;
+}
+.pos1{
+    position: absolute;
+    top: 50%;
+    right: 3%;
+    transform: translateY(-50%);
+}
+
+.calendar-container {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    /* margin-top: 20px; */
+    background: #fff;
+    padding: 15px;
+  }
+  
+  .react-calendar {
+    width: 100%;
+    max-width: 400px; /* Ajuster la taille maximale */
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+  }
+  
+  .react-calendar__navigation button {
+    color: #ff9800;
+  }
+  
+  .react-calendar__tile--active {
+    background: #ff9800 !important;
+    color: #fff !important;
+  }
+  
+  .cale{
+    display: flex;
+    justify-content: end;
+  }
+  .bos{
+    position: fixed;
+    right: 0;
+    top:50%;
+    transform: translateY(-50%);
+  }
+
+  /* Conteneur principal */
+
+
+  
+  .img-fluid {
+    max-width: 100%;
+    height: auto;
+    cursor: pointer;
+  }
+  
+  /* Sliding page */
+  .sliding-page {
+    position: fixed;
+    top: 0;
+    right: -100%; /* Masquée à droite par défaut */
+    width: 75%;
+    height: 100%;
+    background-color: #ffffff;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+    z-index: 2;
+    transition: right 0.5s ease; /* Animation glissante */
+  }
+  
+  .sliding-page.open {
+    right: 0; /* S'ouvre à droite */
+  }
+  
+  .close-btn {
+    position: absolute;
+    top: 10px;
+    left: -35px;
+  }

@@ -12,11 +12,8 @@ import ReceiptPayment from '../views/clientviews/billingmanagement/receipt'; // 
 import Department from '../views/clientviews/deparmentmanagment/department'; // Page Patient Management
 import HospitalSetting from '../views/hospitalsetting'; // Page Patient Management
 import PatientCard from '../views/clientviews/Patientmanagment/patientcard'; // Page Patient Management
-
-
-
-
-
+import Infirmier from '../views/new/infirmier';
+import Docteur from '../views/new/docteur'
 
 
 
@@ -35,6 +32,8 @@ const ClientRoutesWithDash = [
   { path: '/hospitaladmin/receiptpay', name: 'ReceiptPayment', element: ReceiptPayment },
   { path: '/hospitaladmin/hospitalsetting', name: 'HospitalSetting', element: HospitalSetting },
   { path: '/patientcard/:patientId', name: 'PatientCard', element: PatientCard },
+  { path: '/infirmier', name: 'Infirmier', element: Infirmier },
+  { path: '/docteur', name: 'Docteur', element: Docteur },
 
 
 
