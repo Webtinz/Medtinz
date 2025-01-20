@@ -27,18 +27,29 @@ const createAgoraClient = ({ onVideoTrack, onUserDisconnected }) => {
       client.on('user-published', async (user, mediaType) => {
         try {
           console.log('User published:', user.uid, mediaType);
+          console.log('Attempting to subscribe to', mediaType);
+          
           await client.subscribe(user, mediaType);
+          console.log('Successfully subscribed to', mediaType);
           
           if (mediaType === 'video') {
+            console.log('Processing video track for user:', user.uid);
             onVideoTrack(user);
           }
           if (mediaType === 'audio') {
+            console.log('Processing audio track for user:', user.uid);
             user.audioTrack?.play();
           }
         } catch (error) {
-          console.error('Subscribe error:', error);
+          console.error('Subscribe error for ' + mediaType + ':', error);
+          console.log('Retrying subscription in 1 second...');
           setTimeout(() => client.subscribe(user, mediaType), 1000);
         }
+      });
+      
+      // Ajouter aussi un log quand un utilisateur quitte
+      client.on('user-left', (user) => {
+        console.log('User left the channel:', user.uid);
       });
 
       client.on('user-left', (user) => {

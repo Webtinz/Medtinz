@@ -28,8 +28,6 @@ const TeleMedicine = () => {
   const handleJoinCall = () => {
     if (!joined) {
       let randomCode = generateMeetingCode();
-      // randomCode = randomCode.replace(/^\//, ''); // Supprimer le slash au début, s'il y en a
-      console.log('randomCode' + randomCode);
   
       const link = generateMeetingLink(randomCode);
       
@@ -49,12 +47,11 @@ const TeleMedicine = () => {
       setJoined(true);
     }
   };
-
-  console.log(meetingLink);
+  
 
   const copyMeetingLink = () => {
     navigator.clipboard.writeText(meetingLink);
-    console.log(navigator.clipboard.writeText(meetingLink));
+    // console.log(navigator.clipboard.writeText(meetingLink));
     
     alert('Lien copié !');
   };
@@ -95,6 +92,12 @@ const TeleMedicine = () => {
                 <span className="doctor-name">Markiz Oceane Malwine</span>
                 <span className="timer">00h : 00mn : 01s</span>
               </div>
+              <button
+                className={`menu-item ${showMedicalForm ? 'active' : ''}`}
+                onClick={toggleMedicalForm}
+              >
+                <FileText />
+              </button>
             </div>
 
             {joined ? (
@@ -124,22 +127,25 @@ const TeleMedicine = () => {
               </button>
             )}
           </div>
-
-          <div ref={sidebarRef} className={`medical-form-sidebar ${showMedicalForm ? 'show' : ''}`}>
+          {/* Sidebar avec bouton de fermeture */}
+          <div 
+            ref={sidebarRef}
+            className={`medical-form-sidebar ${showMedicalForm ? 'show' : ''}`}
+          >
             <div className="medical-form-content">
               <div className="sidebar-header">
+              
                 <button className="close-sidebar" onClick={toggleMedicalForm}>
-                  <FileText />
+                <FileText />
                 </button>
               </div>
-              <Docteur />
+              <Docteur/>
             </div>
           </div>
         </div>
-
-        <button className="ai-assistant">
+        {/* <button className="ai-assistant">
           <div className="ai-icon">AI</div>
-        </button>
+        </button> */}
       </div>
     </div>
   );
