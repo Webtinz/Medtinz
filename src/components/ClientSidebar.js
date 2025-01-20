@@ -39,7 +39,8 @@ const ClientSidebar = () => {
             <li><Link to=""><MdMoney className="nav-icon" />Billing</Link></li>
             <li><Link to=""><MdLocalHospital className="nav-icon" />Inventory and Pharmacy</Link></li>
             <li><Link to=""><MdLibraryBooks className="nav-icon" />Laboratory Records</Link></li>
-            <li><Link to="https://e77f-156-0-213-50.ngrok-free.app/call" target='_blank'><MdLibraryBooks className="nav-icon" />Telemedicine</Link></li>
+            <li><Link to="/hospitaladmin/telemedecine"><MdLibraryBooks className="nav-icon" />Telemedicine</Link></li>
+            {/* <li><Link to="https://e77f-156-0-213-50.ngrok-free.app/call" target='_blank'><MdLibraryBooks className="nav-icon" />Telemedicine</Link></li> */}
             <li><Link to=""><MdLibraryBooks className="nav-icon" />Reports and Analytics</Link></li>
           </ul>
         </div>

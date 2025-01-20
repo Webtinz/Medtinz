@@ -1,0 +1,408 @@
+.controls {
+  position: relative;
+  z-index: 1;
+}
+
+/* Dans tele.css, ajoutez : */
+.control-btn.disabled {
+  background-color: #dc3545;
+}
+
+.control-btn.disabled svg {
+  color: #ffffff;
+}
+
+.video-frame {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #1a1a1a;
+}
+
+.participant-tag {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 5px 15px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+  .menu-item {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: transparent;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6c757d;
+  }
+  
+  .menu-item.active {
+    background-color: #e7f5ff;
+    color: #4263eb;
+  }
+  
+  /* Main Section Styles */
+  .main-section {
+    flex: 1;
+    padding: 1rem;
+    position: relative;
+  }
+  
+  /* Header Styles */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .breadcrumb {
+    display: flex;
+    gap: 0.5rem;
+    color: #6c757d;
+  }
+  
+  .user-profile {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+  }
+  
+  .user-role {
+    color: #6c757d;
+    font-size: 0.875rem;
+  }
+  
+  /* Conference Container Styles */
+  .conference-container {
+    position:relative !important;
+    background-color: #14375B;
+    border-radius: 12px;
+    padding: 1.5rem;
+    color: white;
+  }
+  
+  .appointment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .appointment-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .timer {
+    color: #6c757d;
+    font-size: 0.875rem;
+  }
+  
+  .video-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+  .video-item {
+    position: relative;
+  }
+  
+  .video-frame {
+    width: 100%;
+    border-radius: 8px;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+  }
+  
+  .participant-tag {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    background-color: #4263eb;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.875rem;
+  }
+  
+  
+  
+  .form-header {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .history-btn, .voice-btn {
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    border: 1px solid #4263eb;
+    background: transparent;
+    color: #4263eb;
+  }
+  
+  .vital-signs, .symptoms-section {
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Controls Styles */
+  .controls {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  
+  .control-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: none;
+    background-color: #2b3a4e;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .control-btn.end-call {
+    background-color: #dc3545;
+  }
+  
+  /* AI Assistant Button */
+  .ai-assistant {
+    position: fixed;
+    bottom: 4rem;
+    left: 5rem;
+    background-color: #198754;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .ai-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+  }
+
+  /* Existing styles remain the same, add these new styles: */
+
+/* Content wrapper styles */
+.content-wrapper {
+  position: relative;
+  height: calc(100vh - 80px);
+}
+
+  
+  /* Conference container styles - remove flex adjustments */
+.conference-container {
+  width: 100%;
+  height: 100%;
+  transition: none; /* Remove transition since we don't want any movement */
+}
+  
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  /* border-bottom: 1px solid #e9ecef; */
+}
+
+.close-sidebar {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  color: #6c757d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-sidebar:hover {
+  background-color: #f8f9fa;
+  color: #dc3545;
+}
+  
+ /* Medical Form Sidebar Styles */
+.medical-form-sidebar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 45%;
+  height: 100%;
+  background: white;
+  border-radius: 8px;
+  overflow-y: auto;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  z-index: 1000;
+  padding: 20px;
+}
+  
+
+.medical-form-sidebar.show {
+  transform: translateX(0);
+}
+  
+
+.medical-form-content {
+  color: #333;
+  height: 100%;
+  padding: 20px;
+}
+  .form-buttons {
+    display: flex;
+    justify-content: space-between;
+    /* flex-direction: column; */
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .medical-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border: 1px solid #4263eb;
+    border-radius: 4px;
+    background: white;
+    color: #4263eb;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .medical-btn:hover {
+    background: #f8f9fa;
+  }
+  
+  .vital-signs-section {
+    background: #fff5f5;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+  
+  .vital-sign-box {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .vital-sign-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .symptoms-section {
+    margin-bottom: 20px;
+  }
+  
+  .symptoms-section h3 {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+  
+  .symptoms-input {
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 12px;
+  }
+  
+  .symptoms-input ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .symptoms-input li {
+    margin-bottom: 8px;
+    padding-left: 20px;
+    position: relative;
+  }
+  
+  .symptoms-input li:before {
+    content: "•";
+    position: absolute;
+    left: 0;
+  }
+  
+  .date-input, .medication-input {
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 12px;
+  }
+  
+  .add-question-btn {
+    width: 100%;
+    padding: 12px;
+    background: white;
+    border: 2px dashed #4263eb;
+    border-radius: 8px;
+    color: #4263eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
+    cursor: pointer;
+  }
+  
+  .add-question-btn:hover {
+    background: #f8f9fa;
+  }
+  
+  /* Remove the adjustment for video grid when sidebar is open */
+
+
+  .icon {
+    font-size: 18px;
+  }
+  
+  .with-sidebar .video-grid {
+    grid-template-columns: repeat(2, 1fr); /* Keep it always 2 columns */
+  }
+ /* Adjust media query */
+@media (max-width: 768px) {
+  .medical-form-sidebar {
+      width: 100%;
+      height: 50vh;
+      top: auto;
+      bottom: 0;
+      transform: translateY(100%);
+  }
+  
+  .medical-form-sidebar.show {
+      transform: translateY(0);
+  }
+}

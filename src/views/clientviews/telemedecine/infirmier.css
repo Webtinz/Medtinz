@@ -1,0 +1,41 @@
+.search{
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+.fcl{
+    border: none;
+    background-color: transparent;
+    width: 90%;
+}
+.fcl:focus{
+    border: 1px solid transparent;
+    background-color: transparent;
+}
+.fcl::placeholder{
+    padding-left: 3%;
+    color: #17426F;
+}
+.sea{
+    position: absolute;
+    top: 50%;
+    left: 8%;
+    transform: translate(-50%,-50%);
+    color: #17426F;
+}
+.table thead tr th{
+    background-color: #0056B31A;
+}
+.fcl1::placeholder{
+    color: #191B1C;
+}
+.form-floating .form-control:focus ~ label {
+    top: -10px; /* Déplacer le label vers le haut lorsque l'input est en focus */
+    font-size: 1rem;
+    font-weight: bold;
+}
+.modal {
+    --bs-modal-width: 60vw;
+    left: 10%;
+}
+  

@@ -19,6 +19,7 @@ import MedicalAppointments from '../views/appointment/patientDetail';
 import CalendarWeekView from '../views/appointment/calendar';
 import StaffDetails from '../views/clientviews/staffmanagment/user'; // Page Patient Management
 import StaffSchedule from '../views/clientviews/staffmanagment/horaire'; // Page Patient Management
+import telMed from '../views/clientviews/telemedecine/tele'; // Page Patient Management
 
 
 
@@ -50,6 +51,8 @@ const ClientRoutesWithDash = [
   { path: '/hospitaladmin/appoint_calendar', name: 'AppointCalendar', element: CalendarWeekView },
   { path: '/hospitaladmin/staff_details', name: 'StaffDetails', element: StaffDetails },
   { path: '/hospitaladmin/staff_schedule', name: 'StaffSchedule', element: StaffSchedule },
+  { path: '/hospitaladmin/telemedecine', name: 'StaffSchedule', element: telMed },
+  { path: '/hospitaladmin/telemedecine/:meetingCode', name: 'TelemedicineCall', element: telMed },
 
 
 
