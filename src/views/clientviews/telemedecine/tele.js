@@ -183,12 +183,12 @@ const TeleMedicine = () => {
               <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 <button
                   onClick={handleJoinCall}
-                  className="join-call-btn control-btn"
+                  className="join-call-btn control-btn bg-success"
                   style={{
                     padding: '10px',
                     borderRadius: '50%',
                     backgroundColor: '#fff', /* Exemple de couleur de fond */
-                    color: '#000', /* Couleur de texte */
+                    color: '#fff', /* Couleur de texte */
                     fontSize: '20px', /* Taille de l'icône */
                   }}
                 >
