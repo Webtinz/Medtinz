@@ -10,6 +10,9 @@ import { generateMeetingCode, generateMeetingLink, extractMeetingCode } from '..
 import './App.css';
 import { VideoRoom } from '../../../components/VideoRoom';
 
+import api from '../../../service/caller';
+import { ToastContainer, toast } from 'react-toastify';
+
 const extractChannelCodeFromURL = () => {
   const params = new URLSearchParams(window.location.search);
   return params.get('channel');
@@ -20,14 +23,54 @@ const TeleMedicine = () => {
   const [showMedicalForm, setShowMedicalForm] = useState(false);
   const [meetingLink, setMeetingLink] = useState('');
   const sidebarRef = useRef(null);
+  const [elapsedTime, setElapsedTime] = useState(0); // Temps écoulé en secondes
 
+  const [UserData, setUserData] = useState([]);  
+
+  useEffect(() => {
+    const fetchLoggedUserData = async () => {
+      try {
+        const response = await api.get('api/usersprofile');
+
+        setUserData(response.data);
+      } catch (error) {
+        toast.error("Failed to fetch data");
+      }
+    };
+    fetchLoggedUserData();
+  }, []);
+
+  useEffect(() => {
+    let timer;
+    if (joined) {
+      timer = setInterval(() => {
+        setElapsedTime((prevTime) => prevTime + 1); // Incrémente d'une seconde
+      }, 1000);
+    } else {
+      clearInterval(timer);
+    }
+
+    // Nettoyage de l'intervalle
+    return () => clearInterval(timer);
+  }, [joined]);
+
+  const formatTime = (timeInSeconds) => {
+    const hours = Math.floor(timeInSeconds / 3600);
+    const minutes = Math.floor((timeInSeconds % 3600) / 60);
+    const seconds = timeInSeconds % 60;
+
+    return `${String(hours).padStart(2, '0')}h : ${String(minutes).padStart(2, '0')}mn : ${String(seconds).padStart(2, '0')}s`;
+  };
   const toggleMedicalForm = () => {
     setShowMedicalForm(!showMedicalForm);
   };
 
+
   const handleJoinCall = () => {
     if (!joined) {
       let randomCode = generateMeetingCode();
+      // randomCode = randomCode.replace(/^\//, ''); // Supprimer le slash au début, s'il y en a
+      console.log('randomCode' + randomCode);
   
       const link = generateMeetingLink(randomCode);
       
@@ -48,13 +91,22 @@ const TeleMedicine = () => {
     }
   };
   
-
-  const copyMeetingLink = () => {
-    navigator.clipboard.writeText(meetingLink);
-    // console.log(navigator.clipboard.writeText(meetingLink));
-    
-    alert('Lien copié !');
+  const copyMeetingLink = async () => {
+    console.log('Lien à copier :', meetingLink); // Vérifiez la valeur ici
+    try {
+      if (!meetingLink) {
+        toast.error('Aucun lien à copier !');
+        return;
+      }
+      await navigator.clipboard.writeText(meetingLink);
+      toast.success('Lien copié dans le presse-papiers !');
+    } catch (error) {
+      console.error('Erreur lors de la copie du lien :', error);
+      toast.error('Impossible de copier le lien.');
+    }
   };
+  
+  
 
   useEffect(() => {
     const codeChannel = extractChannelCodeFromURL();
@@ -83,6 +135,7 @@ const TeleMedicine = () => {
 
   return (
     <div className="app-container">
+      <ToastContainer /> {/* Conteneur pour afficher les toasts */}
       <div className="main-section">
         <div className="content-wrapper">
           <div className="conference-container">
@@ -90,7 +143,9 @@ const TeleMedicine = () => {
               <div className="appointment-info">
                 <h2>Appointment with</h2>
                 <span className="doctor-name">Markiz Oceane Malwine</span>
-                <span className="timer">00h : 00mn : 01s</span>
+                {/* <span className="doctor-name">{UserData?.firstname}</span> */}
+                {/* <span className="timer">00h : 00mn : 01s</span> */}
+                <span className="timer">{joined ? formatTime(elapsedTime) : '00h : 00mn : 00s'}</span>
               </div>
               <button
                 className={`menu-item ${showMedicalForm ? 'active' : ''}`}

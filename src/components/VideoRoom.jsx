@@ -134,6 +134,11 @@ export const VideoRoom = () => {
       setVideoTrack(null);
       setIsAudioMuted(false);
       setIsVideoMuted(false);
+      
+      // Redirection vers l'URL sans le paramètre ?channel
+      const url = new URL(window.location.href);
+      url.searchParams.delete('channel');
+      window.location.href = url.pathname; // Redirige vers l'URL sans paramètres
     }
   };
 
