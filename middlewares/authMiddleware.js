@@ -12,6 +12,10 @@ const authMiddleware = (req, res, next) => {
         return res.status(401).json({ message: 'Access denied. No token provided.' });
     }
 
+    if (error.name === 'TokenExpiredError') {
+        return res.status(401).json({ message: 'Votre session a expiré. Veuillez vous reconnecter.' });
+    }
+      
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET); // Utilisez votre clé secrète JWT
         req.user = decoded; // Ajoutez les données du token à l'objet req pour un accès ultérieur
