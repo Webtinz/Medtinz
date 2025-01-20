@@ -177,9 +177,25 @@ const TeleMedicine = () => {
               </div>
             )}
             {!joined && (
-              <button onClick={handleJoinCall} className="leave-call-btn control-btn">
-                <Phone />
-              </button>
+              // <button onClick={handleJoinCall} className="leave-call-btn control-btn">
+              //   <Phone />
+              // </button>
+              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <button
+                  onClick={handleJoinCall}
+                  className="join-call-btn control-btn"
+                  style={{
+                    padding: '10px',
+                    borderRadius: '50%',
+                    backgroundColor: '#fff', /* Exemple de couleur de fond */
+                    color: '#000', /* Couleur de texte */
+                    fontSize: '20px', /* Taille de l'icône */
+                  }}
+                >
+                  <Phone />
+                </button>
+              </div>
+
             )}
           </div>
           {/* Sidebar avec bouton de fermeture */}
