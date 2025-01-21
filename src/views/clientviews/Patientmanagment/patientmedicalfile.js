@@ -103,7 +103,7 @@ const Patientfilemedical = () => {
                                     <AddAppointmentModal
                                         visible={visible}
                                         onClose={() => setVisible(false)}
-                                        onAppointmentAdded={handleAppointmentAdded}
+                                        onAppointmentAdded={handleAppointmentAdded} patientId={patientId} patientName={patientData.name}
                                     />
 
                                     <div className='patientdetails'>

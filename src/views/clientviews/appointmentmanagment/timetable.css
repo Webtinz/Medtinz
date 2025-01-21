@@ -1,5 +1,5 @@
 /* Conteneur principal */
-.max-w-4xl {
+.timetablelast .max-w-4xl {
   background: white;
   border-radius: 12px;
   max-width: 100%; /* S'adapte à la largeur de l'écran */
@@ -9,18 +9,18 @@
 }
 
 /* Header et navigation */
-.mb-4 {
+.timetablelast .mb-4 {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 16px;
 }
 
-.gap-1 {
+.timetablelast .gap-1 {
   gap: 1.25rem !important;
 }
 
-.p-2 {
+.timetablelast .p-2 {
   width: 100px;
   height: 50px;
   display: flex;
@@ -34,11 +34,11 @@
   font-size: 18px;
 }
 
-.p-2:hover {
+.timetablelast .p-2:hover {
   background-color: #f0f0f0;
 }
 
-.text-lg {
+.timetablelast .text-lg {
   color: #333;
   font-weight: 600;
   font-size: 20px;
@@ -46,7 +46,7 @@
 }
 
 /* Grille principale */
-.grid {
+.timetablelast .grid {
   display: grid;
   grid-template-columns: 150px repeat(5, 1fr); /* Largeur fixe pour les heures, reste flexible pour les jours */
   gap: 2px;
@@ -56,7 +56,7 @@
 }
 
 /* En-têtes des colonnes */
-.font-semibold {
+.timetablelast .font-semibold {
   background-color: #f8f9fa;
   color: #495057;
   font-weight: 600;
@@ -67,7 +67,7 @@
 }
 
 /* Colonne des horaires */
-.text-sm {
+.timetablelast .text-sm {
   background: #FF980017;
   color: #495057;
   text-align: center;
@@ -78,7 +78,7 @@
 }
 
 /* Créneaux libres (vert) */
-.bg-green-100 {
+.timetablelast .bg-green-100 {
   background-color: #d4edda;
   color: #155724;
   font-weight: bold;
@@ -89,13 +89,13 @@
   transition: background-color 0.3s ease, opacity 0.3s ease;
 }
 
-.bg-green-100:hover {
+.timetablelast .bg-green-100:hover {
   background-color: #c3e6cb;
   opacity: 0.9;
 }
 
 /* Créneaux réservés (rose) */
-.bg-pink-100 {
+.timetablelast .bg-pink-100 {
   background-color: #f8d7da;
   color: #721c24;
   font-weight: bold;
@@ -106,13 +106,13 @@
   transition: background-color 0.3s ease, opacity 0.3s ease;
 }
 
-.bg-pink-100:hover {
+.timetablelast .bg-pink-100:hover {
   background-color: #f5c6cb;
   opacity: 0.9;
 }
 
 /* Style des créneaux horaires */
-.h-12 {
+.timetablelast .h-12 {
   width: 100px;
   height: 50px;
   display: flex;
@@ -130,7 +130,7 @@
 }
 
 /* Conteneur des icônes */
-.absolute {
+.timetablelast .absolute {
   position: absolute;
   top: 0;
   left: 0;
@@ -147,7 +147,7 @@
 }
 
 /* Style des icônes */
-.w-6 {
+.timetablelast .w-6 {
   width: 24px;
   height: 24px;
   color: #666;
@@ -155,19 +155,19 @@
   transition: color 0.3s ease;
 }
 
-.w-6:hover {
+.timetablelast .w-6:hover {
   color: #007bff;
 }
 
 /* Pagination */
-.mt-6 {
+.timetablelast .mt-6 {
   display: flex;
   justify-content: end;
   gap: 10px;
   margin-top: 16px;
 }
 
-.mt-6 button {
+.timetablelast .mt-6 button {
   width: 32px;
   height: 32px;
   display: flex;
@@ -182,25 +182,25 @@
   transition: background-color 0.3s ease;
 }
 
-.mt-6 button:hover {
+.timetablelast .mt-6 button:hover {
   background-color: #f8f9fa;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .max-w-4xl {
+  .timetablelast .max-w-4xl {
     padding: 10px;
     margin: 8px;
     overflow-x: auto; /* Scroll horizontal activé */
   }
 
-  .grid {
+  .timetablelast .grid {
     grid-template-columns: 100px repeat(3, 1fr); /* Réduit le nombre de colonnes visibles */
     min-width: 600px; /* Largeur minimale pour permettre le scroll */
     gap: 1px;
   }
 
-  .font-semibold, .text-sm {
+  .timetablelast .font-semibold, .text-sm {
     font-size: 12px;
     padding: 8px;
   }
@@ -209,14 +209,14 @@
     height: 40px;
   }
 
-  .text-lg {
+  .timetablelast.text-lg {
     font-size: 16px;
   }
 }
 
 
 /* Style général pour le modal */
-.modal-overlay {
+.timetablelast .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -230,7 +230,7 @@
 }
 
 /* Conteneur du contenu du modal */
-.modal-content1 {
+.timetablelast .modal-content1 {
   background: white;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -241,20 +241,20 @@
 }
 
 /* Texte du modal */
-.modal-text {
+.timetablelast .modal-text {
   font-size: 16px;
   color: #333;
   margin-bottom: 20px;
 }
 
 /* Boutons dans le modal */
-.modal-buttons {
+.timetablelast .modal-buttons {
   display: flex;
   justify-content: space-around;
   gap: 10px;
 }
 
-.modal-button {
+.timetablelast .modal-button {
   padding: 10px 20px;
   font-size: 14px;
   font-weight: 500;
@@ -263,29 +263,29 @@
   transition: background-color 0.3s ease;
 }
 
-.modal-button.close {
+.timetablelast .modal-button.close {
   background-color: #f5f5f5;
   color: #333;
   border: 1px solid #ccc;
 }
 
-.modal-button.close:hover {
+.timetablelast .modal-button.close:hover {
   background-color: #e0e0e0;
 }
 
-.modal-button.confirm {
+.timetablelast .modal-button.confirm {
   background-color: #4caf50;
   color: white;
   border: none;
 }
 
-.modal-button.confirm:hover {
+.timetablelast .modal-button.confirm:hover {
   background-color: #43a047;
 }
 
 /* le deuxieme modal */
 
-.modal-overlay {
+.timetablelast .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -298,7 +298,7 @@
   z-index: 50;
 }
 
-.modal-content2 {
+.timetablelast .modal-content2 {
   background: white;
   border-radius: 8px;
   padding: 20px;
@@ -307,19 +307,19 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.modal-text {
+.timetablelast .modal-text {
   font-size: 16px;
   color: #333;
 }
 
-.modal-buttons {
+.timetablelast .modal-buttons {
   display: flex;
   justify-content: space-around;
   gap: 10px;
   margin-top: 20px;
 }
 
-.modal-button2 {
+.timetablelast .modal-button2 {
   padding: 14px 80px;
   font-size: 14px;
   border-radius: 4px;
@@ -329,24 +329,24 @@
   color: #fff;
 }
 
-.modal-button.close {
+.timetablelast .modal-button.close {
   background-color: #f5f5f5;
   color: #333;
   border: 1px solid #ccc;
 }
 
-.modal-button.confirm {
+.timetablelast .modal-button.confirm {
   background-color: #4caf50;
   color: white;
 }
 
-.vie{
+.timetablelast .vie{
   background-color:#28A7451A;
   display: flex;
   justify-content: center;
   padding: 12px 20px;
 }
-.immole{
+.timetablelast .immole{
   display: flex;
   justify-content: space-between;
 }

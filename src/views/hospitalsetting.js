@@ -14,12 +14,13 @@ import { FaArrowDown } from "react-icons/fa";
 import {
   CHeader, CContainer, CHeaderNav, CNavItem, CNavLink,
 } from '@coreui/react'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; // N'oublie pas d'importer les styles de toast
 import { BsPersonPlus, BsChevronRight, BsChevronLeft, BsArrowUpLeft } from 'react-icons/bs';
+import api from  '../service/caller'
 
 import Adminprofil from '../assets/images/adminprofil.png';
 
-import api from '../service/caller';
-import { ToastContainer, toast } from 'react-toastify';
 
 const getUserIdFromToken = () => {
   const token = localStorage.getItem('access_token'); // Récupérer le token depuis le localStorage
@@ -51,10 +52,21 @@ const Hospital = () => {
   const [mainHospital, setMainHospital] = useState(null);  // Stocker l'hôpital principal
   const [otherHospitals, setOtherHospitals] = useState([]);  // Stocker les autres hôpitaux
   const [hospitals, setHospitals] = useState([]);
-  const [mainDropdownOpen, setMainDropdownOpen] = useState(false);
-  const [departmentsOpen, setDepartmentsOpen] = useState(false);
-  const [specialitiesOpen, setSpecialitiesOpen] = useState(false);
-  const [servicesOpen, setServicesOpen] = useState(false);
+
+  const [dropdownState, setDropdownState] = useState({
+    main: true,
+    generalSettings: false,
+    specialities: true,
+    departments: true,
+    services: true,
+  });
+
+  const toggleDropdown = (key) => {
+    setDropdownState((prevState) => ({
+      ...prevState,
+      [key]: !prevState[key], // Basculer l'état spécifique du dropdown
+    }));
+  };
   const [showModal, setShowModal] = useState(false);
   const [showSpecialityModal, setShowSpecialityModal] = useState(false);
   const [hasOtherSites, setHasOtherSites] = useState(false); // État pour "Do you have other sites?"
@@ -72,13 +84,20 @@ const Hospital = () => {
   const [newSpeciality, setNewSpeciality] = useState({
     name: '',
     description: '',
-    departementId:'',
+    departementId: '',
   });
 
-  const toggleMainDropdown = () => setMainDropdownOpen(!mainDropdownOpen);
-  const toggleDepartments = () => setDepartmentsOpen(!departmentsOpen);
-  const toggleSpecialities = () => setSpecialitiesOpen(!specialitiesOpen);
-  const toggleServices = () => setServicesOpen(!servicesOpen);
+  // Fonction pour ouvrir et fermer le dropdown Main Hospital
+  const toggleMainDropdown = () => toggleDropdown("main");
+
+  // Fonction pour ouvrir et fermer le dropdown Departments
+  const toggleDepartments = () => toggleDropdown("departments");
+
+  // Fonction pour ouvrir et fermer le dropdown Specialities
+  const toggleSpecialities = () => toggleDropdown("specialities");
+
+  // Fonction pour ouvrir et fermer le dropdown Services
+  const toggleServices = () => toggleDropdown("services");
 
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
@@ -86,24 +105,26 @@ const Hospital = () => {
   const handleShowSpecialityModal = () => setShowSpecialityModal(true);
   const handleCloseSpecialityModal = () => setShowSpecialityModal(false);
 
-  const handleDepartmentInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewDepartment({ ...newDepartment, [name]: value });
-  };
+  // const handleDepartmentInputChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setNewDepartment({ ...newDepartment, [name]: value });
+  // };
 
   const handleSpecialityInputChange = (e) => {
     const { name, value } = e.target;
     setNewSpeciality({ ...newSpeciality, [name]: value });
   };
 
-  const addService = () => {
-    setServices([...services, { name: '', price: '' }]);
-  };
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewDepartment({ ...newDepartment, [name]: value });
   };
+
+  const addService = () => {
+    setServices([...services, { name: '', price: '' }]);
+  };
+
+
   const [selectedDepartment, setSelectedDepartment] = useState(null);
   const [showDepartmentDetailsModal, setShowDepartmentDetailsModal] = useState(false);
 
@@ -115,6 +136,7 @@ const Hospital = () => {
   const handleCloseDepartmentDetails = () => {
     setShowDepartmentDetailsModal(false); // Ferme le modal
   };
+
   const [showDeleteConfirmModal, setShowDeleteConfirmModal] = useState(false);
 
   const handleShowDeleteConfirm = () => setShowDeleteConfirmModal(true);
@@ -125,20 +147,9 @@ const Hospital = () => {
     console.log('Item deleted');
     handleCloseDeleteConfirm();
   };
-  const [dropdownState, setDropdownState] = useState({
-    main: false,
-    generalSettings: false,
-    speciality: false,
-    departments: false,
-    services: false,
-  });
 
-  const toggleDropdown = (key) => {
-    setDropdownState((prev) => ({
-      ...prev,
-      [key]: !prev[key], // Basculer l'état spécifique du dropdown
-    }));
-  };
+
+
   const [showSubadminInfo, setShowSubadminInfo] = useState(false);
   // État pour afficher le toast modal
   const [showToast, setShowToast] = useState(false);
@@ -176,9 +187,6 @@ const Hospital = () => {
           setDepartments(mainHospitalData.departments); // Associer les départements
           setSpecialities(mainHospitalData.specialities); // Associer les spécialités
         }
-
-        console.log('mainhospital', mainHospitalData); // Ajoutez un log ici pour vérifier une seule fois
-
         setHospitals(response.data); // Sauvegarder tous les hôpitaux
         setOtherHospitals(otherHospitalsData); // Stocker les autres hôpitaux
       } catch (error) {
@@ -191,6 +199,29 @@ const Hospital = () => {
       fetchHospitals(); // Appeler la fonction pour récupérer les hôpitaux uniquement si l'utilisateur est authentifié
     }
   }, [userId]); // Dépendance sur userId pour recharger si nécessaire
+
+  useEffect(() => {
+    const fetchDepartments = async () => {
+      if (!mainHospital) return; // Si l'hôpital principal n'est pas défini, ne rien faire
+      try {
+        const hospitalId = mainHospital._id; // Utiliser l'ID de l'hôpital principal
+        const response = await api.get(`/api/departments/hospital/${hospitalId}`, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+          }
+        });
+
+        // Mettre à jour les départements dans l'état
+        setDepartments(response.data.data);
+      } catch (error) {
+        console.error('Erreur lors de la récupération des départements:', error);
+        setMessage('Erreur lors de la récupération des départements.');
+      }
+    };
+
+    fetchDepartments(); // Appeler la fonction pour récupérer les départements
+  }, [mainHospital]); // Dépendance sur `mainHospital`, donc dès qu'il est disponible, on récupère les départements
+
 
   // Fonction pour gérer l'ajout d'un département
   const addDepartment = async () => {
@@ -209,7 +240,7 @@ const Hospital = () => {
           hospital_id: hospitalId, // Ajouter l'ID de l'hôpital à la requête
         };
 
-        const response = await axios.post('http://localhost:5000/api/adddepartment', departmentData, {
+        const response = await api.post('/api/adddepartment', departmentData, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
@@ -221,9 +252,6 @@ const Hospital = () => {
         // Réinitialiser le formulaire
         setNewDepartment({ name: '', description: '', price_consult: '' });
         handleCloseModal();  // Fermer le modal après l'ajout
-
-        // Mettre à jour le message de succès
-        setSuccessMessage('Département ajouté avec succès!');
       } catch (error) {
         console.error('Error adding department:', error);
       }
@@ -231,36 +259,49 @@ const Hospital = () => {
   };
 
 
+// recuperer les specialites
+  const fetchSpecialities = async () => {
+    if (!mainHospital) return; // Si l'hôpital principal n'est pas défini, ne rien faire
+    try {
+      const hospitalId = mainHospital._id; // Utiliser l'ID de l'hôpital principal
+      const response = await api.get(`/api/specialities/hospital/${hospitalId}`, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+        }
+      });
+
+      // Mettre à jour l'état des spécialités dans le state
+      setSpecialities(response.data.data);
+
+    } catch (error) {
+      console.error('Erreur lors de la récupération des spécialités:', error);
+      setMessage('Erreur lors de la récupération des spécialités.');
+    }
+  };
+
   useEffect(() => {
-    const fetchDepartments = async () => {
-      if (!mainHospital) return; // Si l'hôpital principal n'est pas défini, ne rien faire
-      try {
-        const hospitalId = mainHospital._id; // Utiliser l'ID de l'hôpital principal
-        const response = await axios.get(`http://localhost:5000/api/departments/hospital/${hospitalId}`, {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
-          }
-        });
-
-        // Mettre à jour les départements dans l'état
-        setDepartments(response.data.data);
-      } catch (error) {
-        console.error('Erreur lors de la récupération des départements:', error);
-        setMessage('Erreur lors de la récupération des départements.');
-      }
-    };
-
-    fetchDepartments(); // Appeler la fonction pour récupérer les départements
-  }, [mainHospital]); // Dépendance sur `mainHospital`, donc dès qu'il est disponible, on récupère les départements
-
-
+    fetchSpecialities(); 
+  }, [mainHospital]); 
 
   // Fonction pour gérer l'ajout d'une spécialité
   const addSpeciality = async () => {
-    if (newSpeciality.name && newSpeciality.description, newSpeciality.departementId) {
+    if (newSpeciality.name && newSpeciality.description && newSpeciality.departementId) {
       try {
         const token = localStorage.getItem('access_token');
-        const response = await axios.post('http://localhost:5000/api/specialities', newSpeciality, {
+        const hospitalId = mainHospital ? mainHospital._id : null;  // Utiliser l'ID de l'hôpital principal
+
+        if (!hospitalId) {
+          console.error('Hospital ID is missing.');
+          return;  // Si l'ID est manquant, on arrête l'exécution
+        }
+
+        const SpecialityData = {
+          ...newSpeciality,
+          hospital_id: hospitalId, // Ajouter l'ID de l'hôpital à la requête
+        };
+
+        // Effectuer la requête POST pour ajouter la spécialité
+        const response = await api.post('/api/specialities', SpecialityData, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -268,14 +309,25 @@ const Hospital = () => {
 
         // Mettre à jour l'état des spécialités après ajout
         setSpecialities([...specialities, response.data]);
-        setNewSpeciality({ name: '', description: '' });
+
+        // Réinitialiser les champs du formulaire
+        setNewSpeciality({ name: '', description: '', departementId: '' });
+
+        // Fermer le modal après l'ajout
         handleCloseSpecialityModal();
+
+        // Charger les spécialités à nouveau (pour s'assurer que la liste est bien à jour)
+        await fetchSpecialities();
+
+        // Afficher un message de succès (si nécessaire)
+        setSuccessMessage('Spécialité ajoutée avec succès!');
       } catch (error) {
         console.error('Erreur lors de l\'ajout de la spécialité:', error);
       }
+    } else {
+      console.log('Veuillez remplir tous les champs.');
     }
   };
-
 
 
 
@@ -321,11 +373,11 @@ const Hospital = () => {
                 <span className='me-3' style={{ width: '70px', height: '5px', background: '#0056B3' }}></span>
                 Main Hospital
               </button>
-              {mainDropdownOpen && (
-                <div className="dropdown-menu w-100 p-3" style={{ display: 'block' }}>
+              {dropdownState.main && (
+                <div className="p-3">
                   {mainHospital && (
-                    <div className="hospital-name mb-4">
-                      <label className='cos'>Hospital Name</label>
+                    <div className="hospital-name mt-3 mb-4">
+                      <label>Hospital Name</label>
                       <input
                         type="text"
                         value={mainHospital.hospital_name || ''}
@@ -344,7 +396,7 @@ const Hospital = () => {
                     >
                       Departments
                     </button>
-                    {departmentsOpen && (
+                    {dropdownState.departments && (
                       <div className="p-3">
                         {departments && Array.isArray(departments) && departments.length > 0 ? (
                           <div className="list d-flex flex-wrap">
@@ -382,7 +434,7 @@ const Hospital = () => {
                     >
                       Speciality
                     </button>
-                    {specialitiesOpen && (
+                    {dropdownState.specialities && (
                       <div className="p-3">
                         {specialities && Array.isArray(specialities) && specialities.length > 0 ? (
                           <div className="list d-flex flex-wrap">
@@ -406,7 +458,6 @@ const Hospital = () => {
                     )}
                   </div>
 
-
                   {/* Services Dropdown */}
                   <div className="dropdown-item mt-4">
                     <button
@@ -416,7 +467,7 @@ const Hospital = () => {
                     >
                       Services
                     </button>
-                    {servicesOpen && (
+                    {dropdownState.services && (
                       <div className="p-3">
                         <p className='ayra mb-3'>*Configurez les services que vous offrez  avec les prix</p>
                         <div className="list container">
@@ -542,6 +593,11 @@ const Hospital = () => {
                 <Modal.Title className='canne mx-auto'>Add New Speciality</Modal.Title>
               </Modal.Header>
               <Modal.Body>
+                {successMessage && (
+                  <div className="alert alert-success" role="alert">
+                    {successMessage}
+                  </div>
+                )}
                 <div className="form-group mb-4">
                   <label className='dress'> Name</label>
                   <input
@@ -553,6 +609,28 @@ const Hospital = () => {
                     onChange={handleSpecialityInputChange}
                   />
                 </div>
+                {/* Sélecteur pour le département */}
+                <div className="form-group mb-4">
+                  <label className='dress'>Department</label>
+                  <select
+                    className="form-control store"
+                    name="departementId"
+                    value={newSpeciality.departementId}
+                    onChange={handleSpecialityInputChange}
+                  >
+                    <option value="">Select a Department</option>
+                    {departments && Array.isArray(departments) && departments.length > 0 ? (
+                      departments.map((department) => (
+                        <option key={department._id} value={department._id}>
+                          {department.name}
+                        </option>
+                      ))
+                    ) : (
+                      <option disabled>No departments available.</option> // Affiche cette option si aucun département n'est disponible
+                    )}
+                  </select>
+                </div>
+
                 <div className="form-group mb-4">
 
                   <textarea
@@ -584,7 +662,7 @@ const Hospital = () => {
             >
               <Modal.Header className='pamela' >
                 <Modal.Title className="text-center w-100 vacation">
-                {selectedDepartment ? selectedDepartment.name : 'Department Details'}
+                  {selectedDepartment ? selectedDepartment.name : 'Department Details'}
                 </Modal.Title>
               </Modal.Header>
               <Modal.Body>
@@ -914,7 +992,7 @@ const Hospital = () => {
                       >
                         Speciality
                       </button>
-                      {specialitiesOpen && (
+                      {dropdownState.specialities && (
                         <div className="p-3">
                           <div className="list d-flex flex-wrap">
                             {specialities.map((spec, index) => (
@@ -946,7 +1024,7 @@ const Hospital = () => {
                       >
                         Departments
                       </button>
-                      {departmentsOpen && (
+                      {dropdownState.departments && (
                         <div className="p-3">
                           <div className="list d-flex flex-wrap">
                             {departments.map((dept, index) => (
@@ -980,7 +1058,7 @@ const Hospital = () => {
                       >
                         Services
                       </button>
-                      {servicesOpen && (
+                      {dropdownState.services && (
                         <div className="p-3">
                           <p className='ayra mb-3'>*Configurez les services que vous offrez  avec les prix</p>
                           <div className="list container">

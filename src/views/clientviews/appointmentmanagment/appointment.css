@@ -77,3 +77,214 @@
   display: flex;
   justify-content: center;
 }
+
+.medical-history-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  background-color: #f0fdf4; /* Light green background */
+}
+
+.medical-history-table th, 
+.medical-history-table td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.medical-history-table thead {
+  background-color: #f0fdf4;
+}
+
+.medical-history-table thead th {
+  color: #047857; /* Green text */
+  font-weight: bold;
+}
+
+.sort-icon {
+  margin-left: 5px;
+  font-size: 12px;
+  color: #047857;
+}
+
+.medical-history-table tbody tr:hover {
+  background-color: #e6f5e9; /* Slightly darker green on hover */
+}
+
+/* Conteneur principal */
+.consultation {
+  background-color: #FF980026;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 15px 0;
+}
+
+
+
+/* Arrangement pour la note et le radio */
+.arrange {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Style pour le texte de la note */
+.note-text {
+  font-size: 16px;
+  color: #333;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.note-text strong {
+  font-weight: 600;
+}
+
+/* Conteneur du radio button */
+.note-radio {
+  position: relative;
+}
+
+/* Style du radio button */
+.note-radio input[type="radio"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #ff9800;
+  cursor: pointer;
+}
+
+/* Boîte de confirmation */
+.confirmation-box {
+  position: absolute;
+  right:16px ;
+  top: 50%;
+ 
+  background-color: #f1f8e9;
+  border: 1px solid #c5e1a5;
+  padding: 10px 15px;
+  border-radius: 5px;
+  width: 200px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+/* Texte de la question */
+.sourou {
+  display: block;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/* Container des boutons */
+.figure {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+/* Style des boutons */
+.btn-dark {
+  background-color: #333;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-warning {
+  background-color: #ff9800;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Hover effect pour les boutons */
+.btn-dark:hover, .btn-warning:hover {
+  opacity: 0.9;
+}
+
+/* Success Modal */
+.success-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+}
+
+.success-content7 {
+  background-color: white;
+  border-radius: 8px;
+  /* width: 90%; */
+  /* max-width: 400px; */
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.success-header {
+  text-align: center;
+  color: #28a745;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.success-body {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.success-info {
+  flex: 1;
+}
+
+.success-info div {
+  margin-bottom: 10px;
+  color: #333;
+  font-size: 14px;
+}
+
+.success-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-circle {
+  width: 60px;
+  height: 60px;
+  background-color: #ffd699;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.close-button:hover {
+  background-color: #218838;
+}

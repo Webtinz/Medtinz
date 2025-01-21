@@ -5,7 +5,8 @@ import Timetable from './timetable';
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FaLongArrowAltLeft } from "react-icons/fa";
 import { FaRegAddressBook } from "react-icons/fa";
-import voix from './image/voix.png';
+// import voix from './image/voix.png';
+import choco from '../../../assets/images/choco.png';
 // import "bootstrap-icons/font/bootstrap-icons.css";
 const Appointment = () => {
   const [showFirstModal, setShowFirstModal] = useState(false);
@@ -32,8 +33,21 @@ const Appointment = () => {
     setShowFirstModal(false);
     setShowSecondModal(false);
     setShowThirdModal(false);
+    setShowSuccessModal(false);
+  };
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+
+  const handleYesClick = () => {
+    setShowConfirmation(false);
+    setShowSuccessModal(true);
   };
 
+  const handleNoClick = () => {
+    setShowConfirmation(false);
+  };
+
+ 
   
  
   return (
@@ -421,13 +435,115 @@ const Appointment = () => {
           </div>
         </div>
       </div>
-      <div className="mt-4">
-        <h5 className="text-success mb-3">Medical History</h5>
-        <div className="azan ">
-          <h5 className="mt-5">No medical history yet</h5>
-          <img src={voix} alt="voix" className="voix" />
+      <div className="consultation">
+      {/* Medical History Label */}
+      <div className="medical-history">
+        Medical history
+      </div>
+      
+      {/* Note Section */}
+      <div className="arrange">
+        <p className="note-text">
+          <strong className="dila">NOTE*: </strong> 
+          Control with <strong>Dr. Badoss Succes</strong>, 20 / 12 / 2025 by 11:40 pm
+        </p>
+        
+        {/* Radio Input Container */}
+        <div className="note-radio">
+          <label className="radio-label">
+            <input
+              type="radio"
+              name="attendance"
+              onChange={() => setShowConfirmation(!showConfirmation)}
+            />
+          </label>
+
+          {/* Confirmation Modal */}
+          {showConfirmation && (
+            <div className="confirmation-box">
+              <span className="sourou">Patient présent pour le rdv?</span>
+              <div className="figure">
+                <button className="btn-dark" onClick={handleNoClick}>No</button>
+                <button className="btn-warning" onClick={handleYesClick}>Yes</button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
+
+      {/* Success Modal */}
+      {showSuccessModal && (
+        <div className="success-modal modal-lg">
+          <div className="success-content7">
+            <div className="success-header">SUCCESS</div>
+            <div className="success-body">
+              <div className="success-info">
+                <div>No Attribut : 0032</div>
+                <div>Name : Nourah ASSESS</div>
+                <div>Date : 12 / 12 / 2025</div>
+                <div>Heure : 12 : 40min</div>
+                <div>Type de rdv : Consultation</div>
+                <div>Department : Dermatology</div>
+                <div>Doctor : Dr. Badoss Succes Rafiou</div>
+              </div>
+              <div className="success-icon">
+              <div>
+                <img src={choco} alt="choco" className="choco" />
+              </div>
+              </div>
+            </div>
+            <button className="close-button" onClick={handleClose}>Close</button>
+          </div>
+        </div>
+      )}
+    </div>
+      <div className="mt-4">
+  <h5 className="text-success mb-3">Medical History</h5>
+  <div className="table-responsive">
+    <table className="table table-bordered table-hover medical-history-table">
+      <thead className="bg-light text-success">
+        <tr>
+          <th>#</th>
+          <th>Last Visit <span className="sort-icon">↓</span></th>
+          <th>Type <span className="sort-icon">↓</span></th>
+          <th>Doctor <span className="sort-icon">↓</span></th>
+          <th>Services <span className="sort-icon">↓</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>20 Dec 2024</td>
+          <td>Consultation</td>
+          <td>Dr. Badoss Success</td>
+          <td>Analyses sanguins, échography</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>20 Dec 2024</td>
+          <td>Consultation</td>
+          <td>Dr. Badoss Success</td>
+          <td>Analyses sanguins, échography</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>20 Dec 2024</td>
+          <td>Contrôle</td>
+          <td>Dr. Badoss Success</td>
+          <td>Analyses sanguins, échography</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>20 Dec 2024</td>
+          <td>Contrôle</td>
+          <td>Dr. Badoss Success</td>
+          <td>Analyses sanguins, échography</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+      </div>
+
     </div>
   );
 };

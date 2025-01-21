@@ -22,6 +22,16 @@ import StaffSchedule from '../views/clientviews/staffmanagment/horaire'; // Page
 import telMed from '../views/clientviews/telemedecine/tele'; // Page Patient Management
 
 
+// apointment manage
+import Appointmentprocess from '../views/clientviews/appointmentmanagment/appointment'; // Page Patient Management
+import Doctoragenda from '../views/clientviews/appointmentmanagment/timetable'; // Page Patient Management
+import Patientdontknow from '../views/clientviews/appointmentmanagment/patient'; // Page Patient Management
+import Schedulerdv from '../views/clientviews/appointmentmanagment/schedulerdv'; // Page Patient Management
+
+
+
+
+
 
 
 
@@ -53,6 +63,16 @@ const ClientRoutesWithDash = [
   { path: '/hospitaladmin/staff_schedule', name: 'StaffSchedule', element: StaffSchedule },
   { path: '/hospitaladmin/telemedecine', name: 'StaffSchedule', element: telMed },
   { path: '/hospitaladmin/telemedecine/:meetingCode', name: 'TelemedicineCall', element: telMed },
+
+  // Appointment
+  { path: '/hospitaladmin/appointmentprocess', name: 'Appointmentprocess', element: Appointmentprocess },
+  { path: '/hospitaladmin/doctoragenda', name: 'Doctoragenda', element: Doctoragenda },
+  { path: '/hospitaladmin/patientdontknow', name: 'Patientdontknow', element: Patientdontknow },
+  { path: '/hospitaladmin/schedulerdv', name: 'Schedulerdv', element: Schedulerdv },
+
+
+
+
 
 
 
