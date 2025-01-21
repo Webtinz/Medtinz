@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom'; // Importez useNavigate
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Modal, Button, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaArrowLeft } from "react-icons/fa";
@@ -8,7 +8,7 @@ import api from '../../../service/caller';
 import { ToastContainer, toast } from 'react-toastify';
 
 const Horaire = () => {
-  const [showhoraireModal, setshowhoraireModal] = useState(true); // Ouverture automatique du modal
+  const [showhoraireModal, setshowhoraireModal] = useState(true);
 
   const navigate = useNavigate();
 
@@ -30,7 +30,7 @@ const Horaire = () => {
   const userId = queryParams.get('_id');
 
   const handleDurationChange = (day, duration) => {
-    const validDuration = duration % 5 === 0 ? duration : 30; // Valide que la durée est un multiple de 5
+    const validDuration = duration % 5 === 0 ? duration : 30;
     setScheduleData(prevState => ({
       ...prevState,
       [day]: {
@@ -73,22 +73,6 @@ const Horaire = () => {
     setCustomDuration(`${duration} min`); // Met à jour l'affichage de la durée personnalisée
   };
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   const formData = {
-  //     user: userId,
-  //     hospital_id: hospitalId,
-  //     schedule: Object.keys(scheduleData).map(day => ({
-  //       day: day,
-  //       start_time: scheduleData[day].start_time,
-  //       end_time: scheduleData[day].end_time,
-  //       duration_unit: scheduleData[day].duration_unit
-  //     }))
-  //   };
-  //   console.log("Form Data:", formData);
-  //   // Vous pouvez maintenant envoyer ces données au serveur via une requête API ou un autre processus
-  // };
-  
   const handleSubmit = async (e) => {
     e.preventDefault();
         
@@ -102,13 +86,12 @@ const Horaire = () => {
         duration_unit: scheduleData[day].duration_unit
       }))
     };
-    // console.log("Form Data:", formData);
 
     try {
         const response = await api.post('api/schedule', formData);
 
         console.log(response);
-        if ((response.status == 200 || response.status == 201) /*  && response.data.success */) {
+        if ((response.status == 200 || response.status == 201)) {
             // Succès
             
             toast.success("Schedule registered successfully! You will be redirect now.");
@@ -120,8 +103,6 @@ const Horaire = () => {
                 search: `?hospital_id=${response?.data?.data?.hospital_id}&_id=${response?.data?.data?.user}&schedule=${JSON.stringify(formData.schedule)}`
               });
             }, 2000); // 2000 ms = 2 secondes
-
-            // onClose(); // Fermer la modal
         } else {
             // Échec géré dans la réponse
             toast.error(response.data.message || "Failed to register schedule. Please try again.");
@@ -135,11 +116,6 @@ const Horaire = () => {
 
   return (
     <div>
-      {/* <h1>Page Horaire</h1>
-      <p>Hospital ID: {hospitalId}</p>
-      <p>User ID: {userId}</p> */}
-
-      {/* Modal avec React Bootstrap */}
       <Modal
         show={showhoraireModal}
         backdrop="static"
@@ -151,7 +127,7 @@ const Horaire = () => {
           <Modal.Title className="mx-auto hius">Configurer les horaires</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-                            <ToastContainer /> {/* Conteneur pour afficher les toasts */}
+                            <ToastContainer />
           <Form onSubmit={handleSubmit}>
             <div className="mb-3">
               <button className="essuie"><FaArrowLeft /> Retour</button>
@@ -201,7 +177,6 @@ const Horaire = () => {
                 ))}
               </tbody>
             </table>
-
             <h3 className="sete">Définissez une durée moyenne de consultation pour ce docteur :</h3>
             <div className="duration-buttons">
               {[15, 20, 25, 30].map((duration) => (
@@ -215,17 +190,6 @@ const Horaire = () => {
                 </Button>
               ))}
             </div>
-            {/* <div className="custom-duration">
-              <label className="tyu">Configurez vous-même une durée :</label>
-              <input
-                type="text"
-                className="custom-duration-input px-2"
-                placeholder="15 min"
-                value={customDuration}
-                onChange={handleCustomDurationChange}
-              />
-            </div> */}
-
             <Modal.Footer>
               <Button type="submit" variant="primary" className="mx-auto modify-button">
                 Soumettre
