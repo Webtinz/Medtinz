@@ -5,10 +5,10 @@ const { validationResult } = require('express-validator');
 const nodemailer = require('nodemailer');
 
 // Créer un rendez-vous
-
+const { v4: uuidv4 } = require('uuid');
 exports.createBaseAppointment = async (req, res) => {
     try {
-        const { patientId, appointmentDate, appointmentTime , department, notes} = req.body;
+        const { patientId,department, notes, motif, type_consultation,price} = req.body;
 
         // Vérifier si l'ID du patient existe
         const patient = await Patient.findById(patientId);
@@ -18,13 +18,14 @@ exports.createBaseAppointment = async (req, res) => {
 
         const newAppointment = new Appointment({
             patientId,
-            appointmentDate,
-            appointmentTime,
+            motif,
+            type_consultation,
             department,
+            price,
             notes,
             status: 'Scheduled',
+            AppointmentCode: `APT-${uuidv4().slice(0, 6).toUpperCase()}`,
         });
-
         await newAppointment.save();
 
         res.status(201).json({

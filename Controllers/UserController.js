@@ -291,6 +291,7 @@ exports.deleteUser = async (req, res) => {
 //         res.status(500).json({ status: "error", message: error.message  });
 //     }
 // };
+
 exports.getUsersByHospital = async (req, res) => {
     try {
         // Récupérer le tableau d'identifiants depuis les paramètres
@@ -346,3 +347,5 @@ exports.getUsersByHospital = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+

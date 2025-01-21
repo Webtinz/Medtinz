@@ -10,15 +10,15 @@ const specialtySchema = new Schema({
         default: null,
     },
     codeSpe: {
-      type: String,
-      required: false,
-      unique: true, 
+        type: String,
+        required: false,
+        unique: true,
     },
-    // hospital_id: {
-    //     type: Schema.Types.ObjectId,
-    //     ref: 'Hospital', // Lien avec le modèle Hospital
-    //     default: null,   // Par défaut, null
-    // },
+    hospital_id: {
+        type: Schema.Types.ObjectId,
+        ref: 'Hospital',
+        required: false,
+    },
 }, { timestamps: true });
 
 // Middleware avant la création pour générer automatiquement le code de spécialité
@@ -35,9 +35,9 @@ specialtySchema.pre('save', async function (next) {
 
         // Filtrer les spécialités de la même année (ajuster si vous ajoutez un mois ou autre critère)
         const lastSpecialty = await mongoose
-        .model('Specialty')
-        .findOne({ codeSpe: { $regex: `^SPE-${currentYear}-` } })
-        .sort({ codeSpe: -1 });  // Trier par codeSpe pour obtenir le plus grand numéro    
+            .model('Specialty')
+            .findOne({ codeSpe: { $regex: `^SPE-${currentYear}-` } })
+            .sort({ codeSpe: -1 });  // Trier par codeSpe pour obtenir le plus grand numéro    
 
         // Extraire le dernier numéro ou initialiser à 0
         let lastNumber = 0;

@@ -1,5 +1,6 @@
 const Specialty = require('../../Models/Specialty');
-const { Hospital } = require('../../Models/Hospital');
+const Hospital = require('../../Models/Hospital');
+const mongoose = require('mongoose');
 
 // Vérifie si l'utilisateur authentifié est l'admin de l'hôpital
 async function verifyHospitalOwnership(hospitalId, userId) {
@@ -12,29 +13,59 @@ async function verifyHospitalOwnership(hospitalId, userId) {
     }
 }
 
-// Créer une spécialité
+
 exports.createSpecialty = async (req, res) => {
     try {
         const { name, description, departementId, hospital_id } = req.body;
-        
-        // console.log(req.body);
 
-        // Vérification de l'autorisation de l'hôpital seulement si hospital_id est défini
-        if (hospital_id) {
-            await verifyHospitalOwnership(hospital_id, req.user.id);
+        // Vérifier que l'ID de l'hôpital est fourni
+        if (!hospital_id || !mongoose.Types.ObjectId.isValid(hospital_id)) {
+            return res.status(400).json({ error: 'Invalid or missing hospital ID.' });
         }
 
+        // Vérifier que l'hôpital existe dans la base de données
+        const hospital = await Hospital.findById(hospital_id);
+        if (!hospital) {
+            return res.status(404).json({ error: 'Hospital not found.' });
+        }
+
+        // Créer la spécialité
         const specialty = new Specialty({
             name,
             description,
             departementId,
-            hospital_id // Ajout du champ hospital_id si nécessaire
+            hospital_id  // Ajout du champ hospital_id si nécessaire
         });
+
+        // Sauvegarder la spécialité dans la base de données
         await specialty.save();
 
+        // Répondre avec un message de succès
         res.status(201).json({ message: 'Spécialité créée avec succès.', specialty });
     } catch (error) {
+        console.error(error);  // Pour déboguer
         res.status(400).json({ message: error.message });
+    }
+};
+
+// Récupérer les spécialités par hospital_id
+exports.getSpecialitiesByHospital = async (req, res) => {
+    try {
+        const hospitalId = req.params.hospitalId; // Récupérer l'ID de l'hôpital depuis les paramètres de l'URL
+
+        // Trouver les spécialités qui correspondent à l'ID de l'hôpital
+        const specialities = await Specialty.find({ hospital_id: hospitalId }); // Filtrer les spécialités par hospital_id
+
+        // Si aucune spécialité n'est trouvée
+        if (specialities.length === 0) {
+            return res.status(404).json({ message: 'Aucune spécialité trouvée pour cet hôpital.' });
+        }
+
+        // Retourner les spécialités dans la réponse
+        return res.status(200).json({ data: specialities });
+    } catch (error) {
+        // En cas d'erreur, retourner un message d'erreur avec un code 500
+        return res.status(500).json({ message: error.message });
     }
 };
 

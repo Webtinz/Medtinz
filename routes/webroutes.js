@@ -95,6 +95,7 @@ router.delete('/deletedepartment', authMiddleware, departmentController.deleteDe
 // CRUD Specialty
 router.post('/specialities',/* authMiddleware,*/ specialtyController.createSpecialty); // Créer une spécialité
 router.get('/specialities',/* authMiddleware,*/ specialtyController.getAllSpecialties); // Lire toutes les spécialités
+router.get('/specialities/hospital/:hospitalId',/* authMiddleware,*/ specialtyController.getSpecialitiesByHospital); // Lire toutes les spécialités
 router.get('/specialitiesbydepartment/:departmentId',/* authMiddleware,*/ specialtyController.getAllSpecialtiesByDepartment); // Lire toutes les spécialités par departement specifie
 router.get('/specialitiy/:id',/* authMiddleware,*/ specialtyController.getSpecialtyById); // Lire une spécialité par ID
 router.get('/specialities/search',/* authMiddleware,*/ specialtyController.searchSpecialtiesByName); // Rechercher par nom
