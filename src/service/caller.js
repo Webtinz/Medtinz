@@ -60,8 +60,8 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response, // Renvoie la réponse si tout va bien
   (error) => {
-    // if (error.response && error.response.status === 401) {
-    if (error.response || error.response.status === 400  || error.response.status === 401) {
+    if (error.response && error.response.status === 401) {
+    // if (error.response || error.response.status === 400  || error.response.status === 401) {
       // Effacer le token expiré ou invalide
       localStorage.removeItem('access_token');
 

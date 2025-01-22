@@ -81,10 +81,10 @@ const DoctorSelectionrdv = ({ visible, onClose, onAppointmentConfirmed }) => {
     };
 
     return (
-        <CModal className='newregistermodal '
+        <CModal className='newregistermodal xl'
             alignment="center"
             scrollable
-            size='lg'
+            size='xl'
             visible={true}
             onClose={onClose}
             aria-labelledby="schedulemodal">

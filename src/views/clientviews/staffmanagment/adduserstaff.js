@@ -38,40 +38,11 @@ const AddStaffModal = ({ visible, onClose, handleStaffAdded, initialData, setVis
     const [Departments, setDepartments] = useState([]);
     const [Roles, setRoles] = useState([]);
     const [errors, setErrors] = useState({});
+    const [filteredSpecialities, setFilteredSpecialities] = useState([]);
 
     const navigate = useNavigate();
     
     useEffect(() => {
-        const fetchSpecialities = async () => {
-            try {
-                const response = await api.get('api/specialities');
-                setSpecialities(response.data);
-            } catch (error) {
-                toast.error("Error fetching specialities");
-                console.error("Error fetching specialities:", error);
-            }
-        };
-
-        const fetchRoles = async () => {
-            try {
-                const response = await api.get('api/getallroles');
-                setRoles(response.data);
-            } catch (error) {
-                toast.error("Error fetching Roles");
-                console.error("Error fetching Roles:", error);
-            }
-        };
-
-        const fetchDepartments = async () => {
-            try {
-                const response = await api.get('api/departments');
-                setDepartments(response.data.data);
-            } catch (error) {
-                toast.error("Error fetching Departments");
-                console.error("Error fetching Departments:", error);
-            }
-        };
-
         const fetchHospitals = async () => {
             try {
                 const token = localStorage.getItem('access_token');
@@ -82,12 +53,40 @@ const AddStaffModal = ({ visible, onClose, handleStaffAdded, initialData, setVis
                 console.error("Error fetching Hospitals:", error);
             }
         };
-
-        fetchSpecialities();
+    
         fetchHospitals();
-        fetchDepartments();
-        fetchRoles();
     }, []);
+    
+    useEffect(() => {
+        if (!Hospitals || Hospitals.length === 0) {
+            return; // Ne pas exécuter si Hospitals n'est pas encore chargé
+        }
+    
+        const hospitalId = Hospitals[0]?._id;
+    
+        const fetchData = async () => {
+            try {
+                // Fetch Specialities
+                const specialitiesResponse = await api.get(`api/specialities/hospital/${hospitalId}`);
+                setSpecialities(specialitiesResponse?.data?.data);
+    
+                // Fetch Departments
+                const departmentsResponse = await api.get(`api/departments/hospital/${hospitalId}`);
+                setDepartments(departmentsResponse.data.data);
+    
+                // Fetch Roles
+                const rolesResponse = await api.get('api/getallroles');
+                setRoles(rolesResponse.data);
+            } catch (error) {
+                toast.error("Error fetching data");
+                console.error("Error fetching data:", error);
+            }
+        };
+    
+        fetchData();
+    }, [Hospitals]); // Ajout de Hospitals comme dépendance
+    
+    // console.log(Hospitals[0]?._id);
     
     const validateForm = () => {
         const newErrors = {};
@@ -133,13 +132,6 @@ const AddStaffModal = ({ visible, onClose, handleStaffAdded, initialData, setVis
         }
     };
 
-    const handleSpecialtiesChange = (selectedOptions) => {
-        setFormData(prevData => ({
-            ...prevData,
-            specialties: selectedOptions ? selectedOptions.map(option => option.value) : []
-        }));
-    };
-
     const handleContinue = (hospitalId, userId) => {
         const dataToSend = {
             hospital_id: hospitalId,
@@ -147,6 +139,35 @@ const AddStaffModal = ({ visible, onClose, handleStaffAdded, initialData, setVis
         };
         navigate(`/hospitaladmin/staff_schedule?${new URLSearchParams(dataToSend).toString()}`);
     };
+// console.log(Specialities);
+
+// Gestion du changement de département
+const handleDepartmentChange = (event) => {
+    const selectedDepartmentId = event.target.value;
+
+    // Mettre à jour l'ID du département et réinitialiser les spécialités sélectionnées
+    setFormData((prevState) => ({
+        ...prevState,
+        departementId: selectedDepartmentId,
+        specialties: [], // Réinitialiser les spécialités sélectionnées
+    }));
+
+    // Filtrer les spécialités en fonction du département sélectionné
+    const updatedSpecialities = Specialities.filter(
+        (speciality) => speciality.departementId === selectedDepartmentId
+    );
+    console.log(updatedSpecialities);
+    
+    setFilteredSpecialities(updatedSpecialities);
+};
+
+// Gestion du changement des spécialités
+const handleSpecialtiesChange = (selectedOptions) => {
+    setFormData((prevData) => ({
+        ...prevData,
+        specialties: selectedOptions ? selectedOptions.map((option) => option.value) : [],
+    }));
+};
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -261,74 +282,76 @@ const AddStaffModal = ({ visible, onClose, handleStaffAdded, initialData, setVis
                         </select>
                         {errors.hospital_id && <div className="text-danger">{errors.hospital_id}</div>}
                     </div>
-                        {/* Department */}
-                        <div  className="form-group">
-                        {/* <div className="form-group col-md-6"> */}
-                            <label htmlFor="departementId">Department</label>
-                            <select
-                                name="departementId"
-                                id="departementId"
-                                onChange={handleInputChange}
-                                value={formData.departementId}
-                            >
-                                <option value="">Select Department</option>
-                                {Departments.map(department => (
-                                    <option key={department._id} value={department._id}>
-                                        {department.name}
-                                    </option>
-                                ))}
-                            </select>
-                            {errors.departementId && <div className="text-danger">{errors.departementId}</div>}
-                        </div>
-                        {/* Specialties */}
-                        {/* <div  className={`form-group ${ modalValue === 'Allusers' ? 'col-md-6' : 'col-md-12' }`}> */}
-                        <div
-                            className="form-group"
-                            style={{
-                                marginBottom: '10px',
-                                marginTop: '20px',
-                                backgroundColor: '#f9f9f9',
-                                position: 'relative', // Ajouté pour éviter les conflits de position
-                                paddingTop: '10px' // Ajouté pour donner de l'espace au label
-                            }}
-                            >
-                            <label
-                                style={{
-                                fontSize: '16px', // Taille de police pour rendre le label visible
-                                color: '#333',    // Couleur explicite pour s'assurer qu'il est visible
-                                position: 'absolute', // Position absolue pour éviter le chevauchement
-                                top: '-10px',     // Ajuster si nécessaire pour l'alignement
-                                left: '0',        // Aligné à gauche
-                                }}
-                            >
-                                Specialties
-                            </label>
-                            <Select
-                                closeMenuOnSelect={false}
-                                components={animatedComponents}
-                                isMulti
-                                options={Specialities.map(option => ({
-                                label: option.name,
-                                value: option._id
-                                }))}
-                                onChange={handleSpecialtiesChange}
-                                value={Specialities.filter(option =>
-                                formData.specialties.includes(option._id)
-                                ).map(option => ({
-                                label: option.name,
-                                value: option._id
-                                }))}
-                                styles={{
-                                control: (provided) => ({
-                                    ...provided,
-                                    borderColor: '#0056B3',
-                                    border: '2px solid #0056B3',
-                                    borderRadius: '10px',
-                                    minHeight: '50px',
-                                }),
-                                }}
-                            />
-                        </div>
+
+                    <>
+        {/* Department */}
+        <div className="form-group">
+            <label htmlFor="departementId">Department</label>
+            <select
+                name="departementId"
+                id="departementId"
+                onChange={handleDepartmentChange}
+                value={formData.departementId}
+            >
+                <option value="">Select Department</option>
+                {Departments.map((department) => (
+                    <option key={department._id} value={department._id}>
+                        {department.name}
+                    </option>
+                ))}
+            </select>
+            {errors.departementId && <div className="text-danger">{errors.departementId}</div>}
+        </div>
+
+        {/* Specialties */}
+        <div
+            className="form-group"
+            style={{
+                marginBottom: '10px',
+                marginTop: '20px',
+                backgroundColor: '#f9f9f9',
+                position: 'relative',
+                paddingTop: '10px',
+            }}
+        >
+            <label
+                style={{
+                    fontSize: '16px',
+                    color: '#333',
+                    position: 'absolute',
+                    top: '-10px',
+                    left: '0',
+                }}
+            >
+                Specialties
+            </label>
+            <Select
+                closeMenuOnSelect={false}
+                components={animatedComponents}
+                isMulti
+                options={filteredSpecialities.map((option) => ({
+                    label: option.name,
+                    value: option._id,
+                }))}
+                onChange={handleSpecialtiesChange}
+                value={filteredSpecialities
+                    .filter((option) => formData.specialties.includes(option._id))
+                    .map((option) => ({
+                        label: option.name,
+                        value: option._id,
+                    }))}
+                styles={{
+                    control: (provided) => ({
+                        ...provided,
+                        borderColor: '#0056B3',
+                        border: '2px solid #0056B3',
+                        borderRadius: '10px',
+                        minHeight: '50px',
+                    }),
+                }}
+            />
+        </div>
+    </>
 
                         <div className='row'>
                             {/* Name */}

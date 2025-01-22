@@ -6,6 +6,9 @@ import { FaArrowLeft } from "react-icons/fa";
 import './horaire.css';
 import api from '../../../service/caller';
 import { ToastContainer, toast } from 'react-toastify';
+import WeekSelector from './WeekSelector';  // Ajustez le chemin selon votre structure
+
+
 
 const Horaire = () => {
   const [showhoraireModal, setshowhoraireModal] = useState(true);
@@ -23,6 +26,12 @@ const Horaire = () => {
   });
   const [customDuration, setCustomDuration] = useState('');
   const location = useLocation();
+  
+  // Ajoutez cet état pour le sélecteur de semaine
+  const [selectedWeek, setSelectedWeek] = useState({
+    start_date: '',
+    end_date: ''
+  });
 
   // Extraire les paramètres de l'URL
   const queryParams = new URLSearchParams(location.search);
@@ -73,19 +82,36 @@ const Horaire = () => {
     setCustomDuration(`${duration} min`); // Met à jour l'affichage de la durée personnalisée
   };
 
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   // Ajoutez les dates au payload que vous envoyez
+  //   const payload = {
+  //     ...scheduleData,
+  //     start_date: selectedWeek.start_date,
+  //     end_date: selectedWeek.end_date
+  //   };
+  //   // Votre logique d'envoi existante
+  // };
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
-        
     const formData = {
       user: userId,
       hospital_id: hospitalId,
-      schedule: Object.keys(scheduleData).map(day => ({
-        day: day,
-        start_time: scheduleData[day].start_time,
-        end_time: scheduleData[day].end_time,
-        duration_unit: scheduleData[day].duration_unit
-      }))
+      schedules: [
+        {
+          start_date: selectedWeek.start_date,
+          end_date: selectedWeek.end_date,
+          schedule: Object.keys(scheduleData).map(day => ({
+            day: day,
+            start_time: scheduleData[day].start_time,
+            end_time: scheduleData[day].end_time,
+            duration_unit: scheduleData[day].duration_unit
+          }))
+        }
+      ]
     };
+console.log(formData);
 
     try {
         const response = await api.post('api/schedule', formData);
@@ -110,9 +136,8 @@ const Horaire = () => {
     } catch (error) {
         toast.error(`Registration failed: ${error?.response?.data?.message || 'An unexpected error occurred. Please try again.'}`);
         console.error('Error:', error?.response|| 'No error message available.');
-
     }
-};
+  };
 
   return (
     <div>
@@ -127,13 +152,24 @@ const Horaire = () => {
           <Modal.Title className="mx-auto hius">Configurer les horaires</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-                            <ToastContainer />
+          <ToastContainer />
+
           <Form onSubmit={handleSubmit}>
+            {/* <div className="mb-3">
+              <button className="essuie"><FaArrowLeft /> Retour</button>
+            </div> */}
+
+            {/* <h3 className="sete">Configurez les horaires de cet utilisateur :</h3> */}
             <div className="mb-3">
               <button className="essuie"><FaArrowLeft /> Retour</button>
             </div>
 
-            <h3 className="sete">Configurez les horaires de cet utilisateur :</h3>
+            {/* Ajoutez le sélecteur de semaine ici */}
+            <WeekSelector 
+              onWeekChange={(dates) => setSelectedWeek(dates)} 
+            />
+
+<h3 className="sete">Configurez les horaires de cet utilisateur :</h3>
             <table className="schedule-table">
               <thead>
                 <tr>
