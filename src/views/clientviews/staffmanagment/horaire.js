@@ -201,7 +201,7 @@ const Horaire = () => {
               <FaPlus /> Add Another Week
             </Button>
           </div>
-          <div className="d-flex justify-content-between">
+          <div className="d-flex justify-content-between mb-2">
             <Button
               variant="primary"
               onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 0))}

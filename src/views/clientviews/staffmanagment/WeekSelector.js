@@ -36,7 +36,7 @@ const WeekSelector = ({ onWeekChange }) => {
   <div className="flex items-center justify-center gap-4 mb-4">
     <button
       onClick={handlePrevWeek}
-      className="p-2 border rounded hover:bg-gray-100"
+      className="p-1 mx-2 border rounded hover:bg-gray-100"
       type="button"
     >
       <ChevronLeft className="w-4 h-4" />
@@ -46,7 +46,7 @@ const WeekSelector = ({ onWeekChange }) => {
     </span>
     <button
       onClick={handleNextWeek}
-      className="p-2 border rounded hover:bg-gray-100"
+      className="p-1 mx-2 border rounded hover:bg-gray-100"
       type="button"
     >
       <ChevronRight className="w-4 h-4" />

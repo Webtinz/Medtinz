@@ -170,13 +170,22 @@ const Horaire = () => {
   if (isLoading) {
     return <div>Loading...</div>;
   }
-
+ 
+  const handleUsersList = () => {
+    // Ajouter les données aux paramètres de l'URL
+    navigate({
+        pathname: '/hospitaladmin/stafflist'
+    });
+  }
   return (
     <Modal show={showhoraireModal} backdrop="static" keyboard={false} centered size="lg">
       <Modal.Header>
         <Modal.Title className="mx-auto hius">Configure Schedules</Modal.Title>
       </Modal.Header>
       <Modal.Body>
+        <button className="btn btn mb-4 toute" onClick={handleUsersList}>
+            <FaArrowLeft /> Retour
+        </button>
         <ToastContainer />
         <Form onSubmit={handleSubmit}>
           <div className="mb-4 p-3 border rounded">
@@ -249,7 +258,7 @@ const Horaire = () => {
               <FaPlus /> Add Another Week
             </Button>
           </div>
-          <div className="d-flex justify-content-between">
+          <div className="d-flex justify-content-between mb-2">
             <Button
               variant="primary"
               onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 0))}

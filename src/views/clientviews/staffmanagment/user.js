@@ -75,7 +75,7 @@ const User = () => {
     return (
         <div className="container user-profile p-2 divp20">
             <div className='row col-12 p-3'>
-                <div className='col-lg-2 mx-auto'>
+                <div className='col-lg-2 mx-auto'> 
                     <button className="btn btn mb-4 toute" onClick={handleUsersList}>
                         <FaArrowLeft /> Retour
                     </button>
