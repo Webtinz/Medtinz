@@ -7,6 +7,7 @@ const pathologieController = require('../Controllers/Bakendadmin/PathologieContr
 const userController = require('../Controllers/userController');
 const roleController = require('../Controllers/RoleController'); // Importer le contrôleur des rôles
 const departmentController = require('../Controllers/clientInterface/DepartmentController');
+const serviceController = require('../Controllers/clientInterface/ServiceController');
 const specialtyController = require('../Controllers/clientInterface/SpecialityController'); // Import du contrôleur Specialty
 const featureController = require('../Controllers/FeatureController'); // Importer le contrôleur des rôles
 
@@ -91,6 +92,14 @@ router.get('/departments/hospital/:hospitalId', authMiddleware, departmentContro
 router.get('/department', authMiddleware, departmentController.getDepartmentById); // Protégée
 router.put('/updatedepartment', authMiddleware, departmentController.updateDepartment); // Protégée
 router.delete('/deletedepartment', authMiddleware, departmentController.deleteDepartment); // Protégée
+
+
+// service managment
+router.post('/addservice', authMiddleware, serviceController.createService); // Protégée
+router.get('/services', authMiddleware, serviceController.getAllServices); // Protégée
+router.get('/services/hospital/:hospitalId', authMiddleware, serviceController.getServicesByHospital); // Protégée
+router.get('/service', authMiddleware, serviceController.getServiceById); // Protégée
+
 
 // CRUD Specialty
 router.post('/specialities',/* authMiddleware,*/ specialtyController.createSpecialty); // Créer une spécialité
