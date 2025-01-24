@@ -668,7 +668,7 @@ const Hospital = () => {
               )}
             </div>
             {/* Modal for Adding a Department */}
-            <Modal show={showModal} onHide={handleCloseModal} centered className='newregistermodal' size="lg">
+            <Modal show={showModal} onHide={handleCloseModal} centered className='' size="lg">
               <Modal.Header  >
                 <Modal.Title className='yuri mx-auto'>Add New Department</Modal.Title>
               </Modal.Header>
@@ -848,19 +848,14 @@ const Hospital = () => {
               show={showSpecialityModal}
               onHide={handleCloseSpecialityModal}
               centered
-              className="speciality-modal newregistermodal"
+              className="speciality-modal"
             >
               <Modal.Header>
                 <Modal.Title className='canne mx-auto'>Add New Speciality</Modal.Title>
               </Modal.Header>
               <Modal.Body>
-                {successMessage && (
-                  <div className="alert alert-success" role="alert">
-                    {successMessage}
-                  </div>
-                )}
                 <div className="form-group mb-4">
-                  <label className='dress'> Name</label>
+                  <label> Name</label>
                   <input
                     type="text"
                     className="form-control store"
@@ -872,7 +867,7 @@ const Hospital = () => {
                 </div>
                 {/* Sélecteur pour le département */}
                 <div className="form-group mb-4">
-                  <label className='dress'>Department</label>
+                  <label >Department</label>
                   <select
                     className="form-control store"
                     name="departementId"
@@ -893,7 +888,6 @@ const Hospital = () => {
                 </div>
 
                 <div className="form-group mb-4">
-
                   <textarea
                     className="form-control straight"
                     name="description"
@@ -928,7 +922,7 @@ const Hospital = () => {
               <form>
                 <Modal.Body>
                   <div className="form-group mb-4">
-                    <label className='dress'> Name</label>
+                    <label> Name</label>
                     <input
                       type="text"
                       className=""
@@ -940,7 +934,7 @@ const Hospital = () => {
                   </div>
                   {/* Sélecteur pour le département */}
                   <div className="form-group mb-4">
-                    <label className='dress'>Department</label>
+                    <label>Department</label>
                     <select
                       className=""
                       name="departementId"
@@ -961,7 +955,7 @@ const Hospital = () => {
                   </div>
 
                   <div className="form-group mb-4">
-                    <label className='dress'>Speciality</label>
+                    <label >Speciality</label>
                     <select
                       className=""
                       name="specialityId"
@@ -990,10 +984,10 @@ const Hospital = () => {
                       onChange={handleserviceInputChange}
 
                     />
-                    <span style={{ width: 'auto', border: '1px solid #17426F' }}>XOF</span>
+                    {/* <span style={{ width: 'auto', border: '1px solid #17426F' }}>XOF</span> */}
                   </div>
+                  
                   <div className="form-group mb-4">
-
                     <textarea
                       className="form-control straight"
                       name="description"
