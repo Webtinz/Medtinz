@@ -42,11 +42,11 @@ const getSchedulesByUserId = async (req, res) => {
 
 const updateSchedule = async (req, res) => {
     try {
-        const { id } = req.params; // L'identifiant de l'horaire
+        const { scheduleId } = req.params; // L'identifiant de l'horaire
         const { schedules } = req.body; // Données mises à jour, incluant start_date, end_date, etc.
 
         const updatedSchedule = await Schedule.findByIdAndUpdate(
-            id,
+            scheduleId,
             { $set: { schedules } },
             { new: true, runValidators: true }
         );
