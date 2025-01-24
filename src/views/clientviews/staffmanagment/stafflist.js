@@ -306,7 +306,7 @@ const StaffList = () => {
                     />
                 </div>
             </div>
-            
+
             <CTable hover className='mt-5' align="middle" responsive>
                 <CTableHead>
                     <CTableRow>
@@ -381,7 +381,7 @@ const StaffList = () => {
                                             </CTabPanel>
                                             {roles.map((role) => (
                                                 <CTabPanel key={role._id} className="p-3" itemKey={role._id}>
-                                                    {renderTable(filterUsersByRole(role._id))}
+                                                    {renderTable(filterUsersByRole(role._id),role._id)}
                                                 </CTabPanel>
                                             ))}
                                         </CTabContent>

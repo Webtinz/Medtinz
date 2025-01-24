@@ -14,6 +14,7 @@ const animatedComponents = makeAnimated();
 
 
 const AddStaffModal = ({ visible, onClose, handleStaffAdded, initialData, setVisible, modalValue, handleButtonClick  }) => {
+// console.log(modalValue);
 
     // if (!visible) return null; // Ne montre pas le modal si `visible` est false
     const [formData, setFormData] = useState({
@@ -87,6 +88,9 @@ const AddStaffModal = ({ visible, onClose, handleStaffAdded, initialData, setVis
         fetchData();
     }, [Hospitals]); // Ajout de Hospitals comme dépendance
     
+    if (modalValue && modalValue !== '') {
+        formData.role = modalValue;
+    } 
     const validateForm = () => {
         const newErrors = {};
         if (!formData.firstname) newErrors.firstname = "Firstname is required";
@@ -105,10 +109,13 @@ const AddStaffModal = ({ visible, onClose, handleStaffAdded, initialData, setVis
         if (!modalValue && !formData.role) {
             newErrors.role = "Role is required";
         } 
-        if (formData.role === '' || formData.role === 'Allusers') {
-            console.log(formData.role);
-            newErrors.role = "Role is required 2";
-        }        
+        // if (modalValue && formData.role === 'Allusers') {
+        //     newErrors.role = "Role is required";
+        // } 
+        // if (formData.role === '' || formData.role === 'Allusers') {
+        //     console.log('Role is ' + modalValue);
+        //     newErrors.role = "Role is required 2";
+        // }        
         if (!formData.departementId) newErrors.departementId = "Department is required";
         if (!formData.hospital_id) newErrors.hospital_id = "Hospital is required";
 
@@ -188,49 +195,51 @@ const handleSpecialtiesChange = (selectedOptions) => {
                 civility: formData.civility,
                 type: formData.type
             };
+            console.log(formPayload);
             
-            try {
-                const response = await api.post('api/adduser', formPayload);
+            
+            // try {
+            //     const response = await api.post('api/adduser', formPayload);
 
-                if ((response.status == 200 || response.status == 201) /*  && response.data.success */) {
-                    // Succès
+            //     if ((response.status == 200 || response.status == 201) /*  && response.data.success */) {
+            //         // Succès
                     
-                    toast.success("Staff registered successfully!");
-                    setFormData({
-                        hospital_id: "",
-                        firstname: "",
-                        lastname: "",
-                        username: "",
-                        email: "",
-                        password: "",
-                        confirmPassword: "",
-                        role: "",
-                        specialties: [],
-                        contact: {
-                            phone: "",
-                            address: ""
-                        },
-                        departementId: "", 
-                        type: "", 
-                        civility: "", 
-                    });
-                    handleStaffAdded();  // Callback après ajout du staff
-                    // response?.data?.user?._id
-                    // handleContinue(response?.data?.user?.hospital_id, response?.data?.user?._id);
-                    setTimeout(() => {
-                      handleContinue(response?.data?.user?.hospital_id, response?.data?.user?._id);
-                    }, 2000); // 2000 ms = 2 secondes
+            //         toast.success("Staff registered successfully!");
+            //         setFormData({
+            //             hospital_id: "",
+            //             firstname: "",
+            //             lastname: "",
+            //             username: "",
+            //             email: "",
+            //             password: "",
+            //             confirmPassword: "",
+            //             role: "",
+            //             specialties: [],
+            //             contact: {
+            //                 phone: "",
+            //                 address: ""
+            //             },
+            //             departementId: "", 
+            //             type: "", 
+            //             civility: "", 
+            //         });
+            //         handleStaffAdded();  // Callback après ajout du staff
+            //         // response?.data?.user?._id
+            //         // handleContinue(response?.data?.user?.hospital_id, response?.data?.user?._id);
+            //         setTimeout(() => {
+            //           handleContinue(response?.data?.user?.hospital_id, response?.data?.user?._id);
+            //         }, 2000); // 2000 ms = 2 secondes
 
-                    // onClose(); // Fermer la modal
-                } else {
-                    // Échec géré dans la réponse
-                    toast.error(response.data.message || "Failed to register staff. Please try again.");
-                }
-            } catch (error) {
-                toast.error(`Registration failed: ${error?.response?.data?.message || 'An unexpected error occurred. Please try again.'}`);
-                console.error('Error:', error?.response|| 'No error message available.');
+            //         // onClose(); // Fermer la modal
+            //     } else {
+            //         // Échec géré dans la réponse
+            //         toast.error(response.data.message || "Failed to register staff. Please try again.");
+            //     }
+            // } catch (error) {
+            //     toast.error(`Registration failed: ${error?.response?.data?.message || 'An unexpected error occurred. Please try again.'}`);
+            //     console.error('Error:', error?.response|| 'No error message available.');
 
-            }
+            // }
         }
     };
     return (
@@ -243,7 +252,7 @@ const handleSpecialtiesChange = (selectedOptions) => {
             onClose={onClose}
         >
             <CModalHeader>
-                <CModalTitle className='Titleformsmodal'>Register new staff </CModalTitle>
+                <CModalTitle className='Titleformsmodal'>Register new staff</CModalTitle>
             </CModalHeader>
             <CModalBody className='p-5'>
                 <form onSubmit={handleSubmit}>
