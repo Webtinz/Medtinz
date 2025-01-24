@@ -1,14 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Camera, User } from 'lucide-react';
-import { Modal, Button } from 'react-bootstrap';
-import choco from '../../../assets/images/choco.png';
+import { parse, addMinutes, format } from 'date-fns';
 import "./timetable.css";
+import choco from '../../../assets/images/choco.png';
 
-const TimeSlot = ({ selection, onSelect, time }) => {
+const isTimeInSchedule = (timeSlot, startTime, endTime) => {
+  const [slotStart, slotEnd] = timeSlot.split(' - ');
+  const scheduleStart = parse(startTime, 'HH:mm', new Date());
+  const scheduleEnd = parse(endTime, 'HH:mm', new Date());
+  const slotStartTime = parse(slotStart, 'HH:mm', new Date());
+  const slotEndTime = parse(slotEnd, 'HH:mm', new Date());
+
+  return slotStartTime >= scheduleStart && slotEndTime <= scheduleEnd;
+};
+
+const TimeSlot = ({ selection, onSelect, time, isAvailable = true }) => {
   const [showIcons, setShowIcons] = useState(false);
 
   const handleClick = () => {
-    if (!selection) {
+    if (!selection && isAvailable) {
       setShowIcons(!showIcons);
     }
   };
@@ -16,6 +26,9 @@ const TimeSlot = ({ selection, onSelect, time }) => {
   const getBackgroundColor = () => {
     if (selection) {
       return 'bg-pink-100';
+    }
+    if (!isAvailable) {
+      return 'bg-gray-300 opacity-50 cursor-not-allowed';
     }
     return 'bg-green-100';
   };
@@ -42,7 +55,7 @@ const TimeSlot = ({ selection, onSelect, time }) => {
     >
       {getIcon()}
 
-      {showIcons && !selection && (
+      {showIcons && !selection && isAvailable && (
         <div className="absolute top-0 left-0 right-0 bottom-0 bg-white flex justify-center items-center gap-4 z-10">
           <Camera
             className="w-6 h-6 hover:text-blue-500 cursor-pointer"
@@ -64,25 +77,60 @@ const TimeSlot = ({ selection, onSelect, time }) => {
   );
 };
 
-const CustomScheduler = () => {
+const CustomScheduler = ({ doctorSchedule }) => {
   const [selections, setSelections] = useState({});
   const [currentWeek, setCurrentWeek] = useState({
-    startDate: new Date(2025, 6, 10), // 10 July 2025
-    endDate: new Date(2025, 6, 16),  // 16 July 2025
+    startDate: new Date(),
+    endDate: new Date(),
   });
+  const [timeSlots, setTimeSlots] = useState([]);
+  const [days, setDays] = useState([]);
   const [modalData, setModalData] = useState(null);
-  const [showSecondModal, setShowSecondModal] = useState(false); // État pour le deuxième modal
+  const [showSecondModal, setShowSecondModal] = useState(false);
 
-  const timeSlots = [
-    "10:00 - 10:20",
-    "10:20 - 10:40",
-    "10:40 - 11:00",
-    "11:00 - 11:20",
-    "11:20 - 11:40",
-    "11:40 - 12:00"
-  ];
+  useEffect(() => {
+    if (doctorSchedule && doctorSchedule.length > 0) {
+      const scheduleItem = doctorSchedule[0];
+      
+      const startDate = new Date(scheduleItem.start_date);
+      const endDate = new Date(scheduleItem.end_date);
+      setCurrentWeek({ startDate, endDate });
 
-  const days = ["Lundi", "Mardi", "Mercredi", "Vendredi", "Samedi"];
+      const generateTimeSlots = () => {
+        const slots = [];
+        const workDays = scheduleItem.schedule
+          .filter(day => day.start_time && day.end_time)
+          .map(day => day.day);
+        
+        setDays(workDays);
+
+        scheduleItem.schedule.forEach(daySchedule => {
+          if (daySchedule.start_time && daySchedule.end_time) {
+            const startTime = parse(daySchedule.start_time, 'HH:mm', new Date());
+            const endTime = parse(daySchedule.end_time, 'HH:mm', new Date());
+            const duration = daySchedule.duration_unit || 30;
+
+            let currentSlot = startTime;
+            while (currentSlot < endTime) {
+              const slotEnd = addMinutes(currentSlot, duration);
+              
+              if (slotEnd <= endTime) {
+                slots.push(
+                  `${format(currentSlot, 'HH:mm')} - ${format(slotEnd, 'HH:mm')}`
+                );
+              }
+              
+              currentSlot = slotEnd;
+            }
+          }
+        });
+
+        setTimeSlots([...new Set(slots)]);
+      };
+
+      generateTimeSlots();
+    }
+  }, [doctorSchedule]);
 
   const handleSelection = (type, time, day) => {
     const slotKey = `${day}-${time}`;
@@ -90,7 +138,7 @@ const CustomScheduler = () => {
       ...prev,
       [slotKey]: type,
     }));
-    setModalData({ type, time, day }); // Set modal data
+    setModalData({ type, time, day });
   };
 
   const changeWeek = (direction) => {
@@ -98,13 +146,8 @@ const CustomScheduler = () => {
       const startDate = new Date(prev.startDate);
       const endDate = new Date(prev.endDate);
 
-      if (direction === "prev") {
-        startDate.setDate(startDate.getDate() - 7);
-        endDate.setDate(endDate.getDate() - 7);
-      } else {
-        startDate.setDate(startDate.getDate() + 7);
-        endDate.setDate(endDate.getDate() + 7);
-      }
+      startDate.setDate(startDate.getDate() + (direction === "prev" ? -7 : 7));
+      endDate.setDate(endDate.getDate() + (direction === "prev" ? -7 : 7));
 
       return { startDate, endDate };
     });
@@ -123,7 +166,7 @@ const CustomScheduler = () => {
         <button className="p-2" onClick={() => changeWeek("next")}>&gt;</button>
       </div>
 
-      <div className="grid grid-cols-[auto_repeat(5,1fr)] gap-1">
+      <div className="grid grid-cols-[auto_repeat(7,1fr)] gap-1">
         <div className="font-semibold p-2">Time</div>
         {days.map((day) => (
           <div key={day} className="font-semibold p-2 text-center">{day}</div>
@@ -132,19 +175,30 @@ const CustomScheduler = () => {
         {timeSlots.map((time) => (
           <React.Fragment key={time}>
             <div className="p-2 text-sm">{time}</div>
-            {days.map((day) => (
-              <TimeSlot
-                key={`${day}-${time}`}
-                time={time}
-                selection={selections[`${day}-${time}`]}
-                onSelect={(type) => handleSelection(type, time, day)}
-              />
-            ))}
+            {days.map((day) => {
+              const scheduleItem = doctorSchedule[0];
+              const isAvailable = scheduleItem.schedule.some(
+                schedule => 
+                  schedule.day === day && 
+                  isTimeInSchedule(time, schedule.start_time, schedule.end_time)
+              );
+
+              return (
+                <TimeSlot
+                  key={`${day}-${time}`}
+                  time={time}
+                  isAvailable={isAvailable}
+                  selection={selections[`${day}-${time}`]}
+                  onSelect={(type) => handleSelection(type, time, day)}
+                />
+              );
+            })}
           </React.Fragment>
         ))}
       </div>
 
-      <div className="flex justify-center gap-4 mt-6">
+
+      {/* <div className="flex justify-center gap-4 mt-6">
         {[1, 2, 3, 4, 5].map((num) => (
           <button
             key={num}
@@ -153,7 +207,7 @@ const CustomScheduler = () => {
             {num}
           </button>
         ))}
-      </div>
+      </div> */}
 
       {/* Premier Modal */}
       {modalData && (
@@ -173,7 +227,7 @@ const CustomScheduler = () => {
                 className="modal-button confirm"
                 onClick={() => {
                   setModalData(null);
-                  setShowSecondModal(true); // Ouvrir le deuxième modal
+                  setShowSecondModal(true);
                 }}
               >
                 Yes
@@ -210,8 +264,7 @@ const CustomScheduler = () => {
               <button
                 className="modal-button2 confirm mx-auto"
                 onClick={() => {
-                  setShowSecondModal(false); // Fermer le deuxième modal
-                  // Redirection ou autres actions ici
+                  setShowSecondModal(false);
                 }}
               >
                 Close
@@ -223,10 +276,5 @@ const CustomScheduler = () => {
     </div>
   );
 };
-
-
-
-
-
 
 export default CustomScheduler;

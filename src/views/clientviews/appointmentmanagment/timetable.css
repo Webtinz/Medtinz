@@ -48,7 +48,7 @@
 /* Grille principale */
 .timetablelast .grid {
   display: grid;
-  grid-template-columns: 150px repeat(5, 1fr); /* Largeur fixe pour les heures, reste flexible pour les jours */
+  grid-template-columns: 150px repeat(7, 1fr); /* Largeur fixe pour les heures, reste flexible pour les jours */
   gap: 2px;
   border-radius: 8px;
   min-width: 800px; /* Largeur minimale pour permettre le scroll */
@@ -195,7 +195,7 @@
   }
 
   .timetablelast .grid {
-    grid-template-columns: 100px repeat(3, 1fr); /* Réduit le nombre de colonnes visibles */
+    grid-template-columns: 100px repeat(7, 1fr); /* Réduit le nombre de colonnes visibles */
     min-width: 600px; /* Largeur minimale pour permettre le scroll */
     gap: 1px;
   }

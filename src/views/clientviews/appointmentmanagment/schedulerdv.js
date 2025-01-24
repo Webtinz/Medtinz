@@ -43,13 +43,17 @@ const DoctorSelectionrdv = ({ visible, onClose, onAppointmentConfirmed }) => {
 
     const fetchDoctorSchedule = async (doctorId) => {
         try {
-            const response = await api.get(`/api/schedule/${doctorId}`);
-            console.log('Réponse de l\'API:', response.data);  // Affiche la réponse de l'API dans la console
-            setDoctorSchedule(response.data.data[0]?.schedule || []);
+            const response = await api.get(`/api/schedule/${doctorId}`); 
+            console.log('Réponse de l\'API:', response.data.data[0].schedules);  // Log avant de définir l'état
+            setDoctorSchedule(response.data.data[0].schedules); 
         } catch (error) {
             console.error('Erreur lors de la récupération des horaires du médecin:', error);
         }
     };
+
+    useEffect(() => {
+        console.log('État mis à jour:', doctorSchedule);
+    }, [doctorSchedule]);
 
     useEffect(() => {
         if (doctorId) {

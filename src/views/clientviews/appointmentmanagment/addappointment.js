@@ -246,7 +246,7 @@ const AddAppointmentModal = ({ visible, onClose, onAppointmentAdded, patientId, 
                         />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="notes">Notes</label>
+                        {/* <label htmlFor="notes">Notes</label> */}
                         <textarea
                             name="notes"
                             value={appointmentData.notes}

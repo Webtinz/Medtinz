@@ -48,10 +48,6 @@ const SignUp = () => {
       telephone2
     };
     // console.log(formData);
-    
-    
-    
-
     // Rediriger avec les données du formulaire
     navigate('/ClientAdmin', { state: formData }); // Exemple de redirection avec les données du formulaire
   };

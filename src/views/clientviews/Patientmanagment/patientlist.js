@@ -22,19 +22,20 @@ import {
     CTableHeaderCell,
     CTableRow
 } from '@coreui/react'
-import { FaRedoAlt, FaExchangeAlt, FaFilter, FaSearch } from "react-icons/fa";
-import { BsPersonPlus, BsChevronRight, BsChevronLeft, BsArrowUpLeft } from 'react-icons/bs';
+import { FaRedoAlt, FaExchangeAlt, FaFilter, FaSearch, FaDownload, FaFolderOpen } from "react-icons/fa";
+import { BsPersonPlus, BsChevronRight, BsChevronLeft, BsArrowUpLeft, BsArrowDownUp } from 'react-icons/bs';
 import '../../../assets/css/mainstyle.css';
 import '../../../assets/css/ClientSidebar.css';
 
 import Adminprofil from '../../../assets/images/adminprofil.png';
+import { Tooltip } from 'react-tooltip'
 
 import api from '../../../service/caller';
 import { ToastContainer, toast } from 'react-toastify';
 
 const PatientList = () => {
 
-  const [UserData, setUserData] = useState([]);  
+    const [UserData, setUserData] = useState([]);
 
     const [visible, setVisible] = useState(false);
     const [appointments, setAppointments] = useState([]);
@@ -68,18 +69,18 @@ const PatientList = () => {
         }
     };
 
-  useEffect(() => {
-    const fetchLoggedUserData = async () => {
-      try {
-        const response = await api.get('api/usersprofile');
+    useEffect(() => {
+        const fetchLoggedUserData = async () => {
+            try {
+                const response = await api.get('api/usersprofile');
 
-        setUserData(response.data);
-      } catch (error) {
-        toast.error("Failed to fetch data");
-      }
-    };
-    fetchLoggedUserData();
-  }, []);
+                setUserData(response.data);
+            } catch (error) {
+                toast.error("Failed to fetch data");
+            }
+        };
+        fetchLoggedUserData();
+    }, []);
 
     useEffect(() => {
         const fetchAppointments = async () => {
@@ -158,8 +159,8 @@ const PatientList = () => {
                                     <CNavLink href="#" className="d-flex ms-auto">
                                         <img src={Adminprofil} className='cardicon' alt="Consultation Icon" width={'50'} height={'50'} />
                                         <div>
-                        <span className="ms-2" style={{ color: 'black' }} >{UserData.firstname} {UserData.lastname}</span>
-                        <p className="ms-2" style={{ color: 'black' }} >{UserData.role?.name}</p>
+                                            <span className="ms-2" style={{ color: 'black' }} >{UserData.firstname} {UserData.lastname}</span>
+                                            <p className="ms-2" style={{ color: 'black' }} >{UserData.role?.name}</p>
                                         </div>
                                     </CNavLink>
                                 </CNavItem>
@@ -243,9 +244,40 @@ const PatientList = () => {
                                                                         <CTableDataCell>{patient.email}</CTableDataCell>
                                                                         <CTableDataCell>{patient.phone}</CTableDataCell>
                                                                         <CTableDataCell>
-                                                                            <Link to={`/hospitaladmin/patientfilemedical/${patient._id}`} className='openfilepatient'>
-                                                                                <BsArrowUpLeft /> Open patient file
-                                                                            </Link>
+                                                                            <div className="flex items-center space-x-4">
+                                                                                <Link
+                                                                                    to={`/hospitaladmin/patientfilemedical/${patient._id}`}
+                                                                                    className="group relative p-2 rounded-lg transition-all duration-300 me-3"
+                                                                                    style={{
+                                                                                        backgroundImage: 'linear-gradient(to right, #e0f2fe, #93c5fd)'
+                                                                                    }}
+                                                                                    data-tooltip-id="open-file-tooltip"
+                                                                                    data-tooltip-content="Open patient File"
+                                                                                >
+                                                                                    <FaFolderOpen
+                                                                                        className="text-blue-800 group-hover:text-blue-600 transition-colors"
+                                                                                        size={24}
+                                                                                    />
+                                                                                </Link>
+
+                                                                                <Link
+                                                                                    to={`/patientcard/${patient._id}`}
+                                                                                    className="group relative p-2 rounded-lg transition-all duration-300"
+                                                                                    style={{
+                                                                                        backgroundImage: 'linear-gradient(to right, #d1fae5, #6ee7b7)'
+                                                                                    }}
+                                                                                    data-tooltip-id="download-card-tooltip"
+                                                                                    data-tooltip-content="Download Patient Card"
+                                                                                >
+                                                                                    <FaDownload
+                                                                                        className="text-green-800 group-hover:text-green-600 transition-colors"
+                                                                                        size={24}
+                                                                                    />
+                                                                                </Link>
+
+                                                                                <Tooltip id="open-file-tooltip" />
+                                                                                <Tooltip id="download-card-tooltip" />
+                                                                            </div>
                                                                         </CTableDataCell>
                                                                     </CTableRow>
                                                                 ))}
