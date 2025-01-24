@@ -150,6 +150,13 @@ const StaffList = () => {
           search: `?_id=${id}`
         });
     }
+    const handleScheduleClick = (id) => {
+        // Ajouter les données aux paramètres de l'URL
+        navigate({
+          pathname: '/hospitaladmin/staff_schedule_edit',
+          search: `?_id=${id}`
+        });
+    }
     
     const handleDeleteUserClick = async(id) => {
         // Ajouter les données aux paramètres de l'URL
@@ -209,6 +216,15 @@ const StaffList = () => {
                                     onClick={() => handleEditClick(user)}
                                 >
                                     Edit
+                                </a>
+                            </li>
+                            <li>
+                                <a 
+                                    className="dropdown-item" 
+                                    href="#" 
+                                    onClick={() => handleScheduleClick(user?._id)}
+                                >
+                                    Edit Schedule
                                 </a>
                             </li>
                             <li>

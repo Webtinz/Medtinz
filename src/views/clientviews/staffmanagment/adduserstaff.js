@@ -195,51 +195,51 @@ const handleSpecialtiesChange = (selectedOptions) => {
                 civility: formData.civility,
                 type: formData.type
             };
-            console.log(formPayload);
+            // console.log(formPayload);
             
             
-            // try {
-            //     const response = await api.post('api/adduser', formPayload);
+            try {
+                const response = await api.post('api/adduser', formPayload);
 
-            //     if ((response.status == 200 || response.status == 201) /*  && response.data.success */) {
-            //         // Succès
+                if ((response.status == 200 || response.status == 201) /*  && response.data.success */) {
+                    // Succès
                     
-            //         toast.success("Staff registered successfully!");
-            //         setFormData({
-            //             hospital_id: "",
-            //             firstname: "",
-            //             lastname: "",
-            //             username: "",
-            //             email: "",
-            //             password: "",
-            //             confirmPassword: "",
-            //             role: "",
-            //             specialties: [],
-            //             contact: {
-            //                 phone: "",
-            //                 address: ""
-            //             },
-            //             departementId: "", 
-            //             type: "", 
-            //             civility: "", 
-            //         });
-            //         handleStaffAdded();  // Callback après ajout du staff
-            //         // response?.data?.user?._id
-            //         // handleContinue(response?.data?.user?.hospital_id, response?.data?.user?._id);
-            //         setTimeout(() => {
-            //           handleContinue(response?.data?.user?.hospital_id, response?.data?.user?._id);
-            //         }, 2000); // 2000 ms = 2 secondes
+                    toast.success("Staff registered successfully!");
+                    setFormData({
+                        hospital_id: "",
+                        firstname: "",
+                        lastname: "",
+                        username: "",
+                        email: "",
+                        password: "",
+                        confirmPassword: "",
+                        role: "",
+                        specialties: [],
+                        contact: {
+                            phone: "",
+                            address: ""
+                        },
+                        departementId: "", 
+                        type: "", 
+                        civility: "", 
+                    });
+                    handleStaffAdded();  // Callback après ajout du staff
+                    // response?.data?.user?._id
+                    // handleContinue(response?.data?.user?.hospital_id, response?.data?.user?._id);
+                    setTimeout(() => {
+                      handleContinue(response?.data?.user?.hospital_id, response?.data?.user?._id);
+                    }, 2000); // 2000 ms = 2 secondes
 
-            //         // onClose(); // Fermer la modal
-            //     } else {
-            //         // Échec géré dans la réponse
-            //         toast.error(response.data.message || "Failed to register staff. Please try again.");
-            //     }
-            // } catch (error) {
-            //     toast.error(`Registration failed: ${error?.response?.data?.message || 'An unexpected error occurred. Please try again.'}`);
-            //     console.error('Error:', error?.response|| 'No error message available.');
+                    // onClose(); // Fermer la modal
+                } else {
+                    // Échec géré dans la réponse
+                    toast.error(response.data.message || "Failed to register staff. Please try again.");
+                }
+            } catch (error) {
+                toast.error(`Registration failed: ${error?.response?.data?.message || 'An unexpected error occurred. Please try again.'}`);
+                console.error('Error:', error?.response|| 'No error message available.');
 
-            // }
+            }
         }
     };
     return (
