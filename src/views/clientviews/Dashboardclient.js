@@ -32,7 +32,24 @@ const DashboardPage = () => {
     };
     fetchLoggedUserData();
   }, []);
+
+  let dateActuelle = new Date();
+
+  // Récupérer le jour
+  let jour = dateActuelle.getDate();
   
+  // Récupérer le mois
+  let mois = dateActuelle.getMonth();
+  
+  // Récupérer l'année
+  let annee = dateActuelle.getFullYear();
+  
+  // Tableau des noms des mois
+  let moisNoms = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  
+  // Formater la date
+  let dateFormatee = `${jour} / ${mois + 1} / ${moisNoms[mois]}`;
+
   // console.log('Demand profile data', UserData);
 
   
@@ -87,8 +104,8 @@ const DashboardPage = () => {
           </div>
           <div className="header-background">
             <div className="header-text px-5">
-              <div className="header-date">September 12-22</div>
-              <h2>Good morning, Admin Daniel</h2>
+              <div className="header-date">{dateFormatee}</div>
+              <h2>Good morning,  {UserData?.role?.name} {UserData.firstname}</h2>
               <p>Have a nice day at work, it seems that you are <br /> returning to Daniel Bruh</p>
             </div>
           </div>
@@ -100,7 +117,9 @@ const DashboardPage = () => {
                   <div className="card-body">
                     <div className='d-flex'>
                       <div className=" textcontent ps-4">
-                        <p className="percentage increase"><i className="bi bi-graph-up-arrow" style={{ color: 'green' }}></i>+8.5%</p>
+                        <p className="percentage increase"><i className="bi bi-graph-up" style={{ color: 'green' }}></i>
+                        {/* +8.5% */}
+                        </p>
                         <h5 className="text-left chiffre">27</h5>
                         <h5 className="text-left module">Patients</h5>
                       </div>
@@ -118,8 +137,10 @@ const DashboardPage = () => {
                   <div className="card-body">
                     <div className='d-flex'>
                       <div className=" textcontent ps-4">
-                        <p className="percentage increase"><i className="bi bi-graph-up-arrow" style={{ color: 'green' }}></i>+8.5%</p>
-                        <h5 className="text-left chiffre">30/34</h5>
+                        <p className="percentage increase"><i className="bi bi-graph-up" style={{ color: 'green' }}></i>
+                        {/* +8.5% */}
+                        </p>
+                        <h5 className="text-left chiffre">30</h5>
                         <h5 className="text-left module">Appointments</h5>
                       </div>
                       <div className='imgcontent'>
@@ -136,8 +157,10 @@ const DashboardPage = () => {
                   <div className="card-body">
                     <div className='d-flex'>
                       <div className=" textcontent ps-4">
-                        <p className="percentage increase"><i className="bi bi-graph-up-arrow" style={{ color: 'green' }}></i>+8.5%</p>
-                        <h5 className="text-left chiffre">30/34</h5>
+                        <p className="percentage increase"><i className="bi bi-graph-up" style={{ color: 'green' }}></i>
+                        {/* +8.5% */}
+                        </p>
+                        <h5 className="text-left chiffre">30</h5>
                         <h5 className="text-left module">Échographie</h5>
                       </div>
                       <div className='imgcontent'>
@@ -154,7 +177,9 @@ const DashboardPage = () => {
                   <div className="card-body">
                     <div className='d-flex'>
                       <div className=" textcontent ps-4">
-                        <p className="percentage increase"><i className="bi bi-graph-up-arrow" style={{ color: 'green' }}></i>+8.5%</p>
+                        <p className="percentage increase"><i className="bi bi-graph-up" style={{ color: 'green' }}></i>
+                        {/* +8.5% */}
+                        </p>
                         <h5 className="text-left chiffre">12</h5>
                         <h5 className="text-left module">Analyses</h5>
                       </div>
@@ -172,7 +197,9 @@ const DashboardPage = () => {
                   <div className="card-body">
                     <div className='d-flex'>
                       <div className=" textcontent ps-4">
-                        <p className="percentage increase"><i className="bi bi-graph-up-arrow" style={{ color: 'green' }}></i>+8.5%</p>
+                        <p className="percentage increase"><i className="bi bi-graph-up" style={{ color: 'green' }}></i>
+                        {/* +8.5% */}
+                        </p>
                         <h5 className="text-left chiffre">34</h5>
                         <h5 className="text-left module">Consultations</h5>
                       </div>
@@ -190,7 +217,9 @@ const DashboardPage = () => {
                   <div className="card-body">
                     <div className='d-flex'>
                       <div className=" textcontent ps-4">
-                        <p className="percentage increase"><i className="bi bi-graph-up-arrow" style={{ color: 'green' }}></i>+8.5%</p>
+                        <p className="percentage increase"><i className="bi bi-graph-up" style={{ color: 'green' }}></i>
+                        {/* +8.5% */}
+                        </p>
                         <h5 className="text-left chiffre">18</h5>
                         <h5 className="text-left module">Rendez-Vous</h5>
                       </div>
