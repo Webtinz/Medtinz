@@ -1,175 +1,157 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Modal, Button, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { FaArrowLeft } from "react-icons/fa";
+import { FaArrowLeft, FaPlus, FaTrash } from "react-icons/fa";
 import './horaire.css';
 import api from '../../../service/caller';
 import { ToastContainer, toast } from 'react-toastify';
-import WeekSelector from './WeekSelector';  // Ajustez le chemin selon votre structure
-
-
+import WeekSelector from './WeekSelector';
 
 const Horaire = () => {
-  const [showhoraireModal, setshowhoraireModal] = useState(true);
-
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const [scheduleData, setScheduleData] = useState({
+  const defaultScheduleTemplate = {
     Monday: { start_time: "", end_time: "", duration_unit: 30 },
     Tuesday: { start_time: "", end_time: "", duration_unit: 30 },
     Wednesday: { start_time: "", end_time: "", duration_unit: 30 },
     Thursday: { start_time: "", end_time: "", duration_unit: 30 },
     Friday: { start_time: "", end_time: "", duration_unit: 30 },
     Saturday: { start_time: "", end_time: "", duration_unit: 30 },
-    Sunday: { start_time: "", end_time: "", duration_unit: 30 }
-  });
-  const [customDuration, setCustomDuration] = useState('');
-  const location = useLocation();
-  
-  // Ajoutez cet état pour le sélecteur de semaine
-  const [selectedWeek, setSelectedWeek] = useState({
-    start_date: '',
-    end_date: ''
-  });
+    Sunday: { start_time: "", end_time: "", duration_unit: 30 },
+  };
 
-  // Extraire les paramètres de l'URL
+  const [scheduleWeeks, setScheduleWeeks] = useState([
+    {
+      selectedWeek: { start_date: '', end_date: '' },
+      scheduleData: { ...defaultScheduleTemplate },
+    },
+  ]);
+
+  const [currentPage, setCurrentPage] = useState(0);
+  const [showhoraireModal, setShowhoraireModal] = useState(true);
+  const [customDuration, setCustomDuration] = useState('');
+
   const queryParams = new URLSearchParams(location.search);
   const hospitalId = queryParams.get('hospital_id');
   const userId = queryParams.get('_id');
 
-  const handleDurationChange = (day, duration) => {
-    const validDuration = duration % 5 === 0 ? duration : 30;
-    setScheduleData(prevState => ({
-      ...prevState,
-      [day]: {
-        ...prevState[day],
-        duration_unit: validDuration
-      }
-    }));
+  const addNewWeekSchedule = () => {
+    setScheduleWeeks([
+      ...scheduleWeeks,
+      {
+        selectedWeek: { start_date: '', end_date: '' },
+        scheduleData: { ...defaultScheduleTemplate },
+      },
+    ]);
+    setCurrentPage(scheduleWeeks.length); // Aller à la nouvelle page
   };
 
-  const handleTimeChange = (day, type, value) => {
-    setScheduleData(prevState => ({
-      ...prevState,
-      [day]: {
-        ...prevState[day],
-        [type]: value
-      }
-    }));
-  };
-
-  const handleCustomDurationChange = (e) => {
-    const value = e.target.value;
-    const numValue = parseInt(value, 10);
-    if (numValue % 5 === 0 || value === '') {
-      setCustomDuration(value);
+  const removeWeekSchedule = (indexToRemove) => {
+    if (scheduleWeeks.length > 1) {
+      const updatedWeeks = scheduleWeeks.filter((_, index) => index !== indexToRemove);
+      setScheduleWeeks(updatedWeeks);
+      setCurrentPage((prevPage) => (prevPage > 0 ? prevPage - 1 : 0)); // Ajuster la page courante
     }
   };
 
-  // Applique la durée sélectionnée à toutes les journées
-  const handleDefaultDuration = (duration) => {
-    setScheduleData(prevState => {
-      const newScheduleData = {};
-      Object.keys(prevState).forEach(day => {
-        newScheduleData[day] = {
-          ...prevState[day],
-          duration_unit: duration
-        };
-      });
-      return newScheduleData;
-    });
-    setCustomDuration(`${duration} min`); // Met à jour l'affichage de la durée personnalisée
+  const handleTimeChange = (weekIndex, day, type, value) => {
+    const newScheduleWeeks = [...scheduleWeeks];
+    newScheduleWeeks[weekIndex].scheduleData[day][type] = value;
+    setScheduleWeeks(newScheduleWeeks);
   };
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   // Ajoutez les dates au payload que vous envoyez
-  //   const payload = {
-  //     ...scheduleData,
-  //     start_date: selectedWeek.start_date,
-  //     end_date: selectedWeek.end_date
-  //   };
-  //   // Votre logique d'envoi existante
-  // };
-  
+  const handleDurationChange = (weekIndex, day, duration) => {
+    const newScheduleWeeks = [...scheduleWeeks];
+    newScheduleWeeks[weekIndex].scheduleData[day].duration_unit =
+      duration % 5 === 0 ? duration : 30;
+    setScheduleWeeks(newScheduleWeeks);
+  };
+
+  const handleDefaultDuration = (duration) => {
+    setScheduleWeeks((prevWeeks) =>
+      prevWeeks.map((week) => ({
+        ...week,
+        scheduleData: Object.keys(week.scheduleData).reduce((acc, day) => {
+          acc[day] = {
+            ...week.scheduleData[day],
+            duration_unit: duration,
+          };
+          return acc;
+        }, {}),
+      }))
+    );
+    setCustomDuration(`${duration} min`);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = {
       user: userId,
       hospital_id: hospitalId,
-      schedules: [
-        {
-          start_date: selectedWeek.start_date,
-          end_date: selectedWeek.end_date,
-          schedule: Object.keys(scheduleData).map(day => ({
-            day: day,
-            start_time: scheduleData[day].start_time,
-            end_time: scheduleData[day].end_time,
-            duration_unit: scheduleData[day].duration_unit
-          }))
-        }
-      ]
+      schedules: scheduleWeeks.map((week) => ({
+        start_date: week.selectedWeek.start_date,
+        end_date: week.selectedWeek.end_date,
+        schedule: Object.keys(week.scheduleData).map((day) => ({
+          day: day,
+          start_time: week.scheduleData[day].start_time,
+          end_time: week.scheduleData[day].end_time,
+          duration_unit: week.scheduleData[day].duration_unit,
+        })),
+      })),
     };
-console.log(formData);
 
     try {
-        const response = await api.post('api/schedule', formData);
-
-        console.log(response);
-        if ((response.status == 200 || response.status == 201)) {
-            // Succès
-            
-            toast.success("Schedule registered successfully! You will be redirect now.");
-                        
-            setTimeout(() => {
-              // Ajouter les données aux paramètres de l'URL
-              navigate({
-                pathname: '/hospitaladmin/staff_details',
-                search: `?hospital_id=${response?.data?.data?.hospital_id}&_id=${response?.data?.data?.user}&schedule=${JSON.stringify(formData.schedule)}`
-              });
-            }, 2000); // 2000 ms = 2 secondes
-        } else {
-            // Échec géré dans la réponse
-            toast.error(response.data.message || "Failed to register schedule. Please try again.");
-        }
+      const response = await api.post('api/schedule', formData);
+      if (response.status === 200 || response.status === 201) {
+        toast.success('Schedules registered successfully!');
+        setTimeout(() => {
+          navigate({
+            pathname: '/hospitaladmin/staff_details',
+            search: `?hospital_id=${response?.data?.data?.hospital_id}&_id=${response?.data?.data?.user}`,
+          });
+        }, 2000);
+      } else {
+        toast.error(response.data.message || 'Failed to register schedules.');
+      }
     } catch (error) {
-        toast.error(`Registration failed: ${error?.response?.data?.message || 'An unexpected error occurred. Please try again.'}`);
-        console.error('Error:', error?.response|| 'No error message available.');
+      toast.error(
+        `Registration failed: ${
+          error?.response?.data?.message || 'An unexpected error occurred.'
+        }`
+      );
     }
   };
 
   return (
-    <div>
-      <Modal
-        show={showhoraireModal}
-        backdrop="static"
-        keyboard={false}
-        centered
-        size="lg"
-      >
-        <Modal.Header>
-          <Modal.Title className="mx-auto hius">Configurer les horaires</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <ToastContainer />
-
-          <Form onSubmit={handleSubmit}>
-            {/* <div className="mb-3">
-              <button className="essuie"><FaArrowLeft /> Retour</button>
-            </div> */}
-
-            {/* <h3 className="sete">Configurez les horaires de cet utilisateur :</h3> */}
-            <div className="mb-3">
-              <button className="essuie"><FaArrowLeft /> Retour</button>
+    <Modal show={showhoraireModal} backdrop="static" keyboard={false} centered size="lg">
+      <Modal.Header>
+        <Modal.Title className="mx-auto hius">Configure Schedules</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <ToastContainer />
+        <Form onSubmit={handleSubmit}>
+          <div className="mb-4 p-3 border rounded">
+            <div className="d-flex justify-content-between align-items-center mb-3">
+              <h4>Week {currentPage + 1} Schedule</h4>
+              {scheduleWeeks.length > 1 && (
+                <Button
+                  variant="danger"
+                  size="sm"
+                  onClick={() => removeWeekSchedule(currentPage)}
+                >
+                  <FaTrash /> Remove
+                </Button>
+              )}
             </div>
-
-            {/* Ajoutez le sélecteur de semaine ici */}
-            <WeekSelector 
-              onWeekChange={(dates) => setSelectedWeek(dates)} 
+            <WeekSelector
+              onWeekChange={(dates) => {
+                const newScheduleWeeks = [...scheduleWeeks];
+                newScheduleWeeks[currentPage].selectedWeek = dates;
+                setScheduleWeeks(newScheduleWeeks);
+              }}
             />
-
-<h3 className="sete">Configurez les horaires de cet utilisateur :</h3>
             <table className="schedule-table">
               <thead>
                 <tr>
@@ -186,24 +168,24 @@ console.log(formData);
                     <td>
                       <input
                         type="time"
-                        value={scheduleData[day].start_time}
-                        onChange={(e) => handleTimeChange(day, "start_time", e.target.value)}
+                        value={scheduleWeeks[currentPage].scheduleData[day].start_time}
+                        onChange={(e) => handleTimeChange(currentPage, day, 'start_time', e.target.value)}
                         className="time-input"
                       />
                     </td>
                     <td>
                       <input
                         type="time"
-                        value={scheduleData[day].end_time}
-                        onChange={(e) => handleTimeChange(day, "end_time", e.target.value)}
+                        value={scheduleWeeks[currentPage].scheduleData[day].end_time}
+                        onChange={(e) => handleTimeChange(currentPage, day, 'end_time', e.target.value)}
                         className="time-input"
                       />
                     </td>
                     <td>
                       <input
                         type="number"
-                        value={scheduleData[day].duration_unit}
-                        onChange={(e) => handleDurationChange(day, e.target.value)}
+                        value={scheduleWeeks[currentPage].scheduleData[day].duration_unit}
+                        onChange={(e) => handleDurationChange(currentPage, day, parseInt(e.target.value))}
                         className="time-input"
                         min="5"
                         step="5"
@@ -213,28 +195,36 @@ console.log(formData);
                 ))}
               </tbody>
             </table>
-            <h3 className="sete">Définissez une durée moyenne de consultation pour ce docteur :</h3>
-            <div className="duration-buttons">
-              {[15, 20, 25, 30].map((duration) => (
-                <Button
-                  key={duration}
-                  className={`duration-button ${customDuration === `${duration} min` ? 'active' : ''}`}
-                  onClick={() => handleDefaultDuration(duration)}
-                  variant="outline-primary"
-                >
-                  {duration} min
-                </Button>
-              ))}
-            </div>
-            <Modal.Footer>
-              <Button type="submit" variant="primary" className="mx-auto modify-button">
-                Soumettre
-              </Button>
-            </Modal.Footer>
-          </Form>
-        </Modal.Body>
-      </Modal>
-    </div>
+          </div>
+          <div className="text-center mb-3">
+            <Button variant="outline-primary" onClick={addNewWeekSchedule}>
+              <FaPlus /> Add Another Week
+            </Button>
+          </div>
+          <div className="d-flex justify-content-between">
+            <Button
+              variant="primary"
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 0))}
+              disabled={currentPage === 0}
+            >
+              Previous
+            </Button>
+            <Button
+              variant="primary"
+              onClick={() => setCurrentPage((prev) => Math.min(prev + 1, scheduleWeeks.length - 1))}
+              disabled={currentPage === scheduleWeeks.length - 1}
+            >
+              Next
+            </Button>
+          </div>
+          <Modal.Footer>
+            <Button type="submit" variant="primary" className="mx-auto modify-button">
+              Submit Schedules
+            </Button>
+          </Modal.Footer>
+        </Form>
+      </Modal.Body>
+    </Modal>
   );
 };
 

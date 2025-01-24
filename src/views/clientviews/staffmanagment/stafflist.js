@@ -100,6 +100,19 @@ const StaffList = () => {
         fetchRoles(); // Charger les rôles
     }, []); // Exécuter cet effet une seule fois au montage
 
+    const refreshHospitalUsers = async () => {
+        try {
+          const token = localStorage.getItem('access_token');
+          const response = await api.get(`api/hospitals/admin/${token}`);
+          const hospitalIds = response.data.map(hospital => hospital._id).join(',');
+          
+          const usersResponse = await api.get(`api/usersbydepartment?hospital_id=${hospitalIds}`);
+          setMyHospitalUser(usersResponse.data);
+        } catch (error) {
+          toast.error("Error refreshing hospital users");
+          console.error("Refresh error:", error);
+        }
+      };
 
     const handleButtonClick = (value) => {
         // console.log(value);
@@ -113,6 +126,7 @@ const StaffList = () => {
 
     const handleStaffAdded = (newStaff) => {
         setStaffs((prev) => [...prev, newStaff]);
+        refreshHospitalUsers(); // Refresh users after deletion
     };
 
     const handlePageChange = (page) => {
@@ -126,6 +140,7 @@ const StaffList = () => {
         
         setSelectedUser(user); // Mettre l'utilisateur sélectionné
         setEditModalVisible(true); // Ouvrir le modal
+        refreshHospitalUsers(); // Refresh users after deletion
     };
 
     const handleDetailsClick = (id) => {
@@ -146,6 +161,7 @@ const StaffList = () => {
                     // Succès
                     
                     toast.success("Staff Deleted successfully!");
+                    refreshHospitalUsers(); // Refresh users after deletion
                 } else {
                     // Échec géré dans la réponse
                     toast.error(response.data.message || "Failed to delete staff. Please try again.");
@@ -158,12 +174,12 @@ const StaffList = () => {
     }
 
     const handleStaffUpdated = (staffs) => {
+            refreshHospitalUsers(); // Refresh users after deletion
         // Mettre à jour la liste des utilisateurs après la modification
         setStaffs((staffs) =>
             staffs.map((staff) => (staff._id === staff._id ? staff : staff))
         );
     };
-
 
     const filterUsersByRole = (role) => {
         // console.log(role);
@@ -173,17 +189,154 @@ const StaffList = () => {
         }
         return myHospitalUser.filter((user) => user.role?._id === role); // Filtrer par rôle
     };
+    
+
+        const renderActionDropdown = (user) => (
+            <div className="actionbtn">
+                <div className="left">
+                    <div className="dropdown-center p-0 bg-none" style={{ border: 'none' }}>
+                        <FaEdit 
+                            className="bg-none border-0 p-0"
+                            data-coreui-toggle="dropdown"
+                            aria-expanded="true"
+                            style={{ border: 'none' }} 
+                        />
+                        <ul className="dropdown-menu">
+                            <li>
+                                <a 
+                                    className="dropdown-item" 
+                                    href="#" 
+                                    onClick={() => handleEditClick(user)}
+                                >
+                                    Edit
+                                </a>
+                            </li>
+                            <li>
+                                <a 
+                                    className="dropdown-item" 
+                                    href="#" 
+                                    onClick={() => handleDetailsClick(user?._id)}
+                                >
+                                    View Details
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div className="right">
+                    <div className="dropdown-center p-0 bg-none" style={{ border: 'none' }}>
+                        <BsTrash3 
+                            style={{ color: '#EF3826', border: 'none' }} 
+                            className="bg-none border-0 p-0" 
+                            data-coreui-toggle="dropdown" 
+                            aria-expanded="true"
+                        />
+                        <ul className="dropdown-menu" style={{ color: '#EF3826', borderRadius: '25px' }}>
+                            <li>
+                                <a 
+                                    className="dropdown-item text-center" 
+                                    style={{ 
+                                        borderBottom: '1px solid #979797', 
+                                        maxWidth: '100%',
+                                        wordBreak: 'break-word',
+                                        whiteSpace: 'normal'
+                                    }} 
+                                    href="#"
+                                >
+                                    Are you sure you want to delete this user?
+                                </a>
+                            </li>
+                            <li>
+                                <a className="dropdown-item my-3" href="#">
+                                    <button 
+                                        className="btn mx-2" 
+                                        style={{ backgroundColor: '#000', color: 'white' }}
+                                    >
+                                        No
+                                    </button>
+                                    <button 
+                                        className="btn mx-2" 
+                                        style={{ backgroundColor: '#ff0000', color: 'white' }} 
+                                        onClick={() => handleDeleteUserClick(user?._id)}
+                                    >
+                                        Delete
+                                    </button>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        );
+    
+        const commonTableColumns = [
+            { key: 'profile', label: 'Profile', render: user => (
+                <img src={Doctorvector} className="cardicon" alt="Consultation Icon" width="50" height="50" />
+            )},
+            { key: 'name', label: 'Name', render: user => `${user?.firstname} ${user?.lastname}` },
+            { key: 'role', label: 'Fonction', render: user => user?.role?.name ?? 'Undefined' },
+            { key: 'department', label: 'Department', render: user => user.departementId[0]?.name ?? 'Undefined' },
+            { key: 'status', label: 'Status', render: () => <span className="coloredsucess">Active</span> },
+            { key: 'actions', label: 'Action', render: user => renderActionDropdown(user) }
+        ];
+    
+        const renderTable = (users, roleId) => (
+            <>
+
+            <div className="d-flex mt-4">
+                <CButton 
+                    onClick={() => handleButtonClick(roleId)} 
+                    className="registernewbtn ms-auto d-flex align-items-center" 
+                    active 
+                    tabIndex={-1}
+                >
+                    <BsPersonPlus className="mx-2" /> Register New User
+                </CButton>
+            </div>
+
+            <div className="search-container">
+                <div className="search-bar">
+                    <FaSearch 
+                        className="search-icon" 
+                        style={{ width: '20px', height: '20px' }} 
+                    />
+                    <input 
+                        type="text" 
+                        placeholder="Search for a patient (Enter ID, name or Tel)"
+                    />
+                </div>
+            </div>
+            
+            <CTable hover className='mt-5' align="middle" responsive>
+                <CTableHead>
+                    <CTableRow>
+                        {commonTableColumns.map(col => (
+                            <CTableHeaderCell key={col.key}>{col.label}</CTableHeaderCell>
+                        ))}
+                    </CTableRow>
+                </CTableHead>
+                <CTableBody>
+                    {users.map((user, index) => (
+                        <CTableRow key={index}>
+                            {commonTableColumns.map(col => (
+                                <CTableDataCell key={col.key}>
+                                    {col.render(user)}
+                                </CTableDataCell>
+                            ))}
+                        </CTableRow>
+                    ))}
+                </CTableBody>
+            </CTable>
+
+            <AddStaffModal visible={visible} onClose={() => setVisible(false)} handleStaffAdded={handleStaffAdded} setVisible={setVisible} modalValue={modalValue} handleButtonClick={handleButtonClick} />
+            
+        </>
+        );
 
     return (
         <div className="dashboard-header">
-        <ToastContainer /> {/* Conteneur pour afficher les toasts */}
-
-        <EditStaffModal
-            visible={isEditModalVisible}
-            onClose={() => setEditModalVisible(false)}
-            onStaffUpdated={handleStaffUpdated}
-            user={selectedUser}
-        />
+            <ToastContainer /> {/* Conteneur pour afficher les toasts */}
+            <EditStaffModal visible={isEditModalVisible} onClose={() => setEditModalVisible(false)} onStaffUpdated={handleStaffUpdated} user={selectedUser} />
             <CHeader position="sticky" style={{ backgroundColor: '#DFEAF5' }}>
                 <CContainer fluid className="d-flex align-items-center">
                     <div className='row w-100'>
@@ -207,7 +360,6 @@ const StaffList = () => {
                     </div>
                 </CContainer>
             </CHeader>
-
             <div className="Patientlist mt-2">
                 <div className='tabsection'>
                     <CRow>
@@ -217,283 +369,20 @@ const StaffList = () => {
                                     <CTabs activeItemKey={activeRole} onTabChange={setActiveRole}>
                                         <CTabList variant="underline" className="border-bottom">
                                             <CTab itemKey="Allusers">All Users</CTab>
-                                            {/* Liste des rôles */}
                                             {roles.map((role) => (
                                                 <CTab itemKey={role._id} key={role._id}>
                                                     {role.name}
                                                 </CTab>
                                             ))}
                                         </CTabList>
-
                                         <CTabContent>
                                             <CTabPanel className="p-3" itemKey="Allusers">
-                                                <div className='tablist' >
-                                                    <div className='d-flex mt-4'>
-                                                        <CButton onClick={() =>  handleButtonClick('Allusers')} className="registernewbtn ms-auto d-flex align-items-center" active tabIndex={-1}>
-                                                            <BsPersonPlus className='mx-2' /> Register New user
-                                                        </CButton>
-                                                    </div>
-                                                    <AddStaffModal
-                                                        visible={visible}
-                                                        onClose={() => setVisible(false)}
-                                                        onPatientAdded={handleStaffAdded}
-
-                                                        handleStaffAdded={handleStaffAdded}
-                                                        setVisible={setVisible} 
-                                                        modalValue={modalValue} 
-                                                        handleButtonClick={handleButtonClick} 
-                                                    />
-
-                                                    <div className="search-container">
-                                                        <div className="search-bar">
-                                                            <FaSearch
-                                                                size="sm"
-                                                                className="search-icon" style={{ width: '20px', height: '20px' }} />
-                                                            <input
-                                                                type="text"
-                                                                placeholder="Search for a patient (Enter ID, name or Tel)"
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                    <div>
-                                                        <CTable hover className='mt-5' align="middle" responsive>
-                                                            <CTableHead>
-                                                                <CTableRow>
-                                                                    <CTableHeaderCell scope="col">Profile</CTableHeaderCell>
-                                                                    <CTableHeaderCell scope="col">Name</CTableHeaderCell>
-                                                                    <CTableHeaderCell scope="col">Fonction</CTableHeaderCell>
-                                                                    <CTableHeaderCell scope="col">Department</CTableHeaderCell>
-                                                                    <CTableHeaderCell scope="col">Status</CTableHeaderCell>
-                                                                    <CTableHeaderCell scope="col">Action</CTableHeaderCell>
-                                                                </CTableRow>
-                                                            </CTableHead>
-                                                            <CTableBody>
-                                                                        {myHospitalUser.map((user, index) => (
-                                                                            <CTableRow key={index}>
-                                                                                <CTableDataCell align="middle">
-                                                                                    <img
-                                                                                        src={Doctorvector}
-                                                                                        className="cardicon"
-                                                                                        alt="Consultation Icon"
-                                                                                        width="50"
-                                                                                        height="50"
-                                                                                    />
-                                                                                </CTableDataCell>
-                                                                                <CTableDataCell>{user?.firstname} {user?.lastname}</CTableDataCell>
-                                                                                {/* <CTableDataCell>{user.hospital_id.hospital_name}</CTableDataCell> */}
-                                                                                <CTableDataCell>{user?.role?.name ?? 'Undefined'}</CTableDataCell>
-                                                                                <CTableDataCell>
-                                                                                    {user.departementId[0]?.name ?? 'Undefined'}
-                                                                                </CTableDataCell>
-                                                                                <CTableDataCell align="middle">
-                                                                                    <span className="coloredsucess">Active</span>
-                                                                                </CTableDataCell>
-                                                                                <CTableDataCell align="middle">
-                                                                                    <div className="actionbtn">
-                                                                                        <div className="left">
-                                                                                            <div class="dropdown-center p-0 bg-none" style={{ border: 'none' }}>
-                                                                                                <FaEdit className="bg-none border-0 p-0"
-                                                                                                    data-coreui-toggle="dropdown"
-                                                                                                    aria-expanded="true"
-                                                                                                    style={{ border: 'none' }} />
-                                                                                                <ul class="dropdown-menu">
-                                                                                                    <li><a class="dropdown-item" href="#" onClick={() => handleEditClick(user)} >Edit</a></li>
-                                                                                                    <li><a class="dropdown-item" href="#" onClick={() => handleDetailsClick(user?._id)} >View Details</a></li>
-                                                                                                </ul>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div className="right">
-                                                                                            <div class="dropdown-center p-0 bg-none" style={{ border: 'none' }}>
-                                                                                            <BsTrash3 style={{ color: '#EF3826', border: 'none' }} className="bg-none border-0 p-0"
-                                                                                                    data-coreui-toggle="dropdown"
-                                                                                                    aria-expanded="true"/>
-                                                                                                <ul className="dropdown-menu" style={{ color: '#EF3826', borderRadius: '25px'}} >
-                                                                                                <li>
-                                                                                                    <a className="dropdown-item text-center"
-                                                                                                    style={{
-                                                                                                        borderBottom: '1px solid #979797',
-                                                                                                        maxWidth: '100%',
-                                                                                                        wordBreak: 'break-word', // Force le retour à la ligne pour les mots longs
-                                                                                                        whiteSpace: 'normal', // Permet au texte de s'étendre sur plusieurs lignes
-                                                                                                    }}
-                                                                                                    href="#"
-                                                                                                    >
-                                                                                                    Are you sure you want to delete this user ?
-                                                                                                    </a>
-                                                                                                </li>
-                                                                                                <li>
-                                                                                                    <a className="dropdown-item my-3" href="#">
-                                                                                                    <button
-                                                                                                        className="btn mx-2"
-                                                                                                        style={{
-                                                                                                        backgroundColor: '#000',
-                                                                                                        color: 'white',
-                                                                                                        }}
-                                                                                                    >
-                                                                                                        No
-                                                                                                    </button>
-                                                                                                    <button
-                                                                                                        className="btn mx-2"
-                                                                                                        style={{
-                                                                                                        backgroundColor: '#ff0000',
-                                                                                                        color: 'white',
-                                                                                                        }}
-                                                                                                        onClick={() => handleDeleteUserClick(user?._id)}
-                                                                                                    >
-                                                                                                        Delete
-                                                                                                    </button>
-                                                                                                    </a>
-                                                                                                </li>
-                                                                                                </ul>
-
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </CTableDataCell>
-                                                                            </CTableRow>
-                                                                        ))}
-                                                            </CTableBody>
-                                                        </CTable>
-                                                    </div>
-                                                </div>
+                                                {renderTable(myHospitalUser)}
                                             </CTabPanel>
                                             {roles.map((role) => (
-                                                <React.Fragment key={role._id}>
-                                                    <CTabPanel className="p-3" itemKey={role._id}>
-                                                        <div className="tablist">
-                                                            <div className="d-flex mt-4">
-                                                                <CButton
-                                                                    onClick={() => handleButtonClick(role._id)}
-                                                                    className="registernewbtn ms-auto d-flex align-items-center"
-                                                                    active
-                                                                    tabIndex={-1}
-                                                                >
-                                                                    <BsPersonPlus className="mx-2" /> Register New User
-                                                                </CButton>
-                                                            </div>
-                                                            <AddStaffModal
-                                                                visible={visible}
-                                                                onClose={() => setVisible(false)}
-                                                                handleStaffAdded={handleStaffAdded}
-                                                                setVisible={setVisible} 
-                                                                modalValue={modalValue} 
-                                                                handleButtonClick={handleButtonClick} 
-                                                            />
-                                                            <div className="search-container">
-                                                                <div className="search-bar">
-                                                                    <FaSearch
-                                                                        className="search-icon"
-                                                                        style={{ width: '20px', height: '20px' }}
-                                                                    />
-                                                                    <input
-                                                                        type="text"
-                                                                        placeholder="Search for a patient (Enter ID, name or Tel)"
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                            <div>
-                                                                <CTable hover className="mt-5" align="middle" responsive>
-                                                                    <CTableHead>
-                                                                        <CTableRow>
-                                                                            <CTableHeaderCell>Profile</CTableHeaderCell>
-                                                                            <CTableHeaderCell>Names</CTableHeaderCell>
-                                                                            <CTableHeaderCell>Hospitals</CTableHeaderCell>
-                                                                            <CTableHeaderCell>Fonction</CTableHeaderCell>
-                                                                            <CTableHeaderCell>Department</CTableHeaderCell>
-                                                                            <CTableHeaderCell>Status</CTableHeaderCell>
-                                                                            <CTableHeaderCell>Action</CTableHeaderCell>
-                                                                        </CTableRow>
-                                                                    </CTableHead>
-                                                                    <CTableBody>
-                                                                        {filterUsersByRole(role._id).map((user, index) => (
-                                                                            <CTableRow key={index}>
-                                                                                <CTableDataCell align="middle">
-                                                                                    <img
-                                                                                        src={Doctorvector}
-                                                                                        className="cardicon"
-                                                                                        alt="Consultation Icon"
-                                                                                        width="50"
-                                                                                        height="50"
-                                                                                    />
-                                                                                </CTableDataCell>
-                                                                                <CTableDataCell>{user.firstname} {user.lastname}</CTableDataCell>
-                                                                                <CTableDataCell>{user.hospital_id.hospital_name}</CTableDataCell>
-                                                                                <CTableDataCell>{user.role.name ?? 'Undefined'}</CTableDataCell>
-                                                                                <CTableDataCell>
-                                                                                    {user.departementId[0]?.name ?? 'Undefined'}
-                                                                                </CTableDataCell>
-                                                                                <CTableDataCell align="middle">
-                                                                                    <span className="coloredsucess">Active</span>
-                                                                                </CTableDataCell>
-                                                                                <CTableDataCell align="middle">
-                                                                                    <div className="actionbtn">
-                                                                                        <div className="left">
-                                                                                            <div class="dropdown-center p-0 bg-none" style={{ border: 'none' }}>
-                                                                                                <FaEdit className="bg-none border-0 p-0"
-                                                                                                    data-coreui-toggle="dropdown"
-                                                                                                    aria-expanded="true"
-                                                                                                    style={{ border: 'none' }} />
-                                                                                                <ul class="dropdown-menu">
-                                                                                                    <li><a class="dropdown-item" href="#"   onClick={() => handleEditClick(user)} >Edit</a></li>
-                                                                                                    <li><a class="dropdown-item" href="#" onClick={() => handleDetailsClick(user?._id)} >View Details</a></li>
-                                                                                                </ul>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div className="right">
-                                                                                            <div class="dropdown-center p-0 bg-none" style={{ border: 'none' }}>
-                                                                                            <BsTrash3 style={{ color: '#EF3826', border: 'none' }} className="bg-none border-0 p-0"
-                                                                                                    data-coreui-toggle="dropdown"
-                                                                                                    aria-expanded="true"/>
-                                                                                                    <ul className="dropdown-menu" style={{ color: '#EF3826', borderRadius: '25px'}} >
-                                                                                                    <li>
-                                                                                                        <a className="dropdown-item text-center"
-                                                                                                        style={{
-                                                                                                            borderBottom: '1px solid #979797',
-                                                                                                            maxWidth: '100%',
-                                                                                                            wordBreak: 'break-word', // Force le retour à la ligne pour les mots longs
-                                                                                                            whiteSpace: 'normal', // Permet au texte de s'étendre sur plusieurs lignes
-                                                                                                        }}
-                                                                                                        href="#"
-                                                                                                        >
-                                                                                                        Are you sure you want to delete this user ?
-                                                                                                        </a>
-                                                                                                    </li>
-                                                                                                    <li>
-                                                                                                        <a className="dropdown-item my-3" href="#">
-                                                                                                        <button
-                                                                                                            className="btn mx-2"
-                                                                                                            style={{
-                                                                                                            backgroundColor: '#000',
-                                                                                                            color: 'white',
-                                                                                                            }}
-                                                                                                        >
-                                                                                                            No
-                                                                                                        </button>
-                                                                                                        <button
-                                                                                                            className="btn mx-2"
-                                                                                                            style={{
-                                                                                                            backgroundColor: '#ff0000',
-                                                                                                            color: 'white',
-                                                                                                            }}
-                                                                                                            onClick={() => handleDeleteUserClick(user?._id)}
-                                                                                                        >
-                                                                                                            Delete
-                                                                                                        </button>
-                                                                                                        </a>
-                                                                                                    </li>
-                                                                                                    </ul>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </CTableDataCell>
-                                                                            </CTableRow>
-                                                                        ))}
-                                                                    </CTableBody>
-                                                                </CTable>
-                                                            </div>
-                                                        </div>
-                                                    </CTabPanel>
-                                                </React.Fragment>
+                                                <CTabPanel key={role._id} className="p-3" itemKey={role._id}>
+                                                    {renderTable(filterUsersByRole(role._id))}
+                                                </CTabPanel>
                                             ))}
                                         </CTabContent>
                                     </CTabs>
@@ -505,18 +394,10 @@ const StaffList = () => {
                                         </p>
                                         <div className='actionbtn'>
                                             <div className='left'>
-                                                <BsChevronLeft
-                                                    className='pagicon'
-                                                    onClick={() => handlePageChange(currentPage - 1)}
-                                                    style={{ cursor: 'pointer' }}
-                                                />
+                                                <BsChevronLeft className='pagicon' onClick={() => handlePageChange(currentPage - 1)} style={{ cursor: 'pointer' }} />
                                             </div>
                                             <div className='right'>
-                                                <BsChevronRight
-                                                    className='pagicon'
-                                                    onClick={() => handlePageChange(currentPage + 1)}
-                                                    style={{ cursor: 'pointer' }}
-                                                />
+                                                <BsChevronRight className='pagicon' onClick={() => handlePageChange(currentPage + 1)} style={{ cursor: 'pointer' }} />
                                             </div>
                                         </div>
                                     </div>

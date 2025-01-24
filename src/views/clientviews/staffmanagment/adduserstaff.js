@@ -105,8 +105,9 @@ const AddStaffModal = ({ visible, onClose, handleStaffAdded, initialData, setVis
         if (!modalValue && !formData.role) {
             newErrors.role = "Role is required";
         } 
-        if (modalValue ==="" || modalValue == 'Allusers') {
-            newErrors.role = "Role is required";
+        if (formData.role === '' || formData.role === 'Allusers') {
+            console.log(formData.role);
+            newErrors.role = "Role is required 2";
         }        
         if (!formData.departementId) newErrors.departementId = "Department is required";
         if (!formData.hospital_id) newErrors.hospital_id = "Hospital is required";
@@ -180,7 +181,7 @@ const handleSpecialtiesChange = (selectedOptions) => {
                 email: formData.email,
                 password: formData.password,
                 // role: formData.role ?? modalValue,
-                role: modalValue ?? formData.role,
+                role: (modalValue & modalValue !== 'Allusers') ? modalValue : formData.role,
                 specialties: formData.specialties,
                 contact: formData.contact,
                 departementId: formData.departementId,
