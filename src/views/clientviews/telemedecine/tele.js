@@ -68,44 +68,56 @@ const TeleMedicine = () => {
 
   const handleJoinCall = () => {
     if (!joined) {
-      let randomCode = generateMeetingCode();
-      // randomCode = randomCode.replace(/^\//, ''); // Supprimer le slash au début, s'il y en a
-      console.log('randomCode' + randomCode);
+      try {
+        let randomCode = generateMeetingCode();
+        console.log('Generated meeting code:', randomCode);
   
-      const link = generateMeetingLink(randomCode);
-      
-      
-      setMeetingLink(link);
+        const link = generateMeetingLink(randomCode);
+        console.log('Generated meeting link:', link);
   
-      const currentUrl = new URL(window.location.href);
-      
-      // Si le paramètre 'channel' n'existe pas dans l'URL, on l'ajoute
-      if (!currentUrl.searchParams.has('channel')) {
-        currentUrl.searchParams.set('channel', randomCode);
-        window.history.pushState({}, '', currentUrl.toString());
-      } else {
-        console.log('Channel already exists in the URL');
+        setMeetingLink(link);
+  
+        const currentUrl = new URL(window.location.href);
+  
+        // Si le paramètre 'channel' n'existe pas, on l'ajoute
+        if (!currentUrl.searchParams.has('channel')) {
+          currentUrl.searchParams.set('channel', randomCode);
+          window.history.pushState({}, '', currentUrl.toString());
+        }
+  
+        setJoined(true);
+      } catch (error) {
+        console.error('Error while joining the call:', error);
+        toast.error('Une erreur est survenue lors de la création de la réunion.');
       }
-  
-      setJoined(true);
     }
   };
   
   const copyMeetingLink = async () => {
-    console.log('Lien à copier :', meetingLink); // Vérifiez la valeur ici
+
+    const currentUrl = new URL(window.location.href);
+
+    // Si le paramètre 'channel' n'existe pas, on l'ajoute
+    if (!currentUrl.searchParams.has('channel')) {
+      // currentUrl.searchParams.set('channel', randomCode);
+      toast.error('Aucun lien à copier !');
+      window.history.pushState({}, '', currentUrl.toString());
+    }
+
+
+    console.log('Lien à copier :', currentUrl); // Vérifiez la valeur ici
+    if (!currentUrl) {
+      toast.error('Aucun lien à copier !');
+      return;
+    }
     try {
-      if (!meetingLink) {
-        toast.error('Aucun lien à copier !');
-        return;
-      }
-      await navigator.clipboard.writeText(meetingLink);
+      await navigator.clipboard.writeText(currentUrl);
       toast.success('Lien copié dans le presse-papiers !');
     } catch (error) {
       console.error('Erreur lors de la copie du lien :', error);
       toast.error('Impossible de copier le lien.');
     }
   };
-  
   
 
   useEffect(() => {
@@ -143,8 +155,6 @@ const TeleMedicine = () => {
               <div className="appointment-info">
                 <h2>Appointment with</h2>
                 <span className="doctor-name">Markiz Oceane Malwine</span>
-                {/* <span className="doctor-name">{UserData?.firstname}</span> */}
-                {/* <span className="timer">00h : 00mn : 01s</span> */}
                 <span className="timer">{joined ? formatTime(elapsedTime) : '00h : 00mn : 00s'}</span>
               </div>
               <button
@@ -177,9 +187,6 @@ const TeleMedicine = () => {
               </div>
             )}
             {!joined && (
-              // <button onClick={handleJoinCall} className="leave-call-btn control-btn">
-              //   <Phone />
-              // </button>
               <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 <button
                   onClick={handleJoinCall}
