@@ -29,7 +29,13 @@ import Doctoragenda from '../views/clientviews/appointmentmanagment/timetable'; 
 import Patientdontknow from '../views/clientviews/appointmentmanagment/patient'; // Page Patient Management
 import Schedulerdv from '../views/clientviews/appointmentmanagment/schedulerdv'; // Page Patient Management
 
+// Dr Functionnalities
 
+import DoctorDashboard from '../views/appointment/overviews'; // Page Patient Management
+import DoctorPatientDetails from '../views/appointment/patientDetail'; // Page Patient Management
+import DoctorCalendar from '../views/appointment/calendar'; // Page Patient Management
+import DoctorAppointment from '../views/appointment/appointment'; // Page Patient Management
+import DoctorHistory from '../views/appointment/appointement_history'; // Page Patient Management
 
 
 
@@ -72,9 +78,12 @@ const ClientRoutesWithDash = [
   { path: '/hospitaladmin/patientdontknow', name: 'Patientdontknow', element: Patientdontknow },
   { path: '/hospitaladmin/schedulerdv', name: 'Schedulerdv', element: Schedulerdv },
 
-
-
-
+  // Doctor
+  { path: '/hospitaladmin/doctor/overviews', name: 'Overviews', element: DoctorDashboard },
+  { path: '/hospitaladmin/doctor/patientdetail', name: 'Patientdetail', element: DoctorPatientDetails },
+  { path: '/hospitaladmin/doctor/calendar', name: 'Calendar', element: DoctorCalendar },
+  { path: '/hospitaladmin/doctor/appointment', name: 'Appointment', element: DoctorAppointment },
+  { path: '/hospitaladmin/doctor/appointement_history', name: 'Appointement_history', element: DoctorHistory },
 
 
 

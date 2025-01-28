@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import "./docteur.css";
 
 const EditableBlockList = () => {
   const [isOpen, setIsOpen] = useState(false); // Dropdown état
@@ -84,7 +85,7 @@ const EditableBlockList = () => {
           {/* Calendrier */}
           {showCalendar && (
             <div className="cale">
-                <div className="w-50">
+                <div className="w-100">
                     <div className="calendar-container">
                     <Calendar
                       onChange={onDateChange}

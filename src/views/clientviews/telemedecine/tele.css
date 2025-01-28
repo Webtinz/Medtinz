@@ -254,7 +254,7 @@
   position: absolute;
   top: 0;
   right: 0;
-  width: 65%;
+  width: 75%;
   height: 100%;
   background: white;
   border-radius: 8px;
@@ -266,6 +266,10 @@
   padding: 20px;
 }
   
+span.react-calendar__navigation__label__labelText.react-calendar__navigation__label__labelText--from{
+
+  font-size: medium;
+}
 
 .medical-form-sidebar.show {
   transform: translateX(0);

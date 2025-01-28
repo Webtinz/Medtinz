@@ -12,7 +12,7 @@ const Dashboard = () => {
         <div className="col-md-4" style={{borderRadius: "20px"}}>
           <div className="card text-white mb-3 text-center" style={{borderRadius: "20px"}} >
             <div className="card-body" style={{borderRadius: "20px", background: 'linear-gradient(180deg, #28A745, #4CAF50)'
-}}>
+}}> 
             <div className='d-flex justify-content-between'>
               <div>
               <h5 className="card-title text-start">Views</h5>

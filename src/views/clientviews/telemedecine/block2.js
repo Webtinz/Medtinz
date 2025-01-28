@@ -71,18 +71,21 @@ const Block = () => {
 
       {/* Le champ input indépendant */}
       <div className="mt-3 d-flex justify-content-center">
-        <input
-          type="text"
-          value={inputValue}
-          onChange={handleInputChange} // Mettre à jour la valeur de l'input indépendamment du label
-          placeholder="ex : nausea"
-          style={{
-            width: "92%",
-            padding: "10px",
+      <div
+        contentEditable="true"
+        className="form-control"
+        style={{
             border: "none",
-            fontSize: "1rem"
-          }}
-        />
+            minHeight: '2vh',
+            padding: '10px',
+            borderRadius: '5px'
+        }}
+        >
+        <ul style={{ margin: 0, paddingLeft: '20px' }}>
+            <li>Feeling pain in my lower back for several days now,</li>
+            <li>Especially when I sit for long periods of time.</li>
+        </ul>
+    </div>
       </div>
     </div>
   );
