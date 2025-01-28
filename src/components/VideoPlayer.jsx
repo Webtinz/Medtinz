@@ -4,7 +4,7 @@ import React, {
   useRef,
 } from 'react';
 
-export const VideoPlayer = ({ user }) => {
+export const VideoPlayer = ({ user, connectedUser }) => {
   const ref = useRef();
 
   useEffect(() => {
@@ -25,7 +25,9 @@ export const VideoPlayer = ({ user }) => {
         className="video-frame"
       ></div>
       <div className="participant-tag">
-         User Id : {user.uid}
+         {/* User Id : {user.uid} */}
+         {/* User: {connectedUser?.firstname}  */}
+         {connectedUser?.role?.name}
       </div>
     </div>
   );

@@ -4,6 +4,9 @@ import { VideoPlayer } from './VideoPlayer';
 import { Video, Mic, PhoneOff } from 'lucide-react';
 import { generateMeetingCode, generateMeetingLink, extractMeetingCode } from '../utils/meetingUtils';
 
+import api from '../service/caller';
+import { ToastContainer, toast } from 'react-toastify';
+
 const APP_ID = '0ed9e0b3cb1b4f5c94cc0635013be32c';
 
 export const VideoRoom = () => {
@@ -16,6 +19,21 @@ export const VideoRoom = () => {
   const [isVideoMuted, setIsVideoMuted] = useState(false);
   const [client, setClient] = useState(null);
   const [channel, setChannel] = useState(null);
+
+  const [UserData, setUserData] = useState([]);  
+
+  useEffect(() => {
+    const fetchLoggedUserData = async () => {
+      try {
+        const response = await api.get('api/usersprofile');
+
+        setUserData(response.data);
+      } catch (error) {
+        toast.error("Failed to fetch data");
+      }
+    };
+    fetchLoggedUserData();
+  }, []);
 
   useEffect(() => {
     // Extract channel code
@@ -228,7 +246,7 @@ export const VideoRoom = () => {
     <div>
       <div className="video-grid">
         {users.map((user) => (
-          <VideoPlayer key={user.uid} user={user} currentUid={uid} />
+          <VideoPlayer key={user.uid} user={user} currentUid={uid} connectedUser={UserData}/>
         ))}
         
       </div>
