@@ -82,8 +82,7 @@ const Block = () => {
         }}
         >
         <ul style={{ margin: 0, paddingLeft: '20px' }}>
-            <li>Feeling pain in my lower back for several days now,</li>
-            <li>Especially when I sit for long periods of time.</li>
+          <li>...</li>
         </ul>
     </div>
       </div>
