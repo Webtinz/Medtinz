@@ -24,42 +24,10 @@ import Frame from './image/Frame1.png';
 const Docteur = () => {
   const [isExpanded, setIsExpanded] = useState(false); // État pour ouvrir/fermer la page
 
-  // const togglePage = () => {
-  //   setIsExpanded(!isExpanded); // Inverse l'état d'ouverture
-  // };
   return (
     <div className="container position-relative">
       
       <div className="row">
-        {/* <div className="col-lg-6 mx-auto mb-3">
-          <div className="p-3 text-white" style={{background:'#28A745',borderRadius:'20px'}}>
-            <div className="d-flex justify-content-between">
-              <div><p className="mt-2">Appointment with</p></div>
-              <div>
-                <img src={l} alt="timer" className="w-75 img-fluid" />
-              </div>
-            </div>
-            <div className="d-flex justify-content-between">
-              <div><h3>Markiz Oceane Malwine,</h3></div>
-              <div>
-                <p className="mt-2" style={{fontSize:'13px'}}>00h : 00mn : 01s</p>
-              </div>
-            </div>
-            <p style={{fontSize:'13px'}}>started !</p>
-          </div>
-        </div> */}
-        {/* <div className="col-lg-6 mx-auto mb-3">
-          <div className="p-3 text-white" style={{background:'#FF9800',borderRadius:'20px'}}>
-            <div className="d-flex justify-content-between">
-              <div><p className="mt-2"> <strong>Gender :</strong> Female</p></div>
-              <div>
-                <img src={l1} alt="timer" className="w-75 img-fluid" />
-              </div>
-            </div>
-            <div><p> <strong>Age :</strong>  24 years Old</p></div>
-            <div><p>Starting time : 10h : 09mn : 20s</p></div>
-          </div>
-        </div> */}
       </div>
       <div className=" bg-white p-3">
         <div className="my-3">
@@ -67,7 +35,7 @@ const Docteur = () => {
         </div>
         <div className="d-flex justify-content-between">
           <div className="d-flex flex-column">
-            <div> <strong>Patient consent to recording ?</strong></div>
+            <div> <strong>Patient consent to recording ?</strong></div> 
             <div className="d-flex">
               <div>
                 <input type="radio" name="consent" className="form-check-input" id="consent1" />
@@ -210,7 +178,6 @@ const Docteur = () => {
 
       </div>
       <div className="bos">
-        {/* <a href="#"><img src={Frame} className="img-fluid"/></a> */}
       </div>
     </div>
   );
